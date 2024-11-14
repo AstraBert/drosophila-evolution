@@ -3,7 +3,7 @@
 
 **Supervisors**: Martin Kapun, Lino Ometto
 
-**Collaborators**: Alan Bergland, Arnoud Estoup, Mathieu Gautier, Joaquin Nunez
+**Collaborators**: Alan Bergland, Arnoud Estoup, Stefan Eichart, Mathieu Gautier, Joaquin Nunez
 
 This repository collects the data, the code and the analysis workflow for the project.
 
