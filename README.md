@@ -21,3 +21,5 @@ bash compose.sh
 ```
 
 You'll be put inside the container (a semi-isolated virtual machine) in which our Docker image is up and running, and you'll find all your mounted data under `/gatk_modified/drosophila-project`.
+
+If you want to check new releases for the image as well as past versions, you can do that on [Docker Hub](https://hub.docker.com/repository/docker/astrabert/silly-gat-kay/general) or on the [GitHub repository](https://github.com/AstraBert/silly-gat-kay)

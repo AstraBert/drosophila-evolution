@@ -1,8 +1,8 @@
 #!/bin/bash
 
-wd=/gatk_modified/drosophila-project/data/pop_data
+wd=/gatk_modified/drosophila-project/data
 
-for sg in ISR_1 ISR_2
+for sg in CN_XJ CnOther CnQTP ISR_1 ISR_2
 do
     outp=${wd}/data_files/${sg}
     
