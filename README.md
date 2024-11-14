@@ -141,4 +141,16 @@ do
 done
 ```
 
-**Variant calling with FreeBayes**: TBD
+**Variant calling with FreeBayes**:
+
+```bash
+freebayes-parallel \
+    <(fasta_generate_regions.py \
+        /gatk_modified/drosophila-project/data/reference/dmel-6.59.fa.fai \
+        100000) \
+    100 \
+    -f /gatk_modified/drosophila-project/data/reference/dmel-6.59.fa \
+    -L /gatk_modified/drosophila-project/data/freebayes_inputs/bamfiles.txt \
+    --pooled-continuous |
+    gzip >/gatk_modified/drosophila-project/results/drosophila_evolution.vcf.gz
+```
