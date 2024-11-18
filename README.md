@@ -3,7 +3,7 @@
 
 **Supervisors**: Martin Kapun, Lino Ometto
 
-**Collaborators**: Alan Bergland, Arnoud Estoup, Stefan Eichart, Mathieu Gautier, Joaquin Nunez
+**Collaborators**: Alan Bergland, Arnoud Estoup, Stefan Eichert, Mathieu Gautier, Joaquin Nunez
 
 This repository collects the data, the code and the analysis workflow for the project.
 
@@ -141,14 +141,14 @@ do
 done
 ```
 
-**Variant calling with FreeBayes**:
+**Variant calling with FreeBayes**: We use multi-threaded FreeBayes to call the variants from our BAM files, storing them into a gzipped VCF file. 
 
 ```bash
 freebayes-parallel \
     <(fasta_generate_regions.py \
         /gatk_modified/drosophila-project/data/reference/dmel-6.59.fa.fai \
         100000) \
-    100 \
+    120 \
     -f /gatk_modified/drosophila-project/data/reference/dmel-6.59.fa \
     -L /gatk_modified/drosophila-project/data/freebayes_inputs/bamfiles.txt \
     --pooled-continuous |

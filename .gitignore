@@ -1,3 +1,5 @@
-data/
+data/bamfiles
+data/reference
+data/dest*
 results/
 docker.log
