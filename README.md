@@ -30,12 +30,32 @@ If you want to check new releases for the image as well as past versions, you ca
 
 Find all the steps of the workflow in [MAIN.sh](./shell/MAIN.sh).
 
-**Getting the data**: We stored all the download links or SRA accessions in specific files that we subsequently used to get the data either through `prefetch`+`fasterq-dump` or through `wget`. 
+**Set your working directory**: Set the working repository so that it matches your local file system:
 
 ```bash
-wd=/gatk_modified/drosophila-project/data
+wd="/gatk_modified/userdata/abertelli/drosophila-evolution/"
+```
 
-## GET FASTQS FOR CHINESE AND ISRAELI SAMPLES
+**Getting the reference genome and index it**: Download the latest release of _Drosophila melanogaster_'s genome from [FlyBase]() and index it with `samtools`+`bwa-mem2`:
+
+```bash
+## GET THE REFERENCE GENOME FOR D. melanogaster FROM FlyBase
+mkdir -p $wd/data/reference/
+
+cd $wd/data/reference/
+
+wget -O dmel-6.59.fa.gz https://ftp.flybase.net/genomes/Drosophila_melanogaster/current/fasta/dmel-all-chromosome-r6.59.fasta.gz
+
+## INDEX THE REFERENCE GENOME
+bwa-mem2 $wd/data/reference/index dmel-6.59.fa.gz
+gunzip -c $wd/data/reference/dmel-6.59.fa.gz >$wd/data/reference/dmel-6.59.fa
+samtools faidx $wd/data/reference/dmel-6.59.fa
+samtools dict $wd/data/reference/dmel-6.59.fa >$wd/data/reference/dmel-6.59.dict
+```
+
+**Get the raw sequencing data and map them**: Store all the SRA accessions in specific files and subsequently use them to get the data either through `prefetch`+`fasterq-dump`. Use the [mapping_pipeline.sh](./shell/mapping_pipeline.sh) script to map them on the fly. 
+
+```bash
 for sg in CN_XJ CnOther CnQTP ISR_1 ISR_2
 do
     outp=${wd}/data_files/${sg}
@@ -49,108 +69,149 @@ do
     while IFS= read -r accession; do
         echo "Downloading and processing: $accession"
         
+        # Download the SRA file
         prefetch "$accession"
         
+        mkdir -p ${wd}/data/mapping/${sg}/${accession}
+
+        # Convert the SRA file to FASTQ format
         fasterq-dump -e 50 --split-files "$accession"
         pigz -p 50 ${wd}/data_files/${sg}/${accession}_1.fastq
         pigz -p 50 ${wd}/data_files/${sg}/${accession}_2.fastq
         rm -rf ${wd}/data_files/${sg}/${accession} 
+        bash $wd/shell/mapping_pipeline.sh \
+            -fq1 ${wd}/data_files/${sg}/${accession}_1.fastq \
+            -fq2 ${wd}/data_files/${sg}/${accession}_2.fastq \
+            -r ${wd}/data/reference/dmel-6.59.fa.gz \
+            -o ${wd}/data/mapping/${sg}/${accession} \
+            -t 50
     done < "$input_file"
 done
 
-cp $wd/*/*/*.dedup.bam* $wd/
+## RETAIN ONLY THE BAM FILES AND MOVE THEM
+rm -rf ${wd}/data_files/
+mkdir ${wd}/data/bamfiles
+mv ${wd}/data/mapping/*/*.bam* ${wd}/data/bamfiles
+```
 
-cd $wd
+**Get already mapped data files**: The DGN data were available from local storage. DESTv2 data can be instead downloaded from the database using `wget`:
 
+```bash
 ## DOWNLOAD FOUR EASTERN EUROPEAN AND FOUR WESTERN EUROPEAN SAMPLES FROM DESTv2
+cd $wd/data/bamfiles/
+
 while IFS= read -r url; do
     wget "$url" 
-done < bam_download_link.txt
+done < $wd/data/bam_download_link.txt
 ```
 
 **Preprocessing the data**: We preprocessed the data modifying the naming in order for them to match with the population from which they're coming from. 
 
 ```bash
-## RENAME BAM FILES IN ORDER TO MATCH WITH THEIR ORIGINAL POPULATION
 conda activate python_deps
 
+## RENAME BAM FILES IN ORDER TO MATCH WITH THEIR ORIGINAL POPULATION
 python3 scripts/RenameBamFiles.py
+
+## RENAME SAMPLES FROM DESTv2 ACCORDING TO WHAT DID BEFORE
 python3 scripts/RenameDestSamples.py
 
 conda deactivate
 
-## RENAME AND MOVE DGN DATA
-bash shell/re_african_data.sh
-rm -rf data/DGN/
-```
-
-And then we moved all the BAM files together:
-
-```bash
-mkdir -p data/bamfiles && mv data/*.bam* data/bamfiles
-```
-
-**Preparing the input for FreeBayes**: We got the reference genome and indexed it:
-
-```bash
-source activate gatk_modified
-
-## GET THE REFERENCE GENOME FOR D. melanogaster FROM FlyBase
-mkdir -p data/reference/
-
-cd data/reference/
-
-wget -O dmel-6.59.fa.gz https://ftp.flybase.net/genomes/Drosophila_melanogaster/current/fasta/dmel-all-chromosome-r6.59.fasta.gz
-
-## INDEX THE REFERENCE GENOME
-bwa-mem2 index dmel-6.59.fa.gz
-gunzip -c dmel-6.59.fa.gz >dmel-6.59.fa
-samtools faidx dmel-6.59.fa
-samtools dict dmel-6.59.fa >dmel-6.59.dict
-
-cd ../../
-
-conda deactivate
-```
-
-Then we extracted all the 250.000bp-long chunks from the reference genome with and AWK script, chunks that we divided into autosomal and X-linked (excluding chromosome 4 and chromosome Y).
-
-```bash
-mkdir data/freebayes_inputs/
-
-### 1. Find all 250000bp chunks
-fastalength -f data/reference/dmel-6.59.fa | awk -f scripts/generate_chunk.awk -v chunk_size=250000 - > data/freebayes_inputs/all.chunks
-
-conda deactivate
-
-### 2. Divide them into X and autosomal chunks
-source activate python_deps
-
-python3 scripts/AutoVsSexChunks.py
-
-conda deactivate
-```
-
-We then created a file with the list of all the BAM files we have:
-
-```bash
-### 3. Create a file listing all the BAM files
-for f in /gatk_modified/drosophila-project/data/bamfiles/*.bam
+counter=0
+for f in $wd/data/DGN/*.bam
 do
-    echo $f >> data/freebayes_inputs/bamfiles.txt
+    ((counter++))
+    mv $f $wd/data/bamfiles/DGN_${counter}.bam
 done
 ```
 
-**Variant calling with FreeBayes**: We use multi-threaded FreeBayes to call the variants from our BAM files, storing them into a gzipped VCF file. 
+**Adjusting the RG line in DGN BAM files and indexing them**: The `@RG` line in the DGN BAM files either reports `sample` or `sample_name` as its `SM` tag. In order to avoid confusion in the variant calling process, substitute the `@RG` line using `samtools` and custom python scripts:
 
 ```bash
+for n in {1..165} 
+do
+    f="$wd/data/bamfiles/DGN_${n}.bam"
+    fres="$wd/data/dgn_renamed/DGN_${n}.bam"
+
+    source activate python_deps
+
+    rgline=$(python3 $wd/scripts/ExtractRgLineText.py -i $f)
+    rgid=$(python3 $wd/scripts/ExtractIdFromRgLine.py -rgl "$rgline")
+
+    conda deactivate
+
+    source activate gatk_modified
+
+    samtools addreplacerg --threads 100 -r "$rgline" -w -o $fres $f
+    samtools index -@ 100 $fres
+
+    conda deactivate
+done
+
+## REMOVE THE UNUSED DIRECTORIES
+rm -rf $wd/data/bamfiles/DGN_*.bam
+mv $wd/data/dgn_renamed/*.bam* $wd/data/bamfiles/
+rm -rf $wd/data/dgn_renamed/
+```
+ 
+**Preparing the input for FreeBayes**: Create a file with the list of all the BAM files we have:
+
+```bash
+for f in $wd/data/bamfiles/*.bam
+do
+    echo $f >> $wd/data/freebayes_inputs/bamfiles.txt
+done
+```
+
+**Variant calling with FreeBayes**: Use multi-threaded FreeBayes to call the variants from BAM files, storing them into a gzipped VCF file. 
+
+```bash
+source activate freebayes-env
+
+export TMPDIR=/gatk_modified/userdata/tmp/
 freebayes-parallel \
     <(fasta_generate_regions.py \
-        /gatk_modified/drosophila-project/data/reference/dmel-6.59.fa.fai \
+        $wd/data/reference/dmel-6.59.fa.fai \
         100000) \
-    120 \
-    -f /gatk_modified/drosophila-project/data/reference/dmel-6.59.fa \
-    -L /gatk_modified/drosophila-project/data/freebayes_inputs/bamfiles.txt \
+    80 \
+    -f $wd/data/reference/dmel-6.59.fa \
+    -L $wd/data/freebayes_inputs/bamfiles.txt \
+    -C 1 \
+    -F 0.02 \
+    -G 5 \
+    --limit-coverage 250 \
+    --use-best-n-alleles 4 \
+    --strict-vcf \
     --pooled-continuous |
-    gzip >/gatk_modified/drosophila-project/results/drosophila_evolution.vcf.gz
+    gzip >$wd/results/drosophila_evolution.freebayes.vcf.gz
+
+conda deactivate
+```
+
+**Variant calling with BCFtools**: Use `bcftools` to perform variant calling on the data (useful for comparison between the two methods, but also faster then FreeBayes and so easier to get the data). Parallelize the variant calling duividing it on different chromosomes and spawn it on different threads with `GNU parallel`:
+
+```bash
+source activate freebayes-env
+echo "will cite" | parallel --citation >/dev/null 2>&1
+parallel --bar -j 40 bash ::: $wd/shell/bcftools_regions/*.sh
+conda deactivate
+```
+
+This is a code snippet for the variant calling command:
+
+```bash
+wd=/gatk_modified/userdata/abertelli/drosophila-evolution
+
+source activate gatk_modified
+bcftools mpileup \
+    -C 50 \
+    -Ou \
+    -f $wd/data/reference/dmel-6.59.fa \
+    -b $wd/data/freebayes_inputs/bamfiles.txt \
+    -q 20 \
+    -Q 20 \
+    -r "2L" \
+    -a DP,AD | bcftools call -mv -Oz --format-fields GQ,GP > $wd/results/drosophila_evolution.bcftools_2L.vcf.gz
+conda deactivate
 ```

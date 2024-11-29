@@ -1,91 +1,140 @@
 #!/bin/bash
 
-## GET FASTQS FOR CHINESE AND ISRAELI SAMPLES
+wd="/gatk_modified/userdata/abertelli/drosophila-evolution/"
+
 source activate gatk_modified
 
-bash shell/download_pop_fastqs.sh
-
-cp data/*/*/*.dedup.bam* data/
-
 ## GET THE REFERENCE GENOME FOR D. melanogaster FROM FlyBase
-mkdir -p data/reference/
+mkdir -p $wd/data/reference/
 
-cd data/reference/
+cd $wd/data/reference/
 
 wget -O dmel-6.59.fa.gz https://ftp.flybase.net/genomes/Drosophila_melanogaster/current/fasta/dmel-all-chromosome-r6.59.fasta.gz
 
 ## INDEX THE REFERENCE GENOME
-bwa-mem2 index dmel-6.59.fa.gz
-gunzip -c dmel-6.59.fa.gz >dmel-6.59.fa
-samtools faidx dmel-6.59.fa
-samtools dict dmel-6.59.fa >dmel-6.59.dict
+bwa-mem2 $wd/data/reference/index dmel-6.59.fa.gz
+gunzip -c $wd/data/reference/dmel-6.59.fa.gz >$wd/data/reference/dmel-6.59.fa
+samtools faidx $wd/data/reference/dmel-6.59.fa
+samtools dict $wd/data/reference/dmel-6.59.fa >$wd/data/reference/dmel-6.59.dict
 
-cd ../../
+## GET FASTQS FOR CHINESE AND ISRAELI SAMPLES
+for sg in CN_XJ CnOther CnQTP ISR_1 ISR_2
+do
+    outp=${wd}/data_files/${sg}
+    
+    mkdir -p $outp
+    
+    cd $outp
 
-conda deactivate
+    input_file=${wd}/download_${sg}.txt 
 
-## RENAME BAM FILES IN ORDER TO MATCH WITH THEIR ORIGINAL POPULATION
-conda activate python_deps
+    while IFS= read -r accession; do
+        echo "Downloading and processing: $accession"
+        
+        # Download the SRA file
+        prefetch "$accession"
+        
+        mkdir -p ${wd}/data/mapping/${sg}/${accession}
 
-python3 scripts/RenameBamFiles.py
+        # Convert the SRA file to FASTQ format
+        fasterq-dump -e 50 --split-files "$accession"
+        pigz -p 50 ${wd}/data_files/${sg}/${accession}_1.fastq
+        pigz -p 50 ${wd}/data_files/${sg}/${accession}_2.fastq
+        rm -rf ${wd}/data_files/${sg}/${accession} 
+        bash $wd/shell/mapping_pipeline.sh \
+            -fq1 ${wd}/data_files/${sg}/${accession}_1.fastq \
+            -fq2 ${wd}/data_files/${sg}/${accession}_2.fastq \
+            -r ${wd}/data/reference/dmel-6.59.fa.gz \
+            -o ${wd}/data/mapping/${sg}/${accession} \
+            -t 50
+    done < "$input_file"
+done
+
+rm -rf ${wd}/data_files/
+mkdir ${wd}/data/bamfiles
+mv ${wd}/data/mapping/*/*.bam* ${wd}/data/bamfiles
 
 conda deactivate
 
 ## DOWNLOAD FOUR EASTERN EUROPEAN AND FOUR WESTERN EUROPEAN SAMPLES FROM DESTv2
-cd data/
+cd $wd/data/bamfiles/
 
 while IFS= read -r url; do
     wget "$url" 
-done < bam_download_link.txt
+done < $wd/data/bam_download_link.txt
+
+conda activate python_deps
+
+## RENAME BAM FILES IN ORDER TO MATCH WITH THEIR ORIGINAL POPULATION
+python3 $wd/scripts/RenameBamFiles.py
 
 ## RENAME SAMPLES FROM DESTv2 ACCORDING TO WHAT DID BEFORE
-source activate python_deps
-
-python3 scripts/RenameDestSamples.py
+python3 $wd/scripts/RenameDestSamples.py
 
 conda deactivate
 
-## RENAME AND MOVE DGN DATA
-bash shell/re_african_data.sh
+counter=0
+for f in $wd/data/DGN/*.bam
+do
+    ((counter++))
+    mv $f $wd/data/bamfiles/DGN_${counter}.bam
+done
 
-rm -rf data/DGN/
+for n in {1..165} 
+do
+    f="$wd/data/bamfiles/DGN_${n}.bam"
+    fres="$wd/data/dgn_renamed/DGN_${n}.bam"
 
-## MOVE ALL THE BAM FILES TOGETHER
-mkdir -p data/bamfiles && mv data/*.bam* data/bamfiles
+    source activate python_deps
 
-conda activate gatk_modified
+    rgline=$(python3 $wd/scripts/ExtractRgLineText.py -i $f)
+    rgid=$(python3 $wd/scripts/ExtractIdFromRgLine.py -rgl "$rgline")
+
+    conda deactivate
+
+    source activate gatk_modified
+
+    samtools addreplacerg --threads 100 -r "$rgline" -w -o $fres $f
+    samtools index -@ 100 $fres
+
+    conda deactivate
+done
+
+rm -rf $wd/data/bamfiles/DGN_*.bam
+mv $wd/data/dgn_renamed/*.bam* $wd/data/bamfiles/
+rm -rf $wd/data/dgn_renamed/
 
 ## CREATE THE INPUTS FOR FreeBayes
-mkdir data/freebayes_inputs/
-
-### 1. Find all 250000bp chunks
-fastalength -f data/reference/dmel-6.59.fa | awk -f scripts/generate_chunk.awk -v chunk_size=250000 - > data/freebayes_inputs/all.chunks
-
-conda deactivate
-
-### 2. Divide them into X and autosomal chunks
-source activate python_deps
-
-python3 scripts/AutoVsSexChunks.py
-
-conda deactivate
+mkdir $wd/data/freebayes_inputs/
 
 ### 3. Create a file listing all the BAM files
-for f in /gatk_modified/drosophila-project/data/bamfiles/*.bam
+for f in $wd/data/bamfiles/*.bam
 do
-    echo $f >> data/freebayes_inputs/bamfiles.txt
+    echo $f >> $wd/data/freebayes_inputs/bamfiles.txt
 done
 
 source activate freebayes-env
 
+export TMPDIR=/gatk_modified/userdata/tmp/
 freebayes-parallel \
     <(fasta_generate_regions.py \
-        /gatk_modified/drosophila-project/data/reference/dmel-6.59.fa.fai \
+        $wd/data/reference/dmel-6.59.fa.fai \
         100000) \
-    100 \
-    -f /gatk_modified/drosophila-project/data/reference/dmel-6.59.fa \
-    -L /gatk_modified/drosophila-project/data/freebayes_inputs/bamfiles.txt \
+    80 \
+    -f $wd/data/reference/dmel-6.59.fa \
+    -L $wd/data/freebayes_inputs/bamfiles.txt \
+    -C 1 \
+    -F 0.02 \
+    -G 5 \
+    --limit-coverage 250 \
+    --use-best-n-alleles 4 \
+    --strict-vcf \
     --pooled-continuous |
-    gzip >/gatk_modified/drosophila-project/results/drosophila_evolution.vcf.gz
+    gzip >$wd/results/drosophila_evolution.freebayes.vcf.gz
 
+conda deactivate
+
+source activate freebayes-env
+echo "will cite" | parallel --citation >/dev/null 2>&1
+parallel --bar -j 40 bash ::: $wd/shell/bcftools_regions/*.sh
 conda deactivate

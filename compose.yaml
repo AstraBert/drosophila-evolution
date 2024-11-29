@@ -1,10 +1,9 @@
 services:
   app: 
-    container_name: drosophila_project_env
-    restart: always
+    container_name: drosophila_project_env1
     image: astrabert/silly-gat-kay:latest
     volumes:
-      - $USERDATA_PATH:/gatk_modified/drosophila-project
+      - $USERDATA_PATH:/gatk_modified/userdata/
     stdin_open: true
     tty: true
     entrypoint: "/bin/bash"
