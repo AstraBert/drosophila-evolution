@@ -36,6 +36,12 @@ Find all the steps of the workflow in [MAIN.sh](./shell/MAIN.sh).
 wd="/gatk_modified/userdata/abertelli/drosophila-evolution/"
 ```
 
+### Data getting pipeline
+
+<div align="center">
+    <img src="./imgs/data_getting.jpg" alt="Pipeline for getting data">
+</div>
+
 **Getting the reference genome and index it**: Download the latest release of _Drosophila melanogaster_'s genome from [FlyBase]() and index it with `samtools`+`bwa-mem2`:
 
 ```bash
@@ -52,6 +58,23 @@ gunzip -c $wd/data/reference/dmel-6.59.fa.gz >$wd/data/reference/dmel-6.59.fa
 samtools faidx $wd/data/reference/dmel-6.59.fa
 samtools dict $wd/data/reference/dmel-6.59.fa >$wd/data/reference/dmel-6.59.dict
 ```
+
+**Get already mapped data files**: The DGN data were available from local storage. DESTv2 data can be instead downloaded from the database using `wget`:
+
+```bash
+## DOWNLOAD FOUR EASTERN EUROPEAN AND FOUR WESTERN EUROPEAN SAMPLES FROM DESTv2
+cd $wd/data/bamfiles/
+
+while IFS= read -r url; do
+    wget "$url" 
+done < $wd/data/bam_download_link.txt
+```
+
+### Mapping data pipeline
+
+<div align="center">
+    <img src="./imgs/data_mapping.jpg" alt="Pipeline for getting data">
+</div>
 
 **Get the raw sequencing data and map them**: Store all the SRA accessions in specific files and subsequently use them to get the data either through `prefetch`+`fasterq-dump`. Use the [mapping_pipeline.sh](./shell/mapping_pipeline.sh) script to map them on the fly. 
 
@@ -94,16 +117,7 @@ mkdir ${wd}/data/bamfiles
 mv ${wd}/data/mapping/*/*.bam* ${wd}/data/bamfiles
 ```
 
-**Get already mapped data files**: The DGN data were available from local storage. DESTv2 data can be instead downloaded from the database using `wget`:
-
-```bash
-## DOWNLOAD FOUR EASTERN EUROPEAN AND FOUR WESTERN EUROPEAN SAMPLES FROM DESTv2
-cd $wd/data/bamfiles/
-
-while IFS= read -r url; do
-    wget "$url" 
-done < $wd/data/bam_download_link.txt
-```
+### Processing the data
 
 **Preprocessing the data**: We preprocessed the data modifying the naming in order for them to match with the population from which they're coming from. 
 
@@ -126,7 +140,7 @@ do
 done
 ```
 
-**Adjusting the RG line in DGN BAM files and indexing them**: The `@RG` line in the DGN BAM files either reports `sample` or `sample_name` as its `SM` tag. In order to avoid confusion in the variant calling process, substitute the `@RG` line using `samtools` and custom python scripts:
+**Adjusting the RG line in DGN BAM files and indexing them**: The `@RG` line in the DGN BAM files either reports `sample` as `SM` tag. In order to avoid confusion in the variant calling process, substitute the `@RG` line using `samtools` and custom python scripts:
 
 ```bash
 for n in {1..165} 
@@ -154,7 +168,41 @@ rm -rf $wd/data/bamfiles/DGN_*.bam
 mv $wd/data/dgn_renamed/*.bam* $wd/data/bamfiles/
 rm -rf $wd/data/dgn_renamed/
 ```
- 
+
+**Adjusting the RG line in DEST BAM files and indexing them**: The `@RG` line in the DEST BAM files reports `sample_name` as `SM` tag. In order to avoid confusion in the variant calling process, substitute the `@RG` line using `samtools` and custom python scripts:
+
+```bash
+mkdir -p $wd/data/dest_renamed/
+
+for sample in EERU EEUA WEES WEFR
+do
+    for n in 1 2
+    do 
+        f="$wd/data/bamfiles/${sample}_${n}.bam"
+        fres="$wd/data/dest_renamed/${sample}_${n}.bam"
+
+        source activate python_deps
+
+        rgline=$(python3 $wd/scripts/RgLineForDest.py -i $f)
+
+        conda deactivate
+
+        source activate gatk_modified
+
+        samtools addreplacerg --threads 100 -r "$rgline" -w -o $fres $f
+        samtools index -@ 100 $fres
+
+        conda deactivate
+    done
+done
+
+rm -rf $wd/data/bamfiles/EE??_?.bam*
+rm -rf $wd/data/bamfiles/WE??_?.bam*
+mv $wd/data/dest_renamed/*.bam* $wd/data/bamfiles/
+rm -rf $wd/data/dest_renamed/
+``` 
+
+
 **Preparing the input for FreeBayes**: Create a file with the list of all the BAM files we have:
 
 ```bash
@@ -163,6 +211,8 @@ do
     echo $f >> $wd/data/freebayes_inputs/bamfiles.txt
 done
 ```
+
+### Variant calling
 
 **Variant calling with FreeBayes**: Use multi-threaded FreeBayes to call the variants from BAM files, storing them into a gzipped VCF file. 
 

@@ -100,9 +100,37 @@ do
     conda deactivate
 done
 
+mkdir -p $wd/data/dest_renamed/
+
+for sample in EERU EEUA WEES WEFR
+do
+    for n in 1 2
+    do 
+        f="$wd/data/bamfiles/${sample}_${n}.bam"
+        fres="$wd/data/dest_renamed/${sample}_${n}.bam"
+
+        source activate python_deps
+
+        rgline=$(python3 $wd/scripts/RgLineForDest.py -i $f)
+
+        conda deactivate
+
+        source activate gatk_modified
+
+        samtools addreplacerg --threads 100 -r "$rgline" -w -o $fres $f
+        samtools index -@ 100 $fres
+
+        conda deactivate
+    done
+done
+
 rm -rf $wd/data/bamfiles/DGN_*.bam
+rm -rf $wd/data/bamfiles/EE??_?.bam*
+rm -rf $wd/data/bamfiles/WE??_?.bam*
 mv $wd/data/dgn_renamed/*.bam* $wd/data/bamfiles/
+mv $wd/data/dest_renamed/*.bam* $wd/data/bamfiles/
 rm -rf $wd/data/dgn_renamed/
+rm -rf $wd/data/dest_renamed/
 
 ## CREATE THE INPUTS FOR FreeBayes
 mkdir $wd/data/freebayes_inputs/
