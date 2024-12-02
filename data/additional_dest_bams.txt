@@ -1,0 +1,14 @@
+http://berglandlab.uvadcos.io/dest_mapped/DESTv2/IT_Tre_San_1_2019-10-01/IT_Tre_San_1_2019-10-01.mel.bam
+http://berglandlab.uvadcos.io/dest_mapped/DESTv2/IT_Tre_San_1_2019-10-01/IT_Tre_San_1_2019-10-01.mel.bam.bai
+http://berglandlab.uvadcos.io/dest_mapped/DESTv2/PL_Lub_Lub_1_2019-09-10/PL_Lub_Lub_1_2019-09-10.mel.bam
+http://berglandlab.uvadcos.io/dest_mapped/DESTv2/PL_Lub_Lub_1_2019-09-10/PL_Lub_Lub_1_2019-09-10.mel.bam.bai
+http://berglandlab.uvadcos.io/dest_mapped/DESTv2/HU_Pes_Pil_1_2018-07-04/HU_Pes_Pil_1_2018-07-04.original.bam
+http://berglandlab.uvadcos.io/dest_mapped/DESTv2/HU_Pes_Pil_1_2018-07-04/HU_Pes_Pil_1_2018-07-04.original.bam.bai
+http://berglandlab.uvadcos.io/dest_mapped/DESTv1/AT_Wie_Gro_1_2012-10-20/AT_Wie_Gro_1_2012-10-20.mel.bam
+http://berglandlab.uvadcos.io/dest_mapped/DESTv1/AT_Wie_Gro_1_2012-10-20/AT_Wie_Gro_1_2012-10-20.mel.bam.bai
+http://berglandlab.uvadcos.io/dest_mapped/DESTv2/DE_Bay_Mun_1_2021-09-04/DE_Bay_Mun_1_2021-09-04.mel.bam
+http://berglandlab.uvadcos.io/dest_mapped/DESTv2/DE_Bay_Mun_1_2021-09-04/DE_Bay_Mun_1_2021-09-04.mel.bam.bai
+http://berglandlab.uvadcos.io/dest_mapped/DESTv1/CY_Nic_Nic_1_2014-08-10/CY_Nic_Nic_1_2014-08-10.mel.bam
+http://berglandlab.uvadcos.io/dest_mapped/DESTv1/CY_Nic_Nic_1_2014-08-10/CY_Nic_Nic_1_2014-08-10.mel.bam.bai
+http://berglandlab.uvadcos.io/dest_mapped/DESTv1/TR_Ank_Yes_1_2016-10-13/TR_Ank_Yes_1_2016-10-13.mel.bam
+http://berglandlab.uvadcos.io/dest_mapped/DESTv1/TR_Ank_Yes_1_2016-10-13/TR_Ank_Yes_1_2016-10-13.mel.bam.bai

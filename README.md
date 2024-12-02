@@ -36,10 +36,12 @@ Find all the steps of the workflow in [MAIN.sh](./shell/MAIN.sh).
 wd="/gatk_modified/userdata/abertelli/drosophila-evolution/"
 ```
 
-### Data getting pipeline
+### Data getting workflow
 
 <div align="center">
     <img src="./imgs/data_getting.jpg" alt="Pipeline for getting data">
+    <p><i>Workflow for getting needed data</i></p>
+    <sbr>
 </div>
 
 **Getting the reference genome and index it**: Download the latest release of _Drosophila melanogaster_'s genome from [FlyBase]() and index it with `samtools`+`bwa-mem2`:
@@ -68,12 +70,28 @@ cd $wd/data/bamfiles/
 while IFS= read -r url; do
     wget "$url" 
 done < $wd/data/bam_download_link.txt
+
+## DOWNLOAD ADDITIONAL EASTERN EUROPEAN AND WESTERN EUROPEAN SAMPLES FROM DESTv1 AND DESTv2
+cnt=0
+mkdir $wd/shell/wget_data/
+
+while IFS= read -r url; do
+    ((cnt++))
+    echo "wget "$url"" > $wd/shell/wget_data/${cnt}.sh 
+done < $wd/data/additional_dest_bams.txt
+
+source activate freebayes-env
+echo "will cite" | parallel --citation >/dev/null 2>&1
+parallel --bar -j 100 bash ::: $wd/shell/wget_data/*.sh
+conda deactivate
 ```
 
 ### Mapping data pipeline
 
 <div align="center">
-    <img src="./imgs/data_mapping.jpg" alt="Pipeline for getting data">
+    <img src="./imgs/data_mapping.jpg" alt="Pipeline for mapping data">
+    <p><i>Raw sequencing data mapping pipeline</i></p>
+    <sbr>
 </div>
 
 **Get the raw sequencing data and map them**: Store all the SRA accessions in specific files and subsequently use them to get the data either through `prefetch`+`fasterq-dump`. Use the [mapping_pipeline.sh](./shell/mapping_pipeline.sh) script to map them on the fly. 
@@ -125,10 +143,13 @@ mv ${wd}/data/mapping/*/*.bam* ${wd}/data/bamfiles
 conda activate python_deps
 
 ## RENAME BAM FILES IN ORDER TO MATCH WITH THEIR ORIGINAL POPULATION
-python3 scripts/RenameBamFiles.py
+python3 $wd/scripts/RenameBamFiles.py
 
 ## RENAME SAMPLES FROM DESTv2 ACCORDING TO WHAT DID BEFORE
-python3 scripts/RenameDestSamples.py
+python3 $wd/scripts/RenameDestSamples.py
+
+## RENAME ADDITIONAL SAMPLES FROM DESTv1/DESTv2 ACCORDING TO WHAT DID BEFORE
+python3 $wd/scripts/RenameAdditionalDest.py
 
 conda deactivate
 
@@ -196,14 +217,46 @@ do
     done
 done
 
+mkdir -p $wd/data/add_dest_renamed/
+
+
+for sample in EBAT WBIT EBPL WBDE EBHU CYP TRK
+do
+    for n in 1
+    do 
+        f="$wd/data/bamfiles/${sample}_${n}.bam"
+        fres="$wd/data/add_dest_renamed/${sample}_${n}.bam"
+
+        source activate python_deps
+
+        rgline=$(python3 $wd/scripts/RgLineForDest.py -i $f)
+
+        conda deactivate
+
+        echo $rgline
+        source activate gatk_modified
+
+        samtools addreplacerg --threads 100 -r "$rgline" -w -o $fres $f
+        samtools index -@ 100 $fres
+
+        conda deactivate
+    done
+done
+
 rm -rf $wd/data/bamfiles/EE??_?.bam*
 rm -rf $wd/data/bamfiles/WE??_?.bam*
+rm -rf $wd/data/bamfiles/WB??_?.bam*
+rm -rf $wd/data/bamfiles/EB??_?.bam*
+rm -rf $wd/data/bamfiles/CYP_?.bam*
+rm -rf $wd/data/bamfiles/TRK_?.bam*
 mv $wd/data/dest_renamed/*.bam* $wd/data/bamfiles/
+mv $wd/data/add_dest_renamed/*.bam* $wd/data/bamfiles/
 rm -rf $wd/data/dest_renamed/
+rm -rf $wd/data/add_dest_renamed/
 ``` 
 
 
-**Preparing the input for FreeBayes**: Create a file with the list of all the BAM files we have:
+**Preparing the input for FreeBayes and BCFTools**: Create a file with the list of all the BAM files we have:
 
 ```bash
 for f in $wd/data/bamfiles/*.bam
