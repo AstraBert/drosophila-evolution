@@ -200,7 +200,7 @@ freebayes-parallel \
     <(fasta_generate_regions.py \
         $wd/data/reference/dmel-6.59.fa.fai \
         100000) \
-    80 \
+    110 \
     -f $wd/data/reference/dmel-6.59.fa \
     -L $wd/data/freebayes_inputs/bamfiles.txt \
     -C 1 \
@@ -217,4 +217,19 @@ conda deactivate
 source activate freebayes-env
 echo "will cite" | parallel --citation >/dev/null 2>&1
 parallel --bar -j 120 bash ::: $wd/shell/bcftools_regions/*.sh
+conda deactivate
+
+## CREATE ALL THE BAM LISTS AND SHELLSCRIPTS NEEDED FOR VCF SUBSAMPLING
+
+source activate python_deps
+
+mkdir $wd/data/bamlists/
+mkdir $wd/shell/subsamples/
+python3 $wd/scripts/CreateBamLists.py
+
+conda deactivate
+
+source activate freebayes-env
+echo "will cite" | parallel --citation >/dev/null 2>&1
+parallel --bar -j 16 bash ::: $wd/shell/subsamples/*.sh
 conda deactivate

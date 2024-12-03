@@ -1,0 +1,1 @@
+/gatk_modified/userdata/abertelli/drosophila-evolution//data/bamfiles/EERU_2.bam
