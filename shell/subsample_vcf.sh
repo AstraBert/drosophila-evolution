@@ -12,7 +12,9 @@ usage() {
         -t, --threads THREADS: integer number of threads (default: 1)
         -sgn, --samples_group_name SAMPLES_GROUP_NAME: name of the samples group to append at the name of the resulting VCF (more in the docs, default: 'samplegroup')
 
-    Input subsample_vcf.sh -h to show this message again."
+    Input subsample_vcf.sh -h to show this message again.
+    
+    DOCS: https://github.com/AstraBert/drosophila-evolution/blob/main/docs/subsample_vcf.md"
     exit 1
 }
 

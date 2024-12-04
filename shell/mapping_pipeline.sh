@@ -1,10 +1,8 @@
 #!/bin/bash
 
-# Example usage: bash /gatk_modified/drosophila-project/shell/snp_calling_pipeline.sh -r /gatk_modified/drosophila-project/data/drosophila_starting_test/dmel-6.59.fa.gz -fq1 /gatk_modified/drosophila-project/data/drosophila_starting_test/SRR3734311_1.fastq.gz -fq2 /gatk_modified/drosophila-project/data/drosophila_starting_test/SRR3734311_2.fastq.gz -o /gatk_modified/drosophila-project/results/drosophila_starting_test -t 100 
-
 # Usage function
 usage() {
-    echo "Usage: snp_calling_pipeline.sh -r,--reference REFERENCE -fq,--fastq FASTQ_FILE -o,--outputdir OUTPUTDIR [-t, --threads THREADS] 
+    echo "Usage: mapping_pipeline.sh -r,--reference REFERENCE -fq,--fastq FASTQ_FILE -o,--outputdir OUTPUTDIR [-t, --threads THREADS] 
 
     REQUIRED ARGUMENTS:
         -r, --reference REFERENCE: Compressed reference FASTA file (.fa.gz, .fasta.gz and other extensions.gz)
@@ -14,7 +12,9 @@ usage() {
     OPTIONAL ARGUMENTS:
         -t, --threads THREADS: integer number of threads (default: 200)
 
-    Input snp_calling_pipeline.sh -h to show this message again."
+    Input mapping_pipeline.sh -h to show this message again.
+    
+    DOCS: https://github.com/AstraBert/drosophila-evolution/blob/main/docs/mapping_pipeline.md"
     exit 1
 }
 
