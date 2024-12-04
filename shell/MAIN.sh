@@ -229,7 +229,17 @@ python3 $wd/scripts/CreateBamLists.py
 
 conda deactivate
 
+## GROUP THE POPULATIONS
 source activate freebayes-env
 echo "will cite" | parallel --citation >/dev/null 2>&1
 parallel --bar -j 16 bash ::: $wd/shell/subsamples/*.sh
+conda deactivate
+
+## CONCATENATE VCF FILES
+
+mkdir -p $wd/shell/concatenate
+
+source activate freebayes-env
+echo "will cite" | parallel --citation >/dev/null 2>&1
+parallel --bar -j 16 bash ::: $wd/shell/concatenate/*.sh
 conda deactivate
