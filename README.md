@@ -373,3 +373,20 @@ echo "will cite" | parallel --citation >/dev/null 2>&1
 parallel --bar -j 16 bash ::: $wd/shell/concatenate/*.sh
 conda deactivate
 ```
+
+**Calculate simple VCF stats**: You can calculate simple VCF stats with `bcftools stats` and plot them with `plot-vcfstats`. Produce the shellscripts to calculate those statistics and execute them in parallel with the following code:
+
+```bash
+## EXTRACT STATS FROM VCF FILES
+
+mkdir -p $wd/shell/stats
+
+source activate python_deps
+python3 $wd/scripts/FindVcfToStats.py
+conda deactivate
+
+source activate freebayes-env
+echo "will cite" | parallel --citation >/dev/null 2>&1
+parallel --bar -j 16 bash ::: $wd/shell/stats/*.sh
+conda deactivate
+```

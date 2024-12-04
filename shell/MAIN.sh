@@ -247,3 +247,16 @@ source activate freebayes-env
 echo "will cite" | parallel --citation >/dev/null 2>&1
 parallel --bar -j 16 bash ::: $wd/shell/concatenate/*.sh
 conda deactivate
+
+## EXTRACT STATS FROM VCF FILES
+
+mkdir -p $wd/shell/stats
+
+source activate python_deps
+python3 $wd/scripts/FindVcfToStats.py
+conda deactivate
+
+source activate freebayes-env
+echo "will cite" | parallel --citation >/dev/null 2>&1
+parallel --bar -j 16 bash ::: $wd/shell/stats/*.sh
+conda deactivate
