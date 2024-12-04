@@ -3,3 +3,4 @@ data/reference
 data/dest*
 results/
 docker.log
+drosophila-evolution.code-workspace

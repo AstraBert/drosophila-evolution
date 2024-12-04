@@ -239,6 +239,10 @@ conda deactivate
 
 mkdir -p $wd/shell/concatenate
 
+source activate python_deps
+python3 $wd/scripts/FindVcfToConcat.py
+conda deactivate
+
 source activate freebayes-env
 echo "will cite" | parallel --citation >/dev/null 2>&1
 parallel --bar -j 16 bash ::: $wd/shell/concatenate/*.sh

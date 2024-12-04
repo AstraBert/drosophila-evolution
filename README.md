@@ -318,3 +318,58 @@ bcftools mpileup \
     -a DP,AD | bcftools call -mv -Oz --format-fields GQ,GP > $wd/results/drosophila_evolution.bcftools_2L.vcf.gz
 conda deactivate
 ```
+
+### VCF Post-Processing
+
+From `bcftools` you will obtain a set of five VCF files, each representing one of the chromosomes of interest (2R, 2L, 3R, 3L and X).
+
+**Dividing files according to population**: Since the produced VCF files represent the whole set of 335 data point, you need to split them according to their reference population. In order to do that, you can leverage the `CreateBamLists.py` script, which takes care of generating samples files that are needed as input for the `subsample_vcf.sh` pipeline. `CreateBamLists.py` will also generate shellscripts to execute the pipeline with the different inputs. 
+
+```bash
+## CREATE ALL THE BAM LISTS AND SHELLSCRIPTS NEEDED FOR VCF SUBSAMPLING
+
+source activate python_deps
+
+mkdir $wd/data/bamlists/
+mkdir $wd/shell/subsamples/
+python3 $wd/scripts/CreateBamLists.py
+
+conda deactivate
+```
+
+You can then execute the subsampling in parallel with GNU Parallel (the base engine for the subsampling is `bcftools view`):
+
+```bash
+## GROUP THE POPULATIONS
+source activate freebayes-env
+echo "will cite" | parallel --citation >/dev/null 2>&1
+parallel --bar -j 16 bash ::: $wd/shell/subsamples/*.sh
+conda deactivate
+```
+
+In the `$wd/results/groups/` directory you will find several sub-directories named as the populations groups, each of which will contain these sub-folders:
+
+- `logs`: logs of the various steps are stored here
+- `data`: samples files with the BAM list as input for the subsampling pipeline are stored here
+- `results`: samples-specific VCFs are stored here
+
+**Concatenate the VCF file for each population**: For each isolated population, you can then generate a full VCF file (with the five regions that we took into account). They will be stored as `POPNAME_all.bcftools.vcf.gz` where POPNAME is the ID of the population (_CnOther_, *WBIT_1* for example). You can execute the python script `FindVcfToConcat.py`, which will find all the VCFs to concatenate and write shellscripts to execute the concatenation with `bcftools concat`:
+
+```bash
+## CONCATENATE VCF FILES
+
+mkdir -p $wd/shell/concatenate
+
+source activate python_deps
+python3 $wd/scripts/FindVcfToConcat.py
+conda deactivate
+```
+
+You can now execute the concatenation in paralle with GNU Parallel:
+
+```bash
+source activate freebayes-env
+echo "will cite" | parallel --citation >/dev/null 2>&1
+parallel --bar -j 16 bash ::: $wd/shell/concatenate/*.sh
+conda deactivate
+```
