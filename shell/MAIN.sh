@@ -219,44 +219,21 @@ echo "will cite" | parallel --citation >/dev/null 2>&1
 parallel --bar -j 120 bash ::: $wd/shell/bcftools_regions/*.sh
 conda deactivate
 
-## CREATE ALL THE BAM LISTS AND SHELLSCRIPTS NEEDED FOR VCF SUBSAMPLING
+## CONCATENATE VCF FILE
+
+bcftools concat \
+    -O z \
+    --threads 16 \
+    -o $wd/results/drosophila_evolution.bcftools_all.vcf.gz \
+    $wd/results/drosophila_evolution.bcftools_2R.vcf.gz \
+    $wd/results/drosophila_evolution.bcftools_2L.vcf.gz \
+    $wd/results/drosophila_evolution.bcftools_3R.vcf.gz \
+    $wd/results/drosophila_evolution.bcftools_3L.vcf.gz \
+    $wd/results/drosophila_evolution.bcftools_X.vcf.gz  
+
+## CALCULATE SIMPLE VCF STATISTICS
 
 source activate python_deps
-
-mkdir $wd/data/bamlists/
-mkdir $wd/shell/subsamples/
-python3 $wd/scripts/CreateBamLists.py
-
-conda deactivate
-
-## GROUP THE POPULATIONS
-source activate freebayes-env
-echo "will cite" | parallel --citation >/dev/null 2>&1
-parallel --bar -j 16 bash ::: $wd/shell/subsamples/*.sh
-conda deactivate
-
-## CONCATENATE VCF FILES
-
-mkdir -p $wd/shell/concatenate
-
-source activate python_deps
-python3 $wd/scripts/FindVcfToConcat.py
-conda deactivate
-
-source activate freebayes-env
-echo "will cite" | parallel --citation >/dev/null 2>&1
-parallel --bar -j 16 bash ::: $wd/shell/concatenate/*.sh
-conda deactivate
-
-## EXTRACT STATS FROM VCF FILES
-
-mkdir -p $wd/shell/stats
-
-source activate python_deps
-python3 $wd/scripts/FindVcfToStats.py
-conda deactivate
-
-source activate freebayes-env
-echo "will cite" | parallel --citation >/dev/null 2>&1
-parallel --bar -j 16 bash ::: $wd/shell/stats/*.sh
+bcftools stats $wd/results/drosophila_evolution.bcftools_all.vcf.gz > $wd/results/drosophila_evolution.bcftools_all.vchk
+plot-vcfstats -p $wd/results/bcftools_plots/ $wd/results/drosophila_evolution.bcftools_all.vchk
 conda deactivate
