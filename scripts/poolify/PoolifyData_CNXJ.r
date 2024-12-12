@@ -11,7 +11,7 @@ colnames(tmp.ind.CNXJ)=c("FullID","POP","ID")
 
 
 dum.CNXJ=as.matrix(table(tmp.ind.CNXJ[,2]))
-tmp.nomfp.CNXJ=data.frame(nom=paste0(rownames(dum.CNXJ),"_fp"),pop=rownames(dum.CNXJ),hapsize=2*dum.CNXJ, type="FakePool",stringsAsFactors = F)
+tmp.nomfp.CNXJ=data.frame(nom=paste0(rownames(dum.CNXJ),"_fp"), fullid=tmp.ind.CNXJ[,3], pop=rownames(dum.CNXJ),hapsize=2*dum.CNXJ, type="FakePool",stringsAsFactors = F)
 det.pools.CNXJ=rbind(tmp.nomtp,tmp.nomfp.CNXJ)
 det.all.CNXJ=data.frame(fullid=c(tmp.nomtp$fullid,tmp.ind.CNXJ[,3]), pop=c(tmp.nom[true.pools],tmp.ind.CNXJ[,2]), seqtype=c(rep("PoolSeq",length(true.pools)),rep("IndSeq",nrow(tmp.ind.CNXJ))), stringsAsFactors = F)
 
@@ -19,17 +19,17 @@ rm(dum.CNXJ,tmp.nom,tmp.nomfp.CNXJ,tmp.ind.CNXJ,tmp.nomtp)
 
 #############
 fake.pools.idx.CNXJ=which(det.pools.CNXJ$type=="FakePool")
-nfake.pools.CNXJ=length(fake.pools.idx)
+nfake.pools.CNXJ=length(fake.pools.idx.CNXJ)
 fakepool.ind.idx.CNXJ=list()
-for(i in 1:nfake.pools){
+for(i in 1:nfake.pools.CNXJ){
 tmp.nom.CNXJ=det.pools.CNXJ$pop[fake.pools.idx.CNXJ[i]]
 fakepool.ind.idx.CNXJ[[i]]=which(det.all.CNXJ$pop==tmp.nom.CNXJ & det.all.CNXJ$seqtype=="IndSeq")
 }
 #######
-vcf.files=list.files(path="./results/",pattern="bcftools_all.vcf.gz")
 nctg.gg=0 ; nctg.pp=0
-for(f in vcf.files){#loop over each contig vcf
-tmp<-vcf2pooldata(f,poolsizes = rep(10,287),nlines.per.readblock = 1e4,min.maf=0.05)
+
+load("/gatk_modified/userdata/abertelli/drosophila-evolution/results/all.vcf.pops.RData")
+tmp<-all.vcf.pops
 
 #creation de fake pool
 nctg.pp=nctg.pp+1
@@ -52,5 +52,5 @@ all.pools@readcoverage=rbind(all.pools@readcoverage,tmp.readcov)
 all.pools@nsnp=all.pools@nsnp+tmp@nsnp
 all.pools@snp.info=rbind(all.pools@snp.info,tmp@snp.info)
 }
-}
+
 rm(tmp)

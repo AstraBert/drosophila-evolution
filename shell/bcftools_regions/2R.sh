@@ -6,10 +6,10 @@ bcftools mpileup \
     -C 50 \
     -Ou \
     -f $wd/data/reference/dmel-6.59.fa \
-    -b $wd/data/freebayes_inputs/bamfiles.txt \
-    -q 20 \
+    -b $wd/data/freebayes_inputs/bamfiles_DGN_subs.txt \
     -Q 20 \
+    -q 0 \
     -r "2R" \
-    -a DP,AD | bcftools call -mv -Oz  --format-fields GQ,GP > $wd/results/drosophila_evolution.bcftools_2R.vcf.gz
+    -a DP,AD | bcftools call -mv -Oz  --format-fields GQ,GP | gunzip -c | head -n 100000
 
 conda deactivate
