@@ -1,5 +1,5 @@
 import polars as pl  
-from typing import List, Dict
+from typing import List, Dict, Tuple
 import pandas as pd
 import random as r
 from collections import Counter
@@ -19,18 +19,57 @@ def randomly_subsample(ref: str, alt: str, infostr: str):
     altls = [alt for i in range(altad)] 
     total = refls + altls
     if len(total) == 0:
-        return "."
+        return (".", 0, 0, "NONE")
     else:
         allele = r.choice(total)
-        return allele
+        if allele in refls:
+            return (allele, len(refls), "REF")
+        return (allele, len(altls), "ALT")
 
 def most_common_el(ls: list):
     counter = Counter(ls)
     element = counter.most_common(1)[0][0] 
     return element 
 
+def is_ref(allele: str, ls: list):
+    for i in ls:
+        if allele == i[0]:
+            if i[3] == "REF":
+                return True, "REF"
+            return False, i[3]
 
-def snps_map(df: pl.DataFrame, population_to_samples: Dict[str,List[str]]) -> List[List[float]]:
+def build_infostr(ls: list, originfostr: str):
+    infostr = ""
+    alleles = [l[0] for l in ls]
+    if len(set(alleles)) >= 2:
+        infostr+="0/1:"
+    else:
+        allele = alleles[0]
+        if is_ref(allele,ls)[0]:
+            infostr+="0/0:"
+        elif not is_ref(allele,ls)[0] and  is_ref(allele,ls)[1]!="NONE":
+            infostr+="1/1:"
+        else:
+            infostr="./.:0,0,0:0:0,0:0,0,0:0"
+            return infostr
+    infostr+=originfostr.split(":")[1]+":"
+    infostr+=str(sum([l[1] for l in ls]))+":"
+    if len(set(alleles)) >= 2:
+        reflen = sum([l[1] for l in ls if l[2]=="REF"])
+        altlen = sum([l[1] for l in ls if l[2]=="ALT"])
+        infostr+=f"{reflen},{altlen}:"
+    else:
+        allele = alleles[0]
+        if is_ref(allele,ls)[0]:
+            infostr+=f"{sum([l[1] for l in ls])},0:"
+        else:
+            infostr+=f"0,{sum([l[1] for l in ls])}:"
+    infostr+=originfostr.split(":")[4]+":"
+    infostr+=originfostr.split(":")[5]
+    return infostr
+            
+
+def snps_map(df: pl.DataFrame, population_to_samples: Dict[str,List[str]]) -> pl.DataFrame:
     population_to_snp_freq = {k: [] for k in population_to_samples}  
     refs = df["REF"].to_list() 
     alts = df["ALT"].to_list() 
@@ -38,6 +77,7 @@ def snps_map(df: pl.DataFrame, population_to_samples: Dict[str,List[str]]) -> Li
     for k in population_to_samples:
         if len(population_to_samples[k])>1:
             pops_freqs = [] 
+            origsamplestr = df[population_to_samples[k][0]].to_list()
             for sample in population_to_samples[k]:
                 samplelist = df[sample].to_list() 
                 freqslist = [randomly_subsample(refs[el], alts[el], samplelist[el]) for el in range(len(samplelist))]
@@ -47,15 +87,14 @@ def snps_map(df: pl.DataFrame, population_to_samples: Dict[str,List[str]]) -> Li
                 l = [] 
                 for j in range(len(pops_freqs)):
                     l.append(pops_freqs[j][i]) 
-                pop_freq.append(most_common_el(l))
+                pop_freq.append(build_infostr(l, origsamplestr[i]))
             population_to_snp_freq[k] = pop_freq
-    print(population_to_snp_freq["CNXJ"])
-    pseudo_df = {"population": list(population_to_snp_freq.keys())}
-    for j in range(len(poss)):
-        key = f"{poss[j]}"
-        values = [population_to_snp_freq[pseudo_df["population"][el]][j] for el in range(len(pseudo_df["population"]))] 
-        pseudo_df.update({key: values})
-    actual_df = pl.DataFrame(pseudo_df)
+    # pseudo_df = {k: [] for k in list(population_to_snp_freq.keys())}
+    # for j in range(len(poss)):
+    #     key = f"{poss[j]}"
+    #     values = [population_to_snp_freq[pseudo_df["population"][el]][j] for el in range(len(pseudo_df["population"]))] 
+    #     pseudo_df.update({key: values})
+    actual_df = pl.DataFrame(population_to_snp_freq)
     return actual_df 
 
 
@@ -104,5 +143,10 @@ if __name__ == "__main__":
     newdf = snps_map(snps_df, pops2samples)
     print(newdf.head())
     print(newdf.height)
+    for k in pops2samples:
+        snps_df = snps_df.drop(pops2samples[k])
+    snps_pd = snps_df.to_pandas()
     pddf = newdf.to_pandas()
-    pddf.to_csv("/gatk_modified/userdata/abertelli/drosophila-evolution/results/fake_pools.tsv", sep="\t", index=False)
+    for key in pddf:
+        snps_pd.insert(-1, key, pddf[key].to_list())
+    snps_pd.to_csv("/gatk_modified/userdata/abertelli/drosophila-evolution/results/fake_pools.tsv", sep="\t", index=False)
