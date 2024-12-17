@@ -149,7 +149,5 @@ samtools index $outputdir/$sample.dedup.bam > $outputdir/logs/samtools_ind.log 2
 
 conda deactivate
 
-pigz -p $threads ${outputdir}/$sample.vcf
-
 echo "END OF THE ANALYSIS"
 echo "0%------------------------------>100%"

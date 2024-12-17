@@ -50,6 +50,50 @@ do
     done < "$input_file"
 done
 
+source activate python_deps
+
+python3 $wd/scripts/DgnSelect.py
+
+conda deactivate
+
+for sg in dgn
+do
+    outp=${wd}/data_files/${sg}
+    
+    mkdir -p $outp
+    
+    cd $outp
+
+    input_file=${wd}/data/download_${sg}.txt 
+
+    while IFS= read -r accession; do
+        echo "Downloading and processing: $accession"
+        
+        # Download the SRA file
+        prefetch "$accession"
+        
+        mkdir -p ${wd}/data/mapping/${sg}/${accession}
+
+        # Convert the SRA file to FASTQ format
+        fasterq-dump -e 100 --split-files "$accession"
+        pigz -p 100 ${wd}/data_files/${sg}/${accession}_1.fastq
+        pigz -p 100 ${wd}/data_files/${sg}/${accession}_2.fastq
+        rm -rf ${wd}/data_files/${sg}/${accession} 
+        bash $wd/shell/mapping_pipeline.sh \
+            -fq1 ${wd}/data_files/${sg}/${accession}_1.fastq.gz \
+            -fq2 ${wd}/data_files/${sg}/${accession}_2.fastq.gz \
+            -r ${wd}/data/reference/dmel-6.59.fa.gz \
+            -o ${wd}/data/mapping/${sg}/${accession} \
+            -t 100
+    done < "$input_file"
+done
+
+source activate python_deps
+
+python3 $wd/scripts/RenameDGN.py
+
+conda deactivate
+
 rm -rf ${wd}/data_files/
 mkdir ${wd}/data/bamfiles
 mv ${wd}/data/mapping/*/*.bam* ${wd}/data/bamfiles
@@ -92,34 +136,8 @@ python3 $wd/scripts/RenameAdditionalDest.py
 
 conda deactivate
 
-counter=0
-for f in $wd/data/DGN/*.bam
-do
-    ((counter++))
-    mv $f $wd/data/bamfiles/DGN_${counter}.bam
-done
+mkdir -p $wd/data/dest_renamed/ 
 
-for n in {1..165} 
-do
-    f="$wd/data/bamfiles/DGN_${n}.bam"
-    fres="$wd/data/dgn_renamed/DGN_${n}.bam"
-
-    source activate python_deps
-
-    rgline=$(python3 $wd/scripts/ExtractRgLineText.py -i $f)
-    rgid=$(python3 $wd/scripts/ExtractIdFromRgLine.py -rgl "$rgline")
-
-    conda deactivate
-
-    source activate gatk_modified
-
-    samtools addreplacerg --threads 100 -r "$rgline" -w -o $fres $f
-    samtools index -@ 100 $fres
-
-    conda deactivate
-done
-
-mkdir -p $wd/data/dest_renamed/
 
 for sample in EERU EEUA WEES WEFR
 do
@@ -177,10 +195,8 @@ rm -rf $wd/data/bamfiles/WB??_?.bam*
 rm -rf $wd/data/bamfiles/EB??_?.bam*
 rm -rf $wd/data/bamfiles/CYP_?.bam*
 rm -rf $wd/data/bamfiles/TRK_?.bam*
-mv $wd/data/dgn_renamed/*.bam* $wd/data/bamfiles/
 mv $wd/data/dest_renamed/*.bam* $wd/data/bamfiles/
 mv $wd/data/add_dest_renamed/*.bam* $wd/data/bamfiles/
-rm -rf $wd/data/dgn_renamed/
 rm -rf $wd/data/dest_renamed/
 rm -rf $wd/data/add_dest_renamed/
 
@@ -216,20 +232,26 @@ conda deactivate
 
 source activate freebayes-env
 echo "will cite" | parallel --citation >/dev/null 2>&1
-parallel --bar -j 120 bash ::: $wd/shell/bcftools_regions/*.sh
+parallel --bar -j 100 bash ::: $wd/shell/bcftools_regions/*.sh
 conda deactivate
 
 ## CONCATENATE VCF FILE
 
 bcftools concat \
     -O z \
-    --threads 16 \
+    --threads 100 \
     -o $wd/results/drosophila_evolution.bcftools_all.vcf.gz \
-    $wd/results/drosophila_evolution.bcftools_2R.vcf.gz \
     $wd/results/drosophila_evolution.bcftools_2L.vcf.gz \
     $wd/results/drosophila_evolution.bcftools_3R.vcf.gz \
     $wd/results/drosophila_evolution.bcftools_3L.vcf.gz \
     $wd/results/drosophila_evolution.bcftools_X.vcf.gz  
+
+bcftools concat \
+    -O z \
+    --threads 100 \
+    -o $wd/results/drosophila_evolution.bcftools_wholegen.vcf.gz \
+    $wd/results/drosophila_evolution.bcftools_2R.vcf.gz \
+    $wd/results/drosophila_evolution.bcftools_all.vcf.gz
 
 ## CALCULATE SIMPLE VCF STATISTICS
 

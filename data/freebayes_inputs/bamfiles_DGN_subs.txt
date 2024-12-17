@@ -1,9 +1,0 @@
-/gatk_modified/userdata/abertelli/drosophila-evolution//data/bamfiles/DGN_103.bam
-/gatk_modified/userdata/abertelli/drosophila-evolution//data/bamfiles/DGN_104.bam
-/gatk_modified/userdata/abertelli/drosophila-evolution//data/bamfiles/DGN_105.bam
-/gatk_modified/userdata/abertelli/drosophila-evolution//data/bamfiles/DGN_106.bam
-/gatk_modified/userdata/abertelli/drosophila-evolution//data/bamfiles/DGN_107.bam
-/gatk_modified/userdata/abertelli/drosophila-evolution//data/bamfiles/DGN_108.bam
-/gatk_modified/userdata/abertelli/drosophila-evolution//data/bamfiles/DGN_109.bam
-/gatk_modified/userdata/abertelli/drosophila-evolution//data/bamfiles/DGN_11.bam
-/gatk_modified/userdata/abertelli/drosophila-evolution//data/bamfiles/CYP_1.bam

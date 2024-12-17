@@ -6,7 +6,7 @@ from collections import Counter
 import pysam
 
 def read_vcf(vcffile: str) -> pl.DataFrame:
-    df = pl.read_csv(vcffile, separator="\t", n_threads=16, skip_rows=1901)
+    df = pl.read_csv(vcffile, separator="\t", n_threads=22, skip_rows=1903)
     return df
 
 def snps(df: pl.DataFrame) -> pl.DataFrame:
@@ -34,24 +34,25 @@ def most_common_el(ls: list):
 def is_ref(allele: str, ls: list):
     for i in ls:
         if allele == i[0]:
-            if i[3] == "REF":
+            if i[2] == "REF":
                 return True, "REF"
-            return False, i[3]
+            return False, i[2]
 
 def build_infostr(ls: list, originfostr: str):
     infostr = ""
     alleles = [l[0] for l in ls]
-    if len(set(alleles)) >= 2:
+    alleles_without = [allele for allele in alleles if allele != "."] 
+    if len(set(alleles_without)) == 2:
         infostr+="0/1:"
-    else:
-        allele = alleles[0]
+    elif len(set(alleles_without)) == 1:
+        allele = alleles_without[0]
         if is_ref(allele,ls)[0]:
             infostr+="0/0:"
-        elif not is_ref(allele,ls)[0] and  is_ref(allele,ls)[1]!="NONE":
-            infostr+="1/1:"
         else:
-            infostr="./.:0,0,0:0:0,0:0,0,0:0"
-            return infostr
+            infostr+="1/1:"
+    else:
+        infostr="./.:0,0,0:0:0,0:0,0,0:0"
+        return infostr
     infostr+=originfostr.split(":")[1]+":"
     infostr+=str(sum([l[1] for l in ls]))+":"
     if len(set(alleles)) >= 2:
@@ -127,10 +128,10 @@ def find_pops_from_bamlist(bamfile: str, population_list: List[str]) -> Dict[str
 
 if __name__ == "__main__":
     bamfile = "/gatk_modified/userdata/abertelli/drosophila-evolution/data/freebayes_inputs/bamfiles.txt"
-    pops = ['CNXJ', 'CnOther', 'CnQTP', 'ISR']
+    pops = ['CNXJ', 'CnOther', 'CnQTP', 'ISR', 'DGN']
     pops2samples = find_pops_from_bamlist(bamfile, pops)
     print("Reading VCF...")
-    df = read_vcf("/gatk_modified/userdata/abertelli/drosophila-evolution/results/example.vcf")
+    df = read_vcf("/gatk_modified/userdata/abertelli/drosophila-evolution/results/drosophila_evolution.bcftools_all.vcf.gz")
     print(df.head())
     print(df.height)
     print("Read VCF!")
@@ -148,5 +149,5 @@ if __name__ == "__main__":
     snps_pd = snps_df.to_pandas()
     pddf = newdf.to_pandas()
     for key in pddf:
-        snps_pd.insert(-1, key, pddf[key].to_list())
-    snps_pd.to_csv("/gatk_modified/userdata/abertelli/drosophila-evolution/results/fake_pools.tsv", sep="\t", index=False)
+        snps_pd.insert(len(list(snps_pd.keys())), key, pddf[key].to_list())
+    snps_pd.to_csv("/gatk_modified/userdata/abertelli/drosophila-evolution/results/fake_pools_all.tsv.gz", sep="\t", index=False)

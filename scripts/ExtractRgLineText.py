@@ -17,7 +17,7 @@ def extract_rgline(bamfile: str) -> str:
     rgline = [line for line in lines if line.startswith("@RG")]
     rgline = rgline[0]
     samplename = rgline.split("\t")[-1]
-    samplename = samplename.split(":")[0] + ":" + bamfile.split("/")[-1].split(".")[0]
+    samplename = samplename.split(":")[0] + ":" + rgline.split("\t")[1].split(":")[1]   
     rgline_split = rgline.split("\t")
     rgline_split[-1] = samplename
     rgline = ("\t").join(rgline_split)

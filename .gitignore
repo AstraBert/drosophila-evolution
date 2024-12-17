@@ -1,6 +1,8 @@
 data/bamfiles
 data/reference
+data/mapping
 data/dest*
+data_files/
 results/
 docker.log
 drosophila-evolution.code-workspace
