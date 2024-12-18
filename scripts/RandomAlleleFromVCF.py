@@ -6,7 +6,7 @@ from collections import Counter
 import pysam
 
 def read_vcf(vcffile: str) -> pl.DataFrame:
-    df = pl.read_csv(vcffile, separator="\t", n_threads=22, skip_rows=1903)
+    df = pl.read_csv(vcffile, separator="\t", n_threads=22, skip_rows=1901)
     return df
 
 def snps(df: pl.DataFrame) -> pl.DataFrame:
@@ -74,7 +74,6 @@ def snps_map(df: pl.DataFrame, population_to_samples: Dict[str,List[str]]) -> pl
     population_to_snp_freq = {k: [] for k in population_to_samples}  
     refs = df["REF"].to_list() 
     alts = df["ALT"].to_list() 
-    poss = df["POS"].to_list() 
     for k in population_to_samples:
         if len(population_to_samples[k])>1:
             pops_freqs = [] 
@@ -90,11 +89,6 @@ def snps_map(df: pl.DataFrame, population_to_samples: Dict[str,List[str]]) -> pl
                     l.append(pops_freqs[j][i]) 
                 pop_freq.append(build_infostr(l, origsamplestr[i]))
             population_to_snp_freq[k] = pop_freq
-    # pseudo_df = {k: [] for k in list(population_to_snp_freq.keys())}
-    # for j in range(len(poss)):
-    #     key = f"{poss[j]}"
-    #     values = [population_to_snp_freq[pseudo_df["population"][el]][j] for el in range(len(pseudo_df["population"]))] 
-    #     pseudo_df.update({key: values})
     actual_df = pl.DataFrame(population_to_snp_freq)
     return actual_df 
 
@@ -131,7 +125,7 @@ if __name__ == "__main__":
     pops = ['CNXJ', 'CnOther', 'CnQTP', 'ISR', 'DGN']
     pops2samples = find_pops_from_bamlist(bamfile, pops)
     print("Reading VCF...")
-    df = read_vcf("/gatk_modified/userdata/abertelli/drosophila-evolution/results/drosophila_evolution.bcftools_all.vcf.gz")
+    df = read_vcf("/gatk_modified/userdata/abertelli/drosophila-evolution/results/drosophila_evolution.bcftools_2R.vcf.gz")
     print(df.head())
     print(df.height)
     print("Read VCF!")
@@ -150,4 +144,4 @@ if __name__ == "__main__":
     pddf = newdf.to_pandas()
     for key in pddf:
         snps_pd.insert(len(list(snps_pd.keys())), key, pddf[key].to_list())
-    snps_pd.to_csv("/gatk_modified/userdata/abertelli/drosophila-evolution/results/fake_pools_all.tsv.gz", sep="\t", index=False)
+    snps_pd.to_csv("/gatk_modified/userdata/abertelli/drosophila-evolution/results/fake_pools_2R.tsv.gz", sep="\t", index=False)

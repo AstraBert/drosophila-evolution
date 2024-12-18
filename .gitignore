@@ -2,6 +2,7 @@ data/bamfiles
 data/reference
 data/mapping
 data/dest*
+data/diyabc_inputs/
 data_files/
 results/
 docker.log

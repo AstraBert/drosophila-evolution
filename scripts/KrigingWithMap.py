@@ -1,45 +1,45 @@
-import pandas as pd  
+import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import pykrige.kriging_tools as kt
 from pykrige.ok import OrdinaryKriging
+from mpl_toolkits.basemap import Basemap  # For basemap functionality
 
+p1 = "DGN"
+p2 = "WEES_1"
 
+# Read your data
 df = pd.read_csv("/gatk_modified/userdata/abertelli/drosophila-evolution/results/f3stats.tsv", sep="\t")
-
-df_subs = df[(df["Pop1"] == "DGN") & (df["Pop2"] == "CnOther")]
-
-
+df_subs = df[(df["Pop1"] == p1) & (df["Pop2"] == p2)]
 df_pools = pd.read_csv("/gatk_modified/userdata/abertelli/drosophila-evolution/results/pools.csv")
-# Calculate distance from each point to the reference point
+
+# Calculate coordinates and prepare the data
 longs = df_pools['LONG'] 
 lats = df_pools['LAT'] 
 pops = df_pools["NAME"].to_list() 
-# Output the DataFrame with distances
 pops2dist = {pops[i]: [longs[i],lats[i]] for i in range(len(pops))}
 focals = df_subs["Focal"].to_list() 
 zscores = df_subs["Z-score"].to_list() 
 f3s = df_subs["Estimate"].to_list() 
 focal2zscoref3 = {focals[i]: [f3s[i]] for i in range(len(focals))}
 
-MINY= min(lats) - 10
+# Define plot boundaries
+MINY = min(lats) - 10
 MAXY = max(lats) + 10
 MINX = min(longs) - 10
 MAXX = max(longs) + 10
 
+# Prepare data for Kriging
 for k in focal2zscoref3:
     focal2zscoref3[k].insert(0, pops2dist[k][0])
     focal2zscoref3[k].insert(1, pops2dist[k][1])
 
-
 data = np.array([focal2zscoref3[k] for k in focal2zscoref3])
-
-print(data)
 
 gridx = np.arange(MINX, MAXX, 0.1)
 gridy = np.arange(MINY, MAXY, 0.1)
 
-# # Perform Ordinary Kriging
+# Perform Ordinary Kriging
 OK = OrdinaryKriging(
     data[:, 0],
     data[:, 1],
@@ -49,55 +49,56 @@ OK = OrdinaryKriging(
     enable_plotting=False,
 )
 
-# # Execute Kriging
+# Execute Kriging
 z, ss = OK.execute("grid", gridx, gridy)
 
-# # Write ASC grid
+# Write ASC grid
 kt.write_asc_grid(gridx, gridy, z, filename="output.asc")
 
-# # Create a more detailed visualization
+# Create the map with Basemap
 plt.figure(figsize=(12, 10))
 
-# # Create the main heatmap with improved color mapping
-im = plt.imshow(
-    z,
-    extent=[MINX, MAXX, MINY, MAXY],  # Set correct geographical extent
-    origin='lower',  # Ensure correct orientation
-    cmap='coolwarm',  # Choose a perceptually uniform colormap
-    aspect='auto'    # Adjust aspect ratio
-)
+# Create Basemap instance for Europe, Africa, and Asia
+m = Basemap(projection='merc', llcrnrlat=MINY, urcrnrlat=MAXY, llcrnrlon=MINX, urcrnrlon=MAXX, resolution='i')
 
-# Add a colorbar
+# Draw coastlines, countries, and other map elements (without background color)
+m.drawcoastlines()
+m.drawcountries()
+m.drawmapboundary(fill_color='none')  # Make the map boundary transparent
+m.drawrivers()
+m.drawstates()
+
+# Convert grid points to map projection coordinates
+xx, yy = np.meshgrid(gridx, gridy)
+x, y = m(xx, yy)
+
+# Overlay the heatmap onto the map (make sure the heatmap is not covered)
+im = m.imshow(z, extent=[MINX, MAXX, MINY, MAXY], origin='lower', cmap='coolwarm', alpha=0.7)
+
+# Add colorbar for the heatmap
 plt.colorbar(im, label='F3 Value')
 
-# # Add labels and title
-plt.xlabel('Longitude')
-plt.ylabel('Latitude')
-plt.title('P1: DGN, P2: CnOther')
-
-# # Scatter plot of original data points with annotations
+# Scatter plot the original data points on the map
 for k in focal2zscoref3:
-    plt.scatter(
-        focal2zscoref3[k][0],  # Longitude
-        focal2zscoref3[k][1],  # Latitude
-        c='yellow',
-        marker='x',
-        s=100  # Increased marker size
-    )
+    xpt, ypt = m(focal2zscoref3[k][0], focal2zscoref3[k][1])
+    plt.scatter(xpt, ypt, c='yellow', marker='x', s=100)
     # Annotate with population name and F3 value
     plt.annotate(
         f'{k}\nF3: {focal2zscoref3[k][2]:.4f}',
-        (focal2zscoref3[k][0], focal2zscoref3[k][1]),
-        xytext=(5, 5),  # 5 points offset
+        (xpt, ypt),
+        xytext=(5, 5),
         textcoords='offset points',
         fontsize=8,
         bbox=dict(boxstyle='round,pad=0.2', fc='yellow', alpha=0.7),
         arrowprops=dict(arrowstyle='->', connectionstyle='arc3,rad=0.2')
     )
 
-plt.legend(['Data Points'], loc='best')
+# Title and labels
+plt.title(f'P1: {p1}, P2: {p2}')
+plt.xlabel('Longitude')
+plt.ylabel('Latitude')
 
-# # Save and show the plot
+# Save and show the plot
 plt.tight_layout()
-plt.savefig("./F3_all_DGN_CnOther.png", dpi=300)
+plt.savefig(f"./F3_{p1}_{p2}.png", dpi=300, transparent=True)  # Save with transparent background
 plt.show()

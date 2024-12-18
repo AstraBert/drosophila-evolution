@@ -249,9 +249,9 @@ bcftools concat \
 bcftools concat \
     -O z \
     --threads 100 \
-    -o $wd/results/drosophila_evolution.bcftools_wholegen.vcf.gz \
-    $wd/results/drosophila_evolution.bcftools_2R.vcf.gz \
-    $wd/results/drosophila_evolution.bcftools_all.vcf.gz
+    -o $wd/results/drosophila_evolution.bcftools_fakepools_wholegen.vcf.gz \
+    $wd/results/drosophila_evolution.bcftools_fakepools_2R.vcf.gz \
+    $wd/results/drosophila_evolution.bcftools_fakepools_all.vcf.gz
 
 ## CALCULATE SIMPLE VCF STATISTICS
 

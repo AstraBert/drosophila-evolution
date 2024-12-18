@@ -1,6 +1,6 @@
 import pandas as pd
 
-csv = open("divergence_all.tsv", "r+")
+csv = open("f4stats.tsv", "r+")
 lines = csv.readlines()
 lines = ["\t".join(line.split(" ")) for line in lines]
 lines =  ["Pools\t"+lines[0].replace("bjack\tmean","bjack_mean").replace("bjack\ts.e.","bjack_s.e.")] + lines[1:]
@@ -9,7 +9,7 @@ csv.truncate()
 csv.writelines(lines)
 csv.close()
 
-df = pd.read_csv("divergence_all.tsv", sep="\t")
+df = pd.read_csv("f4stats.tsv", sep="\t")
 pools_df = pd.read_csv("pools.csv")
 names = pools_df["NAME"].to_list()
 pools = pools_df["POOL"].to_list()
