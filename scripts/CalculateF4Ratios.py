@@ -5,14 +5,14 @@ import pykrige.kriging_tools as kt
 from pykrige.ok import OrdinaryKriging
 from mpl_toolkits.basemap import Basemap  # For basemap functionality
 
-pO = "DGN"
-pA = "ISR"
-pC = "CNXJ"
+pO = "DrosSim"
+pA = "EERU_1"
+pC = "ISR"
 
 
-df = pd.read_csv("f4stats.tsv", sep="\t")
+df = pd.read_csv("F4stats.tsv", sep="\t")
 
-df_sel = df[(df["B"] == pC) & (df["O"] == pO) & (df["X"] == pA)]
+df_sel = df[(df["PopC"] == pC) & (df["PopO"] == pO) & (df["PopA"] == pA)]
 print(df_sel)
 df_pools = pd.read_csv("/gatk_modified/userdata/abertelli/drosophila-evolution/results/pools.csv")
 

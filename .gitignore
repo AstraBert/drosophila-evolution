@@ -3,6 +3,7 @@ data/reference
 data/mapping
 data/dest*
 data/diyabc_inputs/
+data/dros_sim/
 data_files/
 results/
 docker.log
