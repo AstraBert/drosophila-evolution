@@ -10,48 +10,47 @@ def read_sync(syncfile: str) -> pl.DataFrame:
     return df
 
 def add_dros_sim(vcfdf: pl.DataFrame, syncdf: pl.DataFrame):
-    syncdf = syncdf.rename({"CHROM": "#CHROM"})
-    findf = syncdf.join(vcfdf, on=["#CHROM", "POS"], how="inner")
+    syncdf = syncdf.rename({"CHROM": "Chromosome"})
+    syncdf = syncdf.rename({"POS": "Position"})
+    findf = syncdf.join(vcfdf, on=["Chromosome", "Position"], how="inner")
     print("Perfomerd join")
     finaldf = findf.drop(findf.columns[4:])
     ls = []
-    positionsvcf = vcfdf["POS"].to_list()
-    chromsvcf = vcfdf["#CHROM"].to_list() 
-    refallelesvcf = vcfdf["REF"].to_list()
-    altallelesvcf = vcfdf["ALT"].to_list() 
+    positionsvcf = vcfdf["Position"].to_list()
+    chromsvcf = vcfdf["Chromosome"].to_list() 
+    refallelesvcf = vcfdf["RefAllele"].to_list()
+    altallelesvcf = vcfdf["AltAllele"].to_list() 
     vcf = {f"{chromsvcf[i]}.{positionsvcf[i]}": [refallelesvcf[i], altallelesvcf[i]] for i in range(len(positionsvcf))}  
-    syncchrom = finaldf["#CHROM"].to_list() 
-    syncpos = finaldf["POS"].to_list() 
+    syncchrom = finaldf["Chromosome"].to_list() 
+    syncpos = finaldf["Position"].to_list() 
     syncalleles = finaldf["ALL"].to_list() 
     sync = {f"{syncchrom[i]}.{syncpos[i]}": syncalleles[i] for i in range(len(syncpos))} 
     print("Created dicts")
     for k in vcf:
         if sync[k] == vcf[k][0]:
-            ls.append("0/0:1,1,1:100:100,0:1,0,0:10")
+            ls.append("100")
         elif sync[k] == vcf[k][1]:
-            ls.append("1/1:1,1,1:100:0,100:1,0,0:10")
+            ls.append("0")
         else:
-            ls.append("./.:0,0,0:0:0,0:0,0,0:0") 
+            ls.append("0") 
     print("Finished loop")
-    drossim = pl.Series("DrosSim", ls)
-    updateddf = vcfdf.insert_column(len(vcfdf.columns), drossim)
-    print("Updated DF")
-    return updateddf
+    snps_counts = ["Pool21\n"]+[f"{l}\n" for l in ls]
+    return snps_counts 
 
 
 if __name__ == "__main__":
-    vcfdf = read_vcf("/gatk_modified/userdata/abertelli/drosophila-evolution/results/drosophila_evolution.bcftools_fakepools_wholegen.vcf.gz")
+    vcfdf = pl.read_csv("/gatk_modified/userdata/abertelli/drosophila-evolution/results/all_pops_snps.csv", n_threads=20)
     print(vcfdf.head())
     print(vcfdf.height)
     syncdf = read_sync("/gatk_modified/userdata/abertelli/drosophila-evolution/data/dros_sim/dros_sim.sync.gz")
     print(syncdf.head())
     print(syncdf.height)
-    updateddf = add_dros_sim(vcfdf, syncdf)
-    print(updateddf.head())
-    print(updateddf.height)
-    updatedpd = updateddf.to_pandas()
-    print("Transformed to Pandas")
-    updatedpd.to_csv("/gatk_modified/userdata/abertelli/drosophila-evolution/results/drosophila_evolution.bcftools_fakepools_withsim.tsv.gz", sep="\t", index=False)
+    snps_counts = add_dros_sim(vcfdf, syncdf)
+    f = open("/gatk_modified/userdata/abertelli/drosophila-evolution/results/drossim_snps.csv", "w")
+    f.writelines(snps_counts)
+    f.close()
+
+    
 
 
 

@@ -7,7 +7,7 @@ from mpl_toolkits.basemap import Basemap  # For basemap functionality
 
 pO = "DrosSim"
 pA = "EERU_1"
-pC = "ISR"
+pC = "DGN"
 
 
 df = pd.read_csv("F4stats.tsv", sep="\t")

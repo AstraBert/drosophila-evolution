@@ -5,12 +5,13 @@ import pykrige.kriging_tools as kt
 from pykrige.ok import OrdinaryKriging
 from mpl_toolkits.basemap import Basemap  # For basemap functionality
 
-p1 = "DGN"
-p2 = "WEES_1"
+p1 = "DrosSim"
+p2 = "DGN"
+p3 = "TRK_1"
 
 # Read your data
-df = pd.read_csv("/gatk_modified/userdata/abertelli/drosophila-evolution/results/f3stats.tsv", sep="\t")
-df_subs = df[(df["Pop1"] == p1) & (df["Pop2"] == p2)]
+df = pd.read_csv("/gatk_modified/userdata/abertelli/drosophila-evolution/data/all_f4stats_wsim.tsv", sep="\t")
+df_subs = df[(df["PopO"] == p2) & (df["PopX"] == p1) & (df["PopA"] == p3)] 
 df_pools = pd.read_csv("/gatk_modified/userdata/abertelli/drosophila-evolution/results/pools.csv")
 
 # Calculate coordinates and prepare the data
@@ -18,8 +19,7 @@ longs = df_pools['LONG']
 lats = df_pools['LAT'] 
 pops = df_pools["NAME"].to_list() 
 pops2dist = {pops[i]: [longs[i],lats[i]] for i in range(len(pops))}
-focals = df_subs["Focal"].to_list() 
-zscores = df_subs["Z-score"].to_list() 
+focals = df_subs["PopC"].to_list() 
 f3s = df_subs["Estimate"].to_list() 
 focal2zscoref3 = {focals[i]: [f3s[i]] for i in range(len(focals))}
 
@@ -35,7 +35,7 @@ for k in focal2zscoref3:
     focal2zscoref3[k].insert(1, pops2dist[k][1])
 
 data = np.array([focal2zscoref3[k] for k in focal2zscoref3])
-
+print(data)
 gridx = np.arange(MINX, MAXX, 0.1)
 gridy = np.arange(MINY, MAXY, 0.1)
 
@@ -76,7 +76,7 @@ x, y = m(xx, yy)
 im = m.imshow(z, extent=[MINX, MAXX, MINY, MAXY], origin='lower', cmap='coolwarm', alpha=0.7)
 
 # Add colorbar for the heatmap
-plt.colorbar(im, label='F3 Value')
+plt.colorbar(im, label='F4 Value')
 
 # Scatter plot the original data points on the map
 for k in focal2zscoref3:
@@ -94,11 +94,11 @@ for k in focal2zscoref3:
     )
 
 # Title and labels
-plt.title(f'P1: {p1}, P2: {p2}')
+plt.title(f'Outgroup: {p1}, PopC: {p2}, PopA: {p3}')
 plt.xlabel('Longitude')
 plt.ylabel('Latitude')
 
 # Save and show the plot
 plt.tight_layout()
-plt.savefig(f"./F3_{p1}_{p2}.png", dpi=300, transparent=True)  # Save with transparent background
+plt.savefig(f"./F4_{p1}_{p2}_{p3}.png", dpi=300, transparent=True)  # Save with transparent background
 plt.show()

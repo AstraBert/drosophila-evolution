@@ -1,6 +1,6 @@
 import pandas as pd
 
-csv = open("F4stats.tsv", "r+")
+csv = open("all_f4stats_wsim.tsv", "r+")
 lines = csv.readlines()
 lines = ["\t".join(line.split(" ")) for line in lines]
 lines =  ["Pools\t"+lines[0].replace("bjack\tmean","bjack_mean").replace("bjack\ts.e.","bjack_s.e.")] + lines[1:]
@@ -9,8 +9,8 @@ csv.truncate()
 csv.writelines(lines)
 csv.close()
 
-df = pd.read_csv("F4stats.tsv", sep="\t")
-pools_df = pd.read_csv("pools.csv")
+df = pd.read_csv("all_f4stats_wsim.tsv", sep="\t")
+pools_df = pd.read_csv("../results/pools.csv")
 names = pools_df["NAME"].to_list()
 pools = pools_df["POOL"].to_list()
 pools2names = {pools[i]: names[i] for i in range(len(pools))}
