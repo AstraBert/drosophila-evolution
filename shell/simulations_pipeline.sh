@@ -110,5 +110,5 @@ scenario      N1            N2            N3            N4           N34        
 
     cd $wd/data/diyabc_executable/
     ./diyabc-RF-linux-v1.1.54 -p $wd/data/diyabc_inputs_${i}/ -n "t:100;c:1;s:2002;f:f"
-    ./diyabc-RF-linux-v1.1.54 -p $wd/data/diyabc_inputs_${i}/ -R "ALL" -m -t 100 -g 100 -r 200
+    ./diyabc-RF-linux-v1.1.54 -p $wd/data/diyabc_inputs_${i}/ -R "ALL" -m -t 100 -g 100 -r 2000
 done

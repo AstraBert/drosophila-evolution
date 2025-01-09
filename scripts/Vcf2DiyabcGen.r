@@ -11,7 +11,7 @@ if (length(args) == 0) {
 vcf_file <- args[1]
 writing_dir <- args[2]
 
-vcfdata <- vcf2pooldata(vcf.file=vcf_file, min.maf="0.05", poolsizes=rep(50,4))
+vcfdata <- vcf2pooldata(vcf.file=vcf_file, min.maf="0.05", poolsizes=rep(1000,4))
 
 pooldata2diyabc(
     vcfdata,
