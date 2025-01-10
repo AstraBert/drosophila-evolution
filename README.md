@@ -65,6 +65,8 @@ bash run_docker.sh
 bash compose.sh
 ```
 
+The container in which the docker image will run will have the same conda environments that you would obtain from the native installation. 
+
 > [!NOTE]
 > _If you want to use these two last solutions, you should manually modify the path of the local file system mounted as a volume in the container in [run_docker.sh](./run_docker.sh) or modify the `USERDATA_PATH` variable in [.env](./.env)_
 
