@@ -9,11 +9,66 @@ This repository collects the data, the code and the analysis workflow for the pr
 
 ## Environment
 
+There are two possibilities to launch the development environment packaged for this project:
+
+### 1. Native `conda` environments
+
+>[!NOTE]
+> _Recommended for compatibility with all operating systems_ 
+
+Use the native conda environments installation:
+
+```bash
+# clone the repository
+git clone https://github.com/AstraBert/drosophila-evolution.git
+cd drosophila-evolution
+# set up conda environments
+bash setup.sh
+```
+
+`setup.sh` will create five conda enviroments:
+
+- **gatk_modified**: contains all GATK dependencies, but also bwa-mem2, cutadapt, bcftools and samtools
+- **picard**: contains picard-slim a lighter implementation of Picard which does not require r-base to run
+- **R**: contains r-base platform for data analysis in R and the various R libraries (like poolfstat)
+- **python_deps**: contains python3.11 and various libraries like pandas, biopython, pyyaml.
+- **freebayes-env**: contains freebayes to run variant calling, and other useful dependencies such as GNU parallel
+
+### 2. Dockerized environment
+
 > [!IMPORTANT]
-> Restructuring
+> _Not built for ARM64-based OS_ 
 
+You can either pull the image `astrabert/drosophila-evolution-dockerized` and run it interactively mounting a volume:
 
-## Analysis workflow
+```bash
+sudo docker pull astrabert/drosophila-evolution-dockerized
+sudo docker run -v /path/to/local/folder:/app/userdata/ -it astrabert/drosophila-evolution-dockerized
+```
+
+Or you can clone this repository and exploit *docker compose* to launch the container:
+
+```bash
+# clone the repository
+git clone https://github.com/AstraBert/drosophila-evolution.git
+cd drosophila-evolution
+# launch docker compose
+sudo docker compose up
+```
+
+Or, if you would like even more automation and you are on a Linux OS:
+
+```bash
+# launch a docker container through a normal docker run
+bash run_docker.sh
+# launch a docker container through compose
+bash compose.sh
+```
+
+> [!NOTE]
+> _If you want to use these two last solutions, you should manually modify the path of the local file system mounted as a volume in the container in [run_docker.sh](./run_docker.sh) or modify the `USERDATA_PATH` variable in [.env](./.env)_
+
+# Analysis workflow
 
 Find all the steps of the workflow in [MAIN.sh](./shell/MAIN.sh).
 
@@ -130,13 +185,13 @@ mv ${wd}/data/mapping/*/*.bam* ${wd}/data/bamfiles
 conda activate python_deps
 
 ## RENAME BAM FILES IN ORDER TO MATCH WITH THEIR ORIGINAL POPULATION
-python3 $wd/scripts/RenameBamFiles.py
+python3 $wd/scripts/python/RenameBamFiles.py
 
 ## RENAME SAMPLES FROM DESTv2 ACCORDING TO WHAT DID BEFORE
-python3 $wd/scripts/RenameDestSamples.py
+python3 $wd/scripts/python/RenameDestSamples.py
 
 ## RENAME ADDITIONAL SAMPLES FROM DESTv1/DESTv2 ACCORDING TO WHAT DID BEFORE
-python3 $wd/scripts/RenameAdditionalDest.py
+python3 $wd/scripts/python/RenameAdditionalDest.py
 
 conda deactivate
 
@@ -158,8 +213,8 @@ do
 
     source activate python_deps
 
-    rgline=$(python3 $wd/scripts/ExtractRgLineText.py -i $f)
-    rgid=$(python3 $wd/scripts/ExtractIdFromRgLine.py -rgl "$rgline")
+    rgline=$(python3 $wd/scripts/python/ExtractRgLineText.py -i $f)
+    rgid=$(python3 $wd/scripts/python/ExtractIdFromRgLine.py -rgl "$rgline")
 
     conda deactivate
 
@@ -191,7 +246,7 @@ do
 
         source activate python_deps
 
-        rgline=$(python3 $wd/scripts/RgLineForDest.py -i $f)
+        rgline=$(python3 $wd/scripts/python/RgLineForDest.py -i $f)
 
         conda deactivate
 
@@ -216,7 +271,7 @@ do
 
         source activate python_deps
 
-        rgline=$(python3 $wd/scripts/RgLineForDest.py -i $f)
+        rgline=$(python3 $wd/scripts/python/RgLineForDest.py -i $f)
 
         conda deactivate
 
@@ -253,31 +308,6 @@ done
 ```
 
 ### Variant calling
-
-**Variant calling with FreeBayes**: Use multi-threaded FreeBayes to call the variants from BAM files, storing them into a gzipped VCF file. 
-
-```bash
-source activate freebayes-env
-
-export TMPDIR=/gatk_modified/userdata/tmp/
-freebayes-parallel \
-    <(fasta_generate_regions.py \
-        $wd/data/reference/dmel-6.59.fa.fai \
-        100000) \
-    80 \
-    -f $wd/data/reference/dmel-6.59.fa \
-    -L $wd/data/freebayes_inputs/bamfiles.txt \
-    -C 1 \
-    -F 0.02 \
-    -G 5 \
-    --limit-coverage 250 \
-    --use-best-n-alleles 4 \
-    --strict-vcf \
-    --pooled-continuous |
-    gzip >$wd/results/drosophila_evolution.freebayes.vcf.gz
-
-conda deactivate
-```
 
 **Variant calling with BCFtools**: Use `bcftools` to perform variant calling on the data (useful for comparison between the two methods, but also faster then FreeBayes and so easier to get the data). Parallelize the variant calling duividing it on different chromosomes and spawn it on different threads with `GNU parallel`:
 
