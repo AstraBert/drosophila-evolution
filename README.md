@@ -9,22 +9,9 @@ This repository collects the data, the code and the analysis workflow for the pr
 
 ## Environment
 
-To reproduce the analysis, we strongly advise that you use the Docker image that we purposedly built for this project. You should get Docker for your platform following [this tutorial](https://dev.to/astrabert/1mindocker-2-get-docker-kh), adjust the path to the data you want to mount inside your Docker image in [`env`](./.env) under `ÙSERDATA_PATH` and then simply run:
+> [!IMPORTANT]
+> Restructuring
 
-```bash
-docker compose up -d
-docker exec -it $(sudo docker ps -qf "name=drosophila_project_env") /bin/bash
-```
-
-Or, if you are on Linux/macOS:
-
-```bash
-bash compose.sh
-```
-
-You'll be put inside the container (a semi-isolated virtual machine) in which our Docker image is up and running, and you'll find all your mounted data under `/gatk_modified/drosophila-project`.
-
-If you want to check new releases for the image as well as past versions, you can do that on [Docker Hub](https://hub.docker.com/repository/docker/astrabert/silly-gat-kay/general) or on the [GitHub repository](https://github.com/AstraBert/silly-gat-kay).
 
 ## Analysis workflow
 
@@ -319,31 +306,13 @@ bcftools mpileup \
 conda deactivate
 ```
 
-### VCF Post-Processing
+### Pseudo-poolification
 
-From `bcftools` you will obtain a set of five VCF files, each representing one of the chromosomes of interest (2R, 2L, 3R, 3L and X).
+### F-stats Computation
 
-**Concatenate VCF files**: You can use `bcftools concat` to concatenate the five VCF files obtained into one:
+### Divergence and FST
 
-```bash
-bcftools concat \
-    -O z \
-    --threads 16 \
-    -o $wd/results/drosophila_evolution.bcftools_all.vcf.gz \
-    $wd/results/drosophila_evolution.bcftools_2R.vcf.gz \
-    $wd/results/drosophila_evolution.bcftools_2L.vcf.gz \
-    $wd/results/drosophila_evolution.bcftools_3R.vcf.gz \
-    $wd/results/drosophila_evolution.bcftools_3L.vcf.gz \
-    $wd/results/drosophila_evolution.bcftools_X.vcf.gz  
-```
+### Random Allele PCA
 
-**Calculate simple VCF stats**: You can calculate simple VCF stats with `bcftools stats` and plot them with `plot-vcfstats`.
+### Kriging
 
-```bash
-## EXTRACT STATS FROM VCF FILES
-
-source activate python_deps
-bcftools stats $wd/results/drosophila_evolution.bcftools_all.vcf.gz > $wd/results/drosophila_evolution.bcftools_all.vchk
-plot-vcfstats -p $wd/results/bcftools_plots/ $wd/results/drosophila_evolution.bcftools_all.vchk
-conda deactivate
-```
