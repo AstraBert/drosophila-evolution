@@ -1,9 +1,11 @@
 name: python_deps
 channels:
   - bioconda
+  - defaults
   - anaconda
   - conda-forge
-  - defaults
+  - https://repo.anaconda.com/pkgs/main
+  - https://repo.anaconda.com/pkgs/r
 dependencies:
   - _libgcc_mutex=0.1=conda_forge
   - _openmp_mutex=4.5=2_gnu
@@ -33,9 +35,9 @@ dependencies:
   - brotli=1.0.9=he6710b0_2
   - bzip2=1.0.8=h5eee18b_6
   - c-ares=1.34.2=heb4867d_0
-  - ca-certificates=2024.11.26=h06a4308_0
+  - ca-certificates=2024.12.31=h06a4308_0
   - cairo=1.18.0=hbb29018_2
-  - certifi=2024.8.30=py311h06a4308_0
+  - certifi=2024.12.14=py311h06a4308_0
   - click=8.1.7=py311h06a4308_0
   - contourpy=1.3.1=py311hdb19cb5_0
   - cycler=0.11.0=pyhd3eb1b0_0
@@ -69,9 +71,11 @@ dependencies:
   - libarrow-acero=18.1.0=h5888daf_1_cpu
   - libarrow-dataset=18.1.0=h5888daf_1_cpu
   - libarrow-substrait=18.1.0=h5c8f2c3_1_cpu
+  - libblas=3.9.0=12_linux64_mkl
   - libbrotlicommon=1.1.0=hb9d3cd8_2
   - libbrotlidec=1.1.0=hb9d3cd8_2
   - libbrotlienc=1.1.0=hb9d3cd8_2
+  - libcblas=3.9.0=12_linux64_mkl
   - libclang-cpp18.1=18.1.8=default_hf981a13_5
   - libclang13=19.1.2=default_h9c6a7e4_1
   - libcrc32c=1.1.2=h6a678d5_0
@@ -87,6 +91,8 @@ dependencies:
   - libffi=3.4.4=h6a678d5_1
   - libgcc=14.2.0=h77fa898_1
   - libgcc-ng=14.2.0=h69a702a_1
+  - libgfortran=14.2.0=h69a702a_1
+  - libgfortran5=14.2.0=hd5240d6_1
   - libgl=1.7.0=ha4b6fd6_2
   - libglib=2.80.2=hf974151_0
   - libglvnd=1.7.0=ha4b6fd6_2
@@ -97,6 +103,7 @@ dependencies:
   - libgrpc=1.67.1=hc2c308b_0
   - libiconv=1.17=hd590300_2
   - libjpeg-turbo=3.0.3=h5eee18b_0
+  - liblapack=3.9.0=12_linux64_mkl
   - libllvm18=18.1.8=h8b73ec9_2
   - libllvm19=19.1.2=ha7bfdaf_0
   - libnghttp2=1.64.0=h161d5f1_0
@@ -124,8 +131,6 @@ dependencies:
   - libxslt=1.1.39=h76b75d6_0
   - libzlib=1.3.1=hb9d3cd8_2
   - lz4-c=1.9.4=h6a678d5_1
-  - matplotlib=3.9.3=py311h38be061_0
-  - matplotlib-base=3.9.3=py311h2b939e6_0
   - mkl=2021.4.0=h06a4308_640
   - mkl-service=2.4.0=py311h5eee18b_0
   - mkl_fft=1.3.1=py311h30b3d60_0
@@ -135,12 +140,9 @@ dependencies:
   - mysql-libs=8.3.0=ha479ceb_5
   - ncurses=6.4=h6a678d5_0
   - numexpr=2.8.4=py311h802d673_0
-  - numpy=1.24.3=py311hc206e33_0
-  - numpy-base=1.24.3=py311hfd5febd_0
   - openjpeg=2.5.2=he7f1fd0_0
   - openssl=3.4.0=hb9d3cd8_0
   - orc=2.0.3=he039a57_0
-  - packaging=24.1=py311h06a4308_0
   - pandas=2.2.3=py311h6a678d5_0
   - pathspec=0.10.3=py311h06a4308_0
   - pcre2=10.43=hcad00b1_0
@@ -152,6 +154,7 @@ dependencies:
   - pthread-stubs=0.3=h0ce48e5_1
   - pyarrow=18.1.0=py311h38be061_0
   - pyarrow-core=18.1.0=py311h4854187_0_cpu
+  - pykrige=1.7.2=py311h18e1886_2
   - pyparsing=3.2.0=py311h06a4308_0
   - pysam=0.22.1=py311h1f0e11c_2
   - pyside6=6.7.2=py311h9053184_4
@@ -166,6 +169,7 @@ dependencies:
   - re2=2024.07.02=h77b4e00_1
   - readline=8.2=h5eee18b_0
   - s2n=1.5.9=h0fd0ee4_0
+  - scipy=1.15.0=py311hc1ac118_1
   - setuptools=75.1.0=py311h06a4308_0
   - six=1.16.0=pyhd3eb1b0_1
   - snappy=1.2.1=h6a678d5_0
@@ -197,3 +201,11 @@ dependencies:
   - yaml=0.2.5=h7b6447c_0
   - zlib=1.3.1=hb9d3cd8_2
   - zstd=1.5.6=ha6fb4c9_0
+  - pip:
+      - basemap==1.4.1
+      - basemap-data==1.3.2
+      - matplotlib==3.8.4
+      - numpy==1.26.4
+      - packaging==23.2
+      - pyproj==3.6.1
+      - pyshp==2.3.1
