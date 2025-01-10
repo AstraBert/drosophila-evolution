@@ -1,9 +1,9 @@
 services:
   app: 
     container_name: drosophila_project_env1
-    image: astrabert/silly-gat-kay:latest
+    image: astrabert/drosophila-evolution-dockerized:latest
     volumes:
-      - $USERDATA_PATH:/gatk_modified/userdata/
+      - $USERDATA_PATH:/app/userdata/
     stdin_open: true
     tty: true
     entrypoint: "/bin/bash"

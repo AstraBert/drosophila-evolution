@@ -1,0 +1,9 @@
+docs/
+data/
+results/
+scripts/
+shell/
+run_docker.sh
+compose.sh
+compose.yaml
+README.md

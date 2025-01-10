@@ -1,1 +1,1 @@
-sudo docker run -it -v /home/minionuser/miniondata1/:/gatk_modified/userdata/ astrabert/silly-gat-kay:latest
+sudo docker run -it -v /home/abert/media1/projects:/app/userdata/ astrabert/drosophila-evolution-dockerized:latest
