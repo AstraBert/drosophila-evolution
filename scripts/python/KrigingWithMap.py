@@ -7,7 +7,8 @@ from mpl_toolkits.basemap import Basemap  # For basemap functionality
 
 p1 = "DrosSim"
 p2 = "DGN"
-p3 = "TRK_1"
+p3 = "CYP_1"
+continent = "AS"
 
 # Read your data
 df = pd.read_csv("/gatk_modified/userdata/abertelli/drosophila-evolution/data/all_f4stats_wsim.tsv", sep="\t")
@@ -15,7 +16,7 @@ df_pools = pd.read_csv("/gatk_modified/userdata/abertelli/drosophila-evolution/r
 pops = df_pools["NAME"].to_list() 
 conts = df_pools["CONTINENT"].to_list() 
 pops2cont = {pops[i]: conts[i] for i in range(len(pops))}
-df_subs = df[(df["PopO"] == p2) & (df["PopX"] == p1) & (df["PopA"] == p3) & (df["PopC"].map(pops2cont) == "EU")]
+df_subs = df[(df["PopO"] == p2) & (df["PopX"] == p1) & (df["PopA"] == p3) & (df["PopC"].map(pops2cont) == continent)]
 
 # Calculate coordinates and prepare the data
 longs = df_pools['LONG'] 
@@ -108,5 +109,5 @@ plt.ylabel('Latitude')
 
 # Save and show the plot
 plt.tight_layout()
-plt.savefig(f"./F4_{p1}_{p2}_{p3}.png", dpi=300, transparent=True)  # Save with transparent background
+plt.savefig(f"./F4_{p1}_{p2}_{p3}_{continent}.png", dpi=300, transparent=True)  # Save with transparent background
 plt.show()
