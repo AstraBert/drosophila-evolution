@@ -7,7 +7,7 @@ from mpl_toolkits.basemap import Basemap  # For basemap functionality
 
 p1 = "DrosSim"
 p2 = "DGN"
-p3 = "CYP_1"
+p3 = "WEES_1"
 continent = "AS"
 
 # Read your data
