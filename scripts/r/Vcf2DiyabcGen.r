@@ -17,7 +17,7 @@ pooldata2diyabc(
     vcfdata,
     writing.dir = writing_dir,
     prefix = "PopData",
-    diyabc.mrc = 1,
+    diyabc.mrc = 5,
 )
 
 
