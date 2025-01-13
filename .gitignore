@@ -10,3 +10,4 @@ results/
 imgs/output.asc
 docker.log
 drosophila-evolution.code-workspace
+run_docker_env.sh

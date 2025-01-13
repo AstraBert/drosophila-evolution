@@ -7,32 +7,40 @@ from mpl_toolkits.basemap import Basemap  # For basemap functionality
 
 p1 = "DrosSim"
 p2 = "DGN"
-p3 = "WBDE_1"
+p3 = "TRK_1"
 
 # Read your data
 df = pd.read_csv("/gatk_modified/userdata/abertelli/drosophila-evolution/data/all_f4stats_wsim.tsv", sep="\t")
-df_subs = df[(df["PopO"] == p2) & (df["PopX"] == p1) & (df["PopA"] == p3)] 
 df_pools = pd.read_csv("/gatk_modified/userdata/abertelli/drosophila-evolution/results/pools.csv")
+pops = df_pools["NAME"].to_list() 
+conts = df_pools["CONTINENT"].to_list() 
+pops2cont = {pops[i]: conts[i] for i in range(len(pops))}
+df_subs = df[(df["PopO"] == p2) & (df["PopX"] == p1) & (df["PopA"] == p3) & (df["PopC"].map(pops2cont) == "EU")]
 
 # Calculate coordinates and prepare the data
 longs = df_pools['LONG'] 
-lats = df_pools['LAT'] 
-pops = df_pools["NAME"].to_list() 
+lats = df_pools['LAT']  
 pops2dist = {pops[i]: [longs[i],lats[i]] for i in range(len(pops))}
 focals = df_subs["PopC"].to_list() 
 f3s = df_subs["Estimate"].to_list() 
 focal2zscoref3 = {focals[i]: [f3s[i]] for i in range(len(focals))}
 
-# Define plot boundaries
-MINY = min(lats) - 10
-MAXY = max(lats) + 10
-MINX = min(longs) - 10
-MAXX = max(longs) + 10
+
+latsused = [] 
+longsused = [] 
 
 # Prepare data for Kriging
 for k in focal2zscoref3:
     focal2zscoref3[k].insert(0, pops2dist[k][0])
     focal2zscoref3[k].insert(1, pops2dist[k][1])
+    longsused.append(pops2dist[k][0])
+    latsused.append(pops2dist[k][1])
+
+# Define plot boundaries
+MINY = min(latsused) - 10
+MAXY = max(latsused) + 10
+MINX = min(longsused) - 10
+MAXX = max(longsused) + 10
 
 data = np.array([focal2zscoref3[k] for k in focal2zscoref3])
 print(data)
