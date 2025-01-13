@@ -340,11 +340,205 @@ conda deactivate
 
 ### Pseudo-poolification
 
+Pseudo-poolification was performed with a random allele sampling approach (refer to the image for a visualization):
+
+- We considered individuals from the same population
+- For each SNP, we randomly sampled the alternative or the reference allele from a list of alleles inferred from the sample field in the VCF
+- From the resulting list of randomly sampled allele, we reconstructed the VCF sample field for the entire population for each SNP
+
+![Pseudo Poolification](./imgs/pseudopool.png)
+
+This is all implemented within the following command:
+
+```bash
+## PSEUDO-POOLIFICATION
+
+source activate python_deps
+
+python3 $wd/scripts/python/RandomAlleleFromVcf.py
+
+conda deactivate
+
+## CONVERSION TO VCF
+
+head -n 1901 > $wd/results/drosophila_evolution.bcftools_fakepools_wholegen.vcf
+cat $wd/results/fake_pools_all.tsv.gz >> $wd/results/drosophila_evolution.bcftools_fakepools_wholegen.vcf
+
+source activate gatk_modified
+
+bcftools view -O z -o $wd/results/drosophila_evolution.bcftools_fakepools_wholegen.vcf.gz $wd/results/drosophila_evolution.bcftools_fakepools_wholegen.vcf
+
+conda deactivate
+```
+
 ### F-stats Computation
+
+>[!IMPORTANT]
+> _F-stats_ were calculated without and with the addition of a _Drosophila simulans_ sample from the DEST dataset
+
+**F-stats without _D. simulans_** -> Random allele PCA, pairwise divergence and Fst
+
+They were calculated with the simple poolfstat-based R code in [FstatsWoDrosSim.r](./scripts/r/FstatsWoDrosSim.r):
+
+```R
+require(poolfstat)
+
+all.pops.data <- vcf2pooldata(vcf.file="/gatk_modified/userdata/abertelli/drosophila-evolution/results/drosophila_evolution.bcftools_fakepools_wholegen.vcf.gz", min.maf="0.05", poolsizes=rep(100000,20))
+
+save(all.pops.data, file="/gatk_modified/userdata/abertelli/drosophila-evolution/results/all_pops_data.RData")
+```
+
+**F-stats with _D. simulans_** -> F4 statistics
+
+The _Drosophila simulans_ sample was added with the following poolfstat-based R code:
+
+```R
+require(poolfstat)
+
+load("/gatk_modified/userdata/abertelli/drosophila-evolution/results/all_pops_data.RData") # -> all.pops.data
+
+dros.sim.df <- read.csv("/gatk_modified/userdata/abertelli/drosophila-evolution/results/drossim_snps.csv")
+dros.sim.column <- dros.sim.df[,1]
+all.pops.count <- cbind(all.pops.data@refallele.readcount)
+colnames(all.pops.count) <- NULL
+all.pops.data@refallele.readcount <- all.pops.count
+all.pops.data@poolsizes <- rep(1000,21)  
+all.pops.data@poolnames <- c(all.pops.data@poolnames, "Pool21")
+all.pops.data@npools <- 21
+all.pops.cov <- all.pops.data@readcoverage
+all.pops.cov <- cbin(all.pops.cov, dros.sim.column)
+colnames(all.pops.cov) <- NULL
+all.pops.data@readcoverage <- all.pops.cov
+```
+And then the f-statistics were calculated with:
+
+```R
+all.pops.fstats <- compute.fstats(all.pops.data, nsnp.per.bjack.block = 1000, computeDstat = TRUE,verbose=TRUE)
+save(all.pops.fstats, file="results/all_pops_fstats_wsim.RData")    
+```
 
 ### Divergence and FST
 
+> [!NOTE]
+> Without *Drosophila simulans*
+
+Pairwise divergence and Fst were simply inferred and represented from the F-stats derived by the `all.pops.data` object previously calculated, with the following code:
+
+```R
+png("divergence_fst_heatmap.png", width=1000, height=1000)
+
+require(ComplexHeatmap)
+load("/gatk_modified/userdata/abertelli/drosophila-evolution/results/all_pops_data.RData") # -> all.pops.fstats 
+poolcsv <- read.csv("/gatk_modified/userdata/abertelli/drosophila-evolution/results/pools.csv")
+hm.fst <- all.pops.fstats@pairwise.fst
+rownames(hm.fst) <- poolcsv$NAME
+colnames(hm.fst) <- poolcsv$NAME
+
+hm.div <- all.pops.fstats@pairwise.div
+rownames(hm.div) <- poolcsv$NAME
+colnames(hm.div) <- poolcsv$NAME
+
+div.hm <- Heatmap(hm.div, cluster_rows = TRUE, cluster_columns=TRUE, name="Divergence (pairwise)", show_heatmap_legend=FALSE, column_title="Divergence (1-Q2)")
+fst.hm <- Heatmap(hm.fst, cluster_rows=TRUE, cluster_columns=TRUE, name="values", column_title = "fst=(Q1-Q2)/(1-Q2)")
+div.hm+fst.hm
+dev.off()
+```
+
+Here is the plot:
+
+![Divergence_Fst](./imgs/divergence_fst_heatmap.png)
+
 ### Random Allele PCA
+
+Random allele PCA was obtained similarly to the Fst and the Divergence, just by perfoming a PCA on the pooldata object and plotting the first vs the second component:
+
+```R
+load("/gatk_modified/userdata/abertelli/drosophila-evolution/results/all_pops_data.RData") # -> all.pops.data
+
+poolcsv <- read.csv("/gatk_modified/userdata/abertelli/drosophila-evolution/results/pools.csv")
+
+png("randomallele.png", width=1000, height=1000)
+
+all.pops.pca <- randomallele.pca(all.pops.data)
+
+pc1_2 <- all.pops.pca$pop.loadings[,c(1,2)] 
+rownames(pc1_2) <- poolcsv$NAME
+
+perc.pc1 <- all.pops.pca$perc.var[[1]] 
+perc.pc2 <- all.pops.pca$perc.var[[2]] 
+
+perc.pc1.rounded <- round(perc.pc1, digits=2)
+perc.pc1.str <- paste0(perc.pc1.rounded)
+xlabel <- paste("PC1", "(", perc.pc1.str, "%)")
+
+perc.pc2.rounded <- round(perc.pc2, digits=2)
+perc.pc2.str <- paste0(perc.pc2.rounded)
+ylabel <- paste("PC2", "(", perc.pc2.str, "%)")
+
+plot(pc1_2[,1], pc1_2[,2], xlab = xlabel, ylab = ylabel, main = "Random Allele PCA", pch = 19, col = "red")
+text(pc1_2[,1], pc1_2[,2], labels = rownames(pc1_2), cex = 0.8, pos = 4)
+
+dev.off()
+```
 
 ### Kriging
 
+Kriging interpolation of F4 statistics values for the populations was obtained by firstly downloading all the F4 statistics from R, manipulating the resulting table programmatically (not showed) into a neat TSV, and then plotting them with the `pykrige` and `basemap` python packages:
+
+```bash
+## KRIGING INTERPOLATION
+
+conda activate python_deps
+
+python3 $wd/scripts/python/KrigingWithMap.py
+
+conda deactivate
+```
+
+Remembe to change lines 8-11 if you want different populations:
+
+```python
+p1 = "DrosSim"
+p2 = "DGN"
+p3 = "WEES_1"
+continent = "AS"
+```
+
+Use this image as reference:
+
+![f4stats](./imgs/f4statm.png)
+
+And consider:
+
+- `p1` as PopO
+- `p2` as PopC
+- `p3` as PopA
+- `"AS"` stands for Asia, `"EU"` stands for Europe, and indicates the continent on which you want to see the kriging interpolation
+
+**These are te resulting images for Europe**:
+
+![CYP_1](./imgs/F4_DrosSim_DGN_CYP_1_EU.png)
+
+![EBHU_1](./imgs/F4_DrosSim_DGN_EBHU_1_EU.png)
+
+![EERU_2](./imgs/F4_DrosSim_DGN_EERU_2_EU.png)
+
+![TRK_1](./imgs/F4_DrosSim_DGN_TRK_1_EU.png)
+
+![WBDE_1](./imgs/F4_DrosSim_DGN_WBDE_1_EU.png)
+
+![WEES_1](./imgs/F4_DrosSim_DGN_WEES_1_EU.png)
+
+**These are te resulting images for Asia (China)**:
+
+![CYP_1](./imgs/F4_DrosSim_DGN_CYP_1_AS.png)
+
+![EBHU_1](./imgs/F4_DrosSim_DGN_EBHU_1_AS.png)
+
+![EERU_2](./imgs/F4_DrosSim_DGN_EERU_2_AS.png)
+
+![TRK_1](./imgs/F4_DrosSim_DGN_TRK_1_AS.png)
+
+![WBDE_1](./imgs/F4_DrosSim_DGN_WBDE_1_AS.png)
+
+![WEES_1](./imgs/F4_DrosSim_DGN_WEES_1_AS.png)

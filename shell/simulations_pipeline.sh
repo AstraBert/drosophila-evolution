@@ -6,7 +6,7 @@ mkdir -p $wd/data/simulation_data/logs/
 
 for i in {1..4}
 do
-	source activate gatk_modified
+	conda activate gatk_modified
     bcftools view \
         -S $wd/data/simulation_data/subsample_${i}.txt \
         -O z \
@@ -16,7 +16,7 @@ do
 
     mkdir -p $wd/data/diyabc_inputs_${i}/
 
-    source activate R
+    conda activate R
 
     Rscript $wd/scripts/r/Vcf2DiyabcGen.r \
         $wd/data/simulation_vcfs/subsample_${i}.vcf.gz \

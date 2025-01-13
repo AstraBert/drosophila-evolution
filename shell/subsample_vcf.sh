@@ -97,7 +97,7 @@ echo ""
 # Capture start time
 start_time=$(date +%s)
 
-source activate python_deps
+conda activate python_deps
 
 mkdir -p $outputdir/data/
 
@@ -113,7 +113,7 @@ python3 $scriptdir/../scripts/SamplesFromBamFiles.py \
 
 conda deactivate
 
-source activate gatk_modified
+conda activate gatk_modified
 
 mkdir -p $outputdir/results/
 

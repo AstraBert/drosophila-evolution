@@ -99,7 +99,7 @@ echo "(You will find the logs of each step at: $outputdir/logs)"
 echo ""
 echo "0%>                         100%"
 
-source activate gatk_modified
+conda activate gatk_modified
 
 echo "Trimming of reads"
 echo "0%---------->                 100%"
@@ -129,7 +129,7 @@ bwa-mem2 mem \
 
 conda deactivate
 
-source activate picard
+conda activate picard
 
 echo "Deduplicating"
 echo "0%-------------------->         100%"
@@ -143,7 +143,7 @@ picard MarkDuplicates \
 
 conda deactivate
 
-source activate gatk_modified
+conda activate gatk_modified
 
 samtools index $outputdir/$sample.dedup.bam > $outputdir/logs/samtools_ind.log 2>&1
 

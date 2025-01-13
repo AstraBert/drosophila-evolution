@@ -1,6 +1,6 @@
 require(poolfstat)
 
-load("results/all_pops_data_wosim.RData") # -> all.pops.data
+load("/gatk_modified/userdata/abertelli/drosophila-evolution/results/all_pops_data.RData") # -> all.pops.data
 
 dros.sim.df <- read.csv("results/drossim_snps.csv")
 dros.sim.column <- dros.sim.df[,1]

@@ -125,7 +125,7 @@ if __name__ == "__main__":
     pops = ['CNXJ', 'CnOther', 'CnQTP', 'ISR', 'DGN']
     pops2samples = find_pops_from_bamlist(bamfile, pops)
     print("Reading VCF...")
-    df = read_vcf("/gatk_modified/userdata/abertelli/drosophila-evolution/results/drosophila_evolution.bcftools_2R.vcf.gz")
+    df = read_vcf("/gatk_modified/userdata/abertelli/drosophila-evolution/results/drosophila_evolution.bcftools_all.vcf.gz")
     print(df.head())
     print(df.height)
     print("Read VCF!")
@@ -144,4 +144,4 @@ if __name__ == "__main__":
     pddf = newdf.to_pandas()
     for key in pddf:
         snps_pd.insert(len(list(snps_pd.keys())), key, pddf[key].to_list())
-    snps_pd.to_csv("/gatk_modified/userdata/abertelli/drosophila-evolution/results/fake_pools_2R.tsv.gz", sep="\t", index=False)
+    snps_pd.to_csv("/gatk_modified/userdata/abertelli/drosophila-evolution/results/drosophila_evolution.bcftools_fakepools_wholegen.vcf.gz", sep="\t", index=False)

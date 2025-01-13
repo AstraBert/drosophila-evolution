@@ -2,7 +2,7 @@
 
 wd="/gatk_modified/userdata/abertelli/drosophila-evolution/"
 
-source activate gatk_modified
+conda activate gatk_modified
 
 ## GET THE REFERENCE GENOME FOR D. melanogaster FROM FlyBase
 mkdir -p $wd/data/reference/
@@ -50,7 +50,7 @@ do
     done < "$input_file"
 done
 
-source activate python_deps
+conda activate python_deps
 
 python3 $wd/scripts/DgnSelect.py
 
@@ -88,7 +88,7 @@ do
     done < "$input_file"
 done
 
-source activate python_deps
+conda activate python_deps
 
 python3 $wd/scripts/RenameDGN.py
 
@@ -118,7 +118,7 @@ while IFS= read -r url; do
     echo "wget "$url"" > $wd/shell/wget_data/${cnt}.sh 
 done < $wd/data/additional_dest_bams.txt
 
-source activate freebayes-env
+conda activate freebayes-env
 echo "will cite" | parallel --citation >/dev/null 2>&1
 parallel --bar -j 100 bash ::: $wd/shell/wget_data/*.sh
 conda deactivate
@@ -146,13 +146,13 @@ do
         f="$wd/data/bamfiles/${sample}_${n}.bam"
         fres="$wd/data/dest_renamed/${sample}_${n}.bam"
 
-        source activate python_deps
+        conda activate python_deps
 
         rgline=$(python3 $wd/scripts/RgLineForDest.py -i $f)
 
         conda deactivate
 
-        source activate gatk_modified
+        conda activate gatk_modified
 
         samtools addreplacerg --threads 100 -r "$rgline" -w -o $fres $f
         samtools index -@ 100 $fres
@@ -171,14 +171,14 @@ do
         f="$wd/data/bamfiles/${sample}_${n}.bam"
         fres="$wd/data/add_dest_renamed/${sample}_${n}.bam"
 
-        source activate python_deps
+        conda activate python_deps
 
         rgline=$(python3 $wd/scripts/RgLineForDest.py -i $f)
 
         conda deactivate
 
         echo $rgline
-        source activate gatk_modified
+        conda activate gatk_modified
 
         samtools addreplacerg --threads 100 -r "$rgline" -w -o $fres $f
         samtools index -@ 100 $fres
@@ -209,28 +209,9 @@ do
     echo $f >> $wd/data/freebayes_inputs/bamfiles.txt
 done
 
-source activate freebayes-env
+## VARIANT CALLING WITH BCFTOOLS
 
-export TMPDIR=/gatk_modified/userdata/tmp/
-freebayes-parallel \
-    <(fasta_generate_regions.py \
-        $wd/data/reference/dmel-6.59.fa.fai \
-        100000) \
-    110 \
-    -f $wd/data/reference/dmel-6.59.fa \
-    -L $wd/data/freebayes_inputs/bamfiles.txt \
-    -C 1 \
-    -F 0.02 \
-    -G 5 \
-    --limit-coverage 250 \
-    --use-best-n-alleles 4 \
-    --strict-vcf \
-    --pooled-continuous |
-    gzip >$wd/results/drosophila_evolution.freebayes.vcf.gz
-
-conda deactivate
-
-source activate freebayes-env
+conda activate freebayes-env
 echo "will cite" | parallel --citation >/dev/null 2>&1
 parallel --bar -j 100 bash ::: $wd/shell/bcftools_regions/*.sh
 conda deactivate
@@ -241,21 +222,54 @@ bcftools concat \
     -O z \
     --threads 100 \
     -o $wd/results/drosophila_evolution.bcftools_all.vcf.gz \
+    $wd/results/drosophila_evolution.bcftools_2R.vcf.gz \
     $wd/results/drosophila_evolution.bcftools_2L.vcf.gz \
     $wd/results/drosophila_evolution.bcftools_3R.vcf.gz \
     $wd/results/drosophila_evolution.bcftools_3L.vcf.gz \
     $wd/results/drosophila_evolution.bcftools_X.vcf.gz  
 
-bcftools concat \
-    -O z \
-    --threads 100 \
-    -o $wd/results/drosophila_evolution.bcftools_fakepools_wholegen.vcf.gz \
-    $wd/results/drosophila_evolution.bcftools_fakepools_2R.vcf.gz \
-    $wd/results/drosophila_evolution.bcftools_fakepools_all.vcf.gz
+## PSEUDO-POOLIFICATION
 
-## CALCULATE SIMPLE VCF STATISTICS
+conda activate python_deps
 
-source activate python_deps
-bcftools stats $wd/results/drosophila_evolution.bcftools_all.vcf.gz > $wd/results/drosophila_evolution.bcftools_all.vchk
-plot-vcfstats -p $wd/results/bcftools_plots/ $wd/results/drosophila_evolution.bcftools_all.vchk
+python3 $wd/scripts/python/RandomAlleleFromVcf.py
+
+conda deactivate
+
+## CONVERSION TO VCF
+
+head -n 1901 > $wd/results/drosophila_evolution.bcftools_fakepools_wholegen.vcf
+cat $wd/results/fake_pools_all.tsv.gz >> $wd/results/drosophila_evolution.bcftools_fakepools_wholegen.vcf
+
+conda activate gatk_modified
+
+bcftools view -O z -o $wd/results/drosophila_evolution.bcftools_fakepools_wholegen.vcf.gz $wd/results/drosophila_evolution.bcftools_fakepools_wholegen.vcf
+
+conda deactivate
+
+## CALCULATION OF F-STATS
+
+conda activate R
+
+### 1. Without Drosophila simulans
+
+Rscript $wd/scripts/r/FstatsWoDrosSim.r
+
+
+### 2. With Drosophila simulans
+
+Rscript $wd/scripts/r/FstatsWithDrosSim.r
+
+## RANDOM ALLELE PCA
+
+Rscript $wd/scripts/r/RandomAllelePca.r
+
+conda deactivate
+
+## KRIGING INTERPOLATION
+
+conda activate python_deps
+
+python3 $wd/scripts/python/KrigingWithMap.py
+
 conda deactivate

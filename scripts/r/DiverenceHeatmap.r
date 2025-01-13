@@ -1,7 +1,7 @@
 png("divergence_fst_heatmap.png", width=1000, height=1000)
 
 require(ComplexHeatmap)
-load("all_pops_fstats.RData") # -> all.pops.fstats 
+load("/gatk_modified/userdata/abertelli/drosophila-evolution/results/all_pops_data.RData") # -> all.pops.fstats 
 poolcsv <- read.csv("pools.csv")
 hm.fst <- all.pops.fstats@pairwise.fst
 rownames(hm.fst) <- poolcsv$NAME
