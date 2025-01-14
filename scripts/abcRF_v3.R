@@ -2,6 +2,21 @@
 # Authors: Louis raynal, Jean-Michel Marin, Arnaud Estoup
 # Date: 19/06/2018 + 17/08/2024 + 11-10-2024 + 08/11/2024
 # Version provided to Astra BERTELLI 08-11-2024
+####################################################################
+
+#### Initial cleaning #################
+# Clean all objects in the global environment
+rm(list = ls())
+# Free memory used by deleted objects
+gc()
+# Clean all open graphics (if using RStudio)
+if (!is.null(dev.list())) dev.off()
+# Reset options
+options(default = TRUE)
+# Clean history (optional)
+cat("", file = ".Rhistory")
+#####################################################
+
 
 ###### Loading of the library abcrf and other useful libraries
 library(abcrf) # RF
@@ -15,12 +30,12 @@ options(max.print=10000) # Pour imprimer des tables jusque 10000 lignes
 ncores = 32
 
 ###### output text file that will include various numerical outputs
-output.file = "abcrf_LUIS_ARG_bestOf_NO_GHOST_versus_two_GHOST_S_3scen_t1000_s20000.txt"
+output.file = "abcrf_REAL_FINAL_LUIS_BRA_focus_wat_plus_Gan2_Gan3_nc_wis_gen_col_t1000_s20000"
 n.run = 10 # Most people do a single RF run (n.run=1)...I prefere to do several runs (e.g. n.run=10) to better appreciate the robustness of my conclusions
 
 ###### Key parameters to inform to run RF  
 # Number of simulations taken from the training dataset (reftable) that will be used to built RF trees
-N.train <- 60000
+N.train <- 120000
 # Number of trees in the forest (ntree)
 ntree <- 1000
 # Threshold results (a gadget to use RF output in a specific way = prunning when manay scenarios are compared = to be explained later)
@@ -32,8 +47,8 @@ results_threshold_fraction_trees = 0.05
 # N = total numbre of simuations one wants to load from the reference table
 name.reference.table <- "reftableRF.bin"
 name.header.file <- "headerRF.txt"
-name.observed.dataset <- "statobsRF.txt" # Note that this observed dataset may includes several lines (i.e. several vectors of observed data/sumstats) 
-#name.observed.dataset <- "statobsRF1234_saplia_sapnin_toknin_toklia.txt"
+name.observed.dataset <- "statobsRF1234_saplia_sapnin_toknin_toklia.txt" # Note that this observed dataset may includes several lines (i.e. several vectors of observed data/sumstats) 
+#name.observed.dataset <- "statobsRF.txt"
 
 # Loading data using the scpecific fonction of abcrf
 reference.table <- readRefTable(filename = name.reference.table, header=name.header.file) #, N=100000)
@@ -48,7 +63,7 @@ grouping.scenarios <- "NO"
 if (grouping.scenarios=="YES")
 {
 # Definition of the scenarios groups (if grouping = YES)
-group.list = list("8", "10")
+group.list = list("3", "4", "5", "6", "7", "9")
 #group.list = list("7","9")
 #group.list = list(c("1", "2", "3", "4"), c("5", "6", "7", "8")) 
 #group.list = list("1","2","3","4")
@@ -180,7 +195,8 @@ for (i.statobs in 1:n.statobs) {
   result.by.statobs[[i.statobs]] <- df.result.nrun
   }
 }
-# sink(file = "output.file.new..txt", split = TRUE) # for testing or independent saving
+
+#sink(file = "output_file_new.txt", split = TRUE) # for testing or independent saving
 #############################################################################################
 #############################################################################################
 cat("\n")
@@ -287,15 +303,19 @@ final.df.over.all.statobs.threshold <- aggregate(
   data = final.df.over.all.statobs.threshold,
   mean
 )
-# Display the final dataframe
-cat( "\n")
-cat("Global mean number of votes over all statobs","\n")
+# Affichage des résultats
+cat("\nFinal results without threshold:\n")
+cat("Global mean number of votes over all statobs:\n")
 print(final.df.over.all.statobs.threshold)
-
-########### FINAL RESULTS #################
-cat( "\n")
-cat( "\n")
-######## No threshold
+# Ajout d'un message final clair
+cat("\n### End of Results ###\n")
+# Suppression des dépendances à RStudio-specific environments
+if (exists(".rs.WorkingDataEnv")) {
+  rm(list = ls(envir = .rs.WorkingDataEnv), envir = .rs.WorkingDataEnv)
+}
+if (exists(".rs.CachedDataEnv")) {
+  rm(list = ls(envir = .rs.CachedDataEnv), envir = .rs.CachedDataEnv)
+}
 
 cat("#############################################################################################","\n")
 cat("#############################################################################################","\n")
@@ -311,130 +331,130 @@ colnames(dataframe.all.results.in.mean.nbre.of.votes) <- col_names
 colnames(dataframe.all.results.in.mean.fraction.of.votes) <- col_names
 # Fill in the "Scenario" column
 dataframe.all.results.in.mean.nbre.of.votes$Scenario <- c(1:n.scen, "TotalTrees")
-dataframe.all.results.in.mean.fraction.of.votes$Scenario <- c(1:n.scen, "Total%")
+dataframe.all.results.in.mean.fraction.of.votes$Scenario <- c(1:n.scen, "TotalFraction")
 
 # Populate the remaining columns with Mean.Votes data for each statobs
 for (i.statobs in 1:n.statobs) {
   # Insert Mean.Votes for the first 28 rows
   dataframe.all.results.in.mean.nbre.of.votes[1:n.scen, paste0("Statobs", i.statobs)] <- list.result.threshold[[i.statobs]]$Mean.Votes
-  
   # Calculate the total for each Statobs column in the mean number of votes dataframe
   dataframe.all.results.in.mean.nbre.of.votes[n.scen + 1, paste0("Statobs", i.statobs)] <- sum(list.result.threshold[[i.statobs]]$Mean.Votes)
-  
   # Insert Mean.Votes as a percentage for the first 28 rows
   dataframe.all.results.in.mean.fraction.of.votes[1:n.scen, paste0("Statobs", i.statobs)] <- list.result.threshold[[i.statobs]]$Mean.Votes / ntree
-  
   # Calculate the total for each Statobs column in the mean fraction of votes dataframe
   dataframe.all.results.in.mean.fraction.of.votes[n.scen + 1, paste0("Statobs", i.statobs)] <- sum(list.result.threshold[[i.statobs]]$Mean.Votes / ntree)
 }
 # Display the final data frames
 cat("\n")
-print("DataFrame for mean number of votes with TotalTrees row:")
-cat("\n")
+# Afficher les résultats
+cat("\nDataFrame for mean number of votes with TotalTrees row:\n")
 print(dataframe.all.results.in.mean.nbre.of.votes)
-cat("\n")
-print("DataFrame for mean fraction of votes with Total% row:")
-cat("\n")
+cat("\nDataFrame for mean fraction of votes with Total% row:\n")
 print(dataframe.all.results.in.mean.fraction.of.votes)
-cat("\n")
-cat("\n")
+# Ajout d'un message final clair
+cat("\n### End of Results ###\n")
+# Vérifications et suppression des environnements spécifiques (optionnel)
+if (exists(".rs.WorkingDataEnv") && length(ls(envir = .rs.WorkingDataEnv)) > 0) {
+  cat("\nCleaning .rs.WorkingDataEnv...\n")
+  rm(list = ls(envir = .rs.WorkingDataEnv), envir = .rs.WorkingDataEnv)
+}
+if (exists(".rs.CachedDataEnv") && length(ls(envir = .rs.CachedDataEnv)) > 0) {
+  cat("\nCleaning .rs.CachedDataEnv...\n")
+  rm(list = ls(envir = .rs.CachedDataEnv), envir = .rs.CachedDataEnv)
+}
 
-######## With threshold
+######## Output With threshold
 cat("#############################################################################################","\n")
 cat("#############################################################################################","\n")
 cat("########### OTHER PRESENTATION OF FINAL RESULTS WITH inititialy defined THRESHOLD ##########", "\n")
 cat("#############################################################################################","\n")
 cat("#############################################################################################","\n")
-
+nbre_df <- dataframe.all.results.in.mean.nbre.of.votes
+percentage_df <- dataframe.all.results.in.mean.fraction.of.votes
 threshold <- ntree * results_threshold_fraction_trees
 cat("ntree =",ntree,"\n")
 cat("results_threshold_fraction_trees=",results_threshold_fraction_trees,"\n")
 cat("threshold in min number of trees =",threshold,"\n")
 cat("\n")
-# Define the indices of the columns to analyze
-start_col <- 2  # The first column to include
-end_col <- min(n.statobs + 1, ncol(nbre_df))  # Limit to the last available column
-# Apply the filter
-if (start_col <= end_col) {
-  filtered_nbre_rows <- nbre_df[
-    apply(nbre_df[, start_col:end_col, drop = FALSE], 2, function(row) any(row > threshold)), 
-  ]
-} else {
-  warning("No valid columns to filter. Check the value of n.statobs.")
-  filtered_nbre_rows <- data.frame()  # Return an empty dataframe if the range is invalid
+# Fonction pour ajouter une ligne TotalFraction ou TotalTrees
+add_summary_row <- function(df, label) {
+  # Supprimer les lignes existantes avec ce label
+  df <- df[df$Scenario != label, ]
+  # Conversion explicite en numérique pour les colonnes sauf la première
+  numeric_columns <- as.data.frame(lapply(df[, -1, drop = FALSE], as.numeric))
+  # Calcul des sommes pour chaque colonne
+  total_row <- c(label, colSums(numeric_columns, na.rm = TRUE))
+  # Ajouter la ligne calculée au DataFrame
+  df <- rbind(df, total_row)
+  return(df)
 }
-# Display the results
-print(filtered_nbre_rows)
-# Remove the last row from the original dataframes
-nbre_df <- dataframe.all.results.in.mean.nbre.of.votes[1:n.scen, ]
-percentage_df <- dataframe.all.results.in.mean.fraction.of.votes[1:n.scen,]
+# Appliquer la fonction au DataFrame pour le nombre moyen de votes
+dataframe.all.results.in.mean.nbre.of.votes <- add_summary_row(
+  dataframe.all.results.in.mean.nbre.of.votes, "TotalTrees"
+)
+# Appliquer la fonction au DataFrame pour la fraction moyenne de votes
+dataframe.all.results.in.mean.fraction.of.votes <- add_summary_row(
+  dataframe.all.results.in.mean.fraction.of.votes, "TotalFraction"
+)
+# Convertir les colonnes après "Scenario" en numérique si nécessaire
+dataframe.all.results.in.mean.nbre.of.votes[, -1] <- 
+  lapply(dataframe.all.results.in.mean.nbre.of.votes[, -1], as.numeric)
+dataframe.all.results.in.mean.fraction.of.votes[, -1] <- 
+  lapply(dataframe.all.results.in.mean.fraction.of.votes[, -1], as.numeric)
+# Filtrer les sous-dataframes basés sur les seuils
+sub_dataframe_mean_votes <- dataframe.all.results.in.mean.nbre.of.votes[
+  apply(dataframe.all.results.in.mean.nbre.of.votes[, -1], 1, function(row) any(row >= threshold)), 
+]
+sub_dataframe_mean_fraction <- dataframe.all.results.in.mean.fraction.of.votes[
+  apply(dataframe.all.results.in.mean.fraction.of.votes[, -1], 1, function(row) any(row >= results_threshold_fraction_trees)), 
+]
+# Supprimer la dernière ligne des sous-dataframes
+sub_dataframe_mean_votes <- sub_dataframe_mean_votes[-nrow(sub_dataframe_mean_votes), ]
+sub_dataframe_mean_fraction <- sub_dataframe_mean_fraction[-nrow(sub_dataframe_mean_fraction), ]
 
-# Define the indices of the columns to analyze
-start_col <- 2  # The first column to include
-end_col <- min(n.statobs + 1, ncol(percentage_df))  # Limit to the last available column
-# For the fraction of votes
-if (start_col <= end_col) {
-  filtered_percentage_rows <- percentage_df[
-    apply(percentage_df[, start_col:end_col, drop = FALSE], 2, function(row) any(row > results_threshold_fraction_trees)), 
-  ]
-} else {
-  warning("No valid columns to filter. Check the value of n.statobs.")
-  filtered_percentage_rows <- data.frame()  # Return an empty dataframe if the range is invalid
+# Calculer les sommes des colonnes après la colonne "Scenario"
+sum_mean_votes <- colSums(sub_dataframe_mean_votes[, -1], na.rm = TRUE)
+sum_mean_fraction <- colSums(sub_dataframe_mean_fraction[, -1], na.rm = TRUE)
+
+# Afficher les résultats
+cat("\nSous-dataframe pour mean number of votes :\n")
+print(sub_dataframe_mean_votes)
+cat("\nSommes des colonnes pour mean number of votes :\n")
+print(sum_mean_votes)
+cat("\nSous-dataframe pour mean fraction of votes :\n")
+print(sub_dataframe_mean_fraction)
+cat("\nSommes des colonnes pour mean fraction of votes :\n")
+print(sum_mean_fraction)
+
+# Fermer proprement les sink(s) ouverts
+if (sink.number() > 0) {
+  sink()
 }
-# Display the results
-print(filtered_percentage_rows)
-# Add total row at the end of each filtered dataframe
-if (nrow(filtered_nbre_rows) > 0) {
-  # Adjust column selection to avoid invalid dimensions
-  start_col <- 2
-  end_col <- min(n.statobs + 1, ncol(filtered_nbre_rows))
-  
-  # Calculate column sums only if there are valid columns
-  if (start_col <= end_col) {
-    total_nbre <- colSums(filtered_nbre_rows[, start_col:end_col, drop = FALSE])
-    filtered_nbre_rows <- rbind(filtered_nbre_rows, c("Total", total_nbre))
-  } else {
-    warning("No valid columns for summation in filtered_nbre_rows.")
+# Nettoyage des environnements spécifiques à RStudio
+cat("Attempting cleanup of RStudio-specific environments...\n")
+tryCatch({
+  if (exists(".rs.WorkingDataEnv") && is.environment(.rs.WorkingDataEnv)) {
+    if (length(ls(envir = .rs.WorkingDataEnv)) > 0) {
+      rm(list = ls(envir = .rs.WorkingDataEnv), envir = .rs.WorkingDataEnv)
+    }
   }
-}
-if (nrow(filtered_percentage_rows) > 0) {
-  # Adjust column selection to avoid invalid dimensions
-  start_col <- 2
-  end_col <- min(n.statobs + 1, ncol(filtered_percentage_rows))
-  
-  # Calculate column sums only if there are valid columns
-  if (start_col <= end_col) {
-    total_percentage <- colSums(filtered_percentage_rows[, start_col:end_col, drop = FALSE])
-    filtered_percentage_rows <- rbind(filtered_percentage_rows, c("Total", total_percentage))
-  } else {
-    warning("No valid columns for summation in filtered_percentage_rows.")
+}, error = function(e) {
+  cat("Warning: Failed to clean .rs.WorkingDataEnv. Continuing execution...\n")
+})
+tryCatch({
+  if (exists(".rs.CachedDataEnv") && is.environment(.rs.CachedDataEnv)) {
+    if (length(ls(envir = .rs.CachedDataEnv)) > 0) {
+      rm(list = ls(envir = .rs.CachedDataEnv), envir = .rs.CachedDataEnv)
+    }
   }
-}
-# Set row names sequentially
-if (nrow(filtered_nbre_rows) > 0) {
-  rownames(filtered_nbre_rows) <- 1:nrow(filtered_nbre_rows)
-}
+}, error = function(e) {
+  cat("Warning: Failed to clean .rs.CachedDataEnv. Continuing execution...\n")
+})
+# Message final clair
+cat("\n### End of Results ###\n")
 
-if (nrow(filtered_percentage_rows) > 0) {
-  rownames(filtered_percentage_rows) <- 1:nrow(filtered_percentage_rows)
-}
 
-# Create final dataframes
-dataframe.all.results.in.mean.nbre.of.votes.threshold <- filtered_nbre_rows
-dataframe.all.results.in.mean.fraction.of.votes.threshold <- filtered_percentage_rows
 
-# Display the final dataframes
-cat("\n")
-print("Filtered DataFrame for mean number of votes with threshold and totals:")
-cat("\n")
-print(dataframe.all.results.in.mean.nbre.of.votes.threshold)
-cat("\n")
-print("Filtered DataFrame for mean fraction of votes with threshold and totals:")
-cat("\n")
-print(dataframe.all.results.in.mean.fraction.of.votes.threshold)
-
-# Clean escaped from the output file
-sink()
 
 #########################################  ################################################
 #########################################  ################################################
@@ -445,6 +465,8 @@ cat("###########################################################################
 cat("Drawing figures for the last of the i.run =",i.run,"\n")
 cat("#############################################################################################","\n")
 
+if (grouping.scenarios=="NO")
+{
 ########### FIGURE OUTPUT ###################################################################################
 #TO BE USED WHEN Analysis of each scenarios independently ---> grouping.scenarios="NO")
 #############################################################################################################
@@ -456,11 +478,77 @@ par(mar = c(3, 2, 2, 1) + 0.1, ask = FALSE)
 # Disable the "Press <ENTER> to Continue..." prompt
 plot(model.rf, dataTrain, obs = stat.obs, pdf = TRUE, n.var = 30)
 
-########## If "margin problem", the graphs are still produced; proceed with
+########## If "margin problem", the graphs are still produced; THEN PROCEED BY RUNNING THIS PART OF THE CODE !!!!!
 # Save the error = f(n.tree) plot in a PNG file
 png("err_oob_plot.png", width = 800, height = 600)
 # Compute err.oob
 err.oob <- err.abcrf(model.rf, dataTrain, paral = TRUE)
+# Produce the plot
+plot(err.oob)
+# Close the PNG file to save the plot
+dev.off()  # Important to close the device so it returns to the Plots window
+cat("THREE ILLUSTRATIVE GRAPHICS have been produced and saved in three different files:", quote=FALSE)
+cat("File named prior_errors_vs_number_of_trees.png: Graphic providing prior error rates for forests with different number of trees and computed using an Out-of-Bag procedure, e.g. Fig. 3 in Pudlo et al. 2016", "\n")
+cat("File named graph_lda.pdf = LDA projections of the reference table for the different scenarios plus the observed dataset cf. black star in the figure", "\n")
+cat("File name graph_varImpPlot.pdf = the contributions of the 30 most important statistics to the RF (e.g. Fig. S6 and Fig. S7 in Pudlo et al. 2016)", "\n")
+# #####################################################################################
+
+
+# ############################### START RENAME OUTPUT FILES ######################################################
+# Give a specific name or use the one you defined for your analysis
+#output.file.save <- "abcrf_LUIS_USA__GAUT_vs_FRAI_S1&S2_tok_sap_ok_t1000_s20000_pS_10runs.txt"
+output.file.save <- output.file
+
+# Extract the name without extension and the extension of output.file
+nse_output.file.save <- tools::file_path_sans_ext(output.file)
+ext_output.file.save <- tools::file_ext(output.file)
+
+# List of output files to rename
+files_to_rename <- c("graph_lda.pdf",
+                     "graph_varImpPlot.pdf",
+                     "err_oob_plot.png",
+                     "Importance_Measures_of_SUMSTATS_SORTED.txt")
+# Rename each output file
+for (file in files_to_rename) {
+  # Extract the name without extension and the extension of the output file
+  nse4f <- tools::file_path_sans_ext(file)
+  ext4f <- tools::file_ext(file)
+  # Create the new file name
+  new_name <- paste0(nse4f, "_", nse_output.file.save, ".", ext4f)
+  # Rename the file
+  file.rename(file, new_name)
+}
+# ############################### END RENAME OUTPUT FILES ######################################################
+}
+
+
+if (grouping.scenarios=="YES")
+{
+########### FIGURE OUTPUT BIS ###############################################################################
+#TO BE USED WHEN Analysis groups of scenarios ---> grouping.scenarios="YES")
+#############################################################################################################
+## Graphic providing prior error rates for forests with different number of trees (pdf file name = error_vs_ntree.pdf")
+## computed using an Out-of-Bag procedure, e.g. Fig. 3 in Pudlo et al. 2016
+# Adjust graphical margins and disable the "Press <ENTER> to Continue..." prompt
+par(mar = c(3, 2, 2, 1) + 0.1, ask = FALSE)
+# First, produce two figures (LDA and VarImp) in the Plots window and automatically save them as PDF files
+# Disable the "Press <ENTER> to Continue..." prompt
+# dataTrain.SubScen <- dataTrain[dataTrain$scenario %in% c(1,2), ]
+dataTrain.SubScen <- dataTrain[dataTrain$scenario %in% group.list, ]
+# Renumber the row indices
+rownames(dataTrain.SubScen) <- NULL
+# Verify the result
+# head(dataTrain.SubScen)
+# First, produce two figures (LDA and VarImp) in the Plots window and automatically save them as PDF files
+# Disable the "Press <ENTER> to Continue..." prompt
+# par(ask = FALSE)
+plot(model.rf, dataTrain.SubScen, obs = stat.obs, pdf = TRUE, n.var = 30)
+
+########## WARNING: If "margin problem", the graphs are still produced; TO FINISH THE PROCESS THEN JUST RUN THIS BELOW SECTION OF THE CODE !!!!!
+# Save the error = f(n.tree) plot in a PNG file
+png("err_oob_plot.png", width = 800, height = 600)
+# Compute err.oob
+err.oob <- err.abcrf(model.rf, dataTrain.SubScen, paral = TRUE)
 # Produce the plot
 plot(err.oob)
 # Close the PNG file to save the plot
@@ -480,9 +568,9 @@ nse_output.file.save <- tools::file_path_sans_ext(output.file)
 ext_output.file.save <- tools::file_ext(output.file)
 
 # List of output files to rename
-files_to_rename <- c("graph_lda.pdf", 
-                     "graph_varImpPlot.pdf", 
-                     "err_oob_plot.png", 
+files_to_rename <- c("graph_lda.pdf",
+                     "graph_varImpPlot.pdf",
+                     "err_oob_plot.png",
                      "Importance_Measures_of_SUMSTATS_SORTED.txt")
 # Rename each output file
 for (file in files_to_rename) {
@@ -495,64 +583,4 @@ for (file in files_to_rename) {
   file.rename(file, new_name)
 }
 # ############################### END RENAME OUTPUT FILES ######################################################
-
-
-# ########### FIGURE OUTPUT BIS ###############################################################################
-# #TO BE USED WHEN Analysis groups of scenarios ---> grouping.scenarios="YES")
-# #############################################################################################################
-# ## Graphic providing prior error rates for forests with different number of trees (pdf file name = error_vs_ntree.pdf")
-# ## computed using an Out-of-Bag procedure, e.g. Fig. 3 in Pudlo et al. 2016
-# # Adjust graphical margins and disable the "Press <ENTER> to Continue..." prompt
-# par(mar = c(3, 2, 2, 1) + 0.1, ask = FALSE)
-# # First, produce two figures (LDA and VarImp) in the Plots window and automatically save them as PDF files
-# # Disable the "Press <ENTER> to Continue..." prompt
-# # dataTrain.SubScen <- dataTrain[dataTrain$scenario %in% c(1,2), ]
-# dataTrain.SubScen <- dataTrain[dataTrain$scenario %in% group.list, ]
-# # Renumber the row indices
-# rownames(dataTrain.SubScen) <- NULL
-# # Verify the result
-# # head(dataTrain.SubScen)
-# # First, produce two figures (LDA and VarImp) in the Plots window and automatically save them as PDF files
-# # Disable the "Press <ENTER> to Continue..." prompt
-# # par(ask = FALSE)
-# plot(model.rf, dataTrain.SubScen, obs = stat.obs, pdf = TRUE, n.var = 30)
-# 
-# ########## If "margin problem", the graphs are still produced; proceed with
-# # Save the error = f(n.tree) plot in a PNG file
-# png("err_oob_plot.png", width = 800, height = 600)
-# # Compute err.oob
-# err.oob <- err.abcrf(model.rf, dataTrain.SubScen, paral = TRUE)
-# # Produce the plot
-# plot(err.oob)
-# # Close the PNG file to save the plot
-# dev.off()  # Important to close the device so it returns to the Plots window
-# cat("THREE ILLUSTRATIVE GRAPHICS have been produced and saved in three different files:", quote=FALSE)
-# cat("File named prior_errors_vs_number_of_trees.png: Graphic providing prior error rates for forests with different number of trees and computed using an Out-of-Bag procedure, e.g. Fig. 3 in Pudlo et al. 2016", "\n")
-# cat("File named graph_lda.pdf = LDA projections of the reference table for the different scenarios plus the observed dataset cf. black star in the figure", "\n")
-# cat("File name graph_varImpPlot.pdf = the contributions of the 30 most important statistics to the RF (e.g. Fig. S6 and Fig. S7 in Pudlo et al. 2016)", "\n")
-# # #####################################################################################
-# # ############################### START RENAME OUTPUT FILES ######################################################
-# # Give a specific name or use the one you defined for your analysis
-# #output.file.save <- "abcrf_LUIS_USA__GAUT_vs_FRAI_S1&S2_tok_sap_ok_t1000_s20000_pS_10runs.txt"
-# output.file.save <- output.file
-# 
-# # Extract the name without extension and the extension of output.file
-# nse_output.file.save <- tools::file_path_sans_ext(output.file)
-# ext_output.file.save <- tools::file_ext(output.file)
-# 
-# # List of output files to rename
-# files_to_rename <- c("graph_lda.pdf", 
-#                      "graph_varImpPlot.pdf", 
-#                      "err_oob_plot.png", 
-#                      "Importance_Measures_of_SUMSTATS_SORTED.txt")
-# # Rename each output file
-# for (file in files_to_rename) {
-#   # Extract the name without extension and the extension of the output file
-#   nse4f <- tools::file_path_sans_ext(file)
-#   ext4f <- tools::file_ext(file)
-#   # Create the new file name
-#   new_name <- paste0(nse4f, "_", nse_output.file.save, ".", ext4f)
-#   # Rename the file
-#   file.rename(file, new_name)
-# }
-# # ############################### END RENAME OUTPUT FILES ######################################################
+}

@@ -24,11 +24,12 @@ do
     
     conda deactivate
 
-    mv $wd/data/diyabc_inputs_${i}/PopData.diyabc $wd/data/diyabc_inputs_${i}/POOL_PopData.snp
+    head -n 10000 $wd/data/diyabc_inputs_${i}/PopData.diyabc > $wd/data/diyabc_inputs_${i}/POOL_PopData.snp
+    tail -n 10000 $wd/data/diyabc_inputs_${i}/PopData.diyabc >> $wd/data/diyabc_inputs_${i}/POOL_PopData.snp
     mv $wd/data/diyabc_inputs_${i}/PopData.snpdet $wd/data/diyabc_inputs_${i}/POOL_PopData.snpdet
 
     head -n 2 $wd/data/diyabc_inputs_${i}/POOL_PopData.snp
-
+	
     cat $wd/data/sample_header_diyabc.txt > $wd/data/diyabc_inputs_${i}/header.txt
 
     cd $wd/data/diyabc_executable/
