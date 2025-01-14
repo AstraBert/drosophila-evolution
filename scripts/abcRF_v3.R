@@ -20,7 +20,6 @@ cat("", file = ".Rhistory")
 
 ###### Loading of the library abcrf and other useful libraries
 library(abcrf) # RF
-help(package = "abcrf")
 library(MASS) # LDA
 library(ranger) # CSRF
 
@@ -30,14 +29,14 @@ options(max.print=10000) # Pour imprimer des tables jusque 10000 lignes
 ncores = 32
 
 ###### output text file that will include various numerical outputs
-output.file = "abcrf_REAL_FINAL_LUIS_BRA_focus_wat_plus_Gan2_Gan3_nc_wis_gen_col_t1000_s20000"
+output.file = "abcrf_output"
 n.run = 10 # Most people do a single RF run (n.run=1)...I prefere to do several runs (e.g. n.run=10) to better appreciate the robustness of my conclusions
 
 ###### Key parameters to inform to run RF  
 # Number of simulations taken from the training dataset (reftable) that will be used to built RF trees
-N.train <- 120000
+N.train <- 1500
 # Number of trees in the forest (ntree)
-ntree <- 1000
+ntree <- 500
 # Threshold results (a gadget to use RF output in a specific way = prunning when manay scenarios are compared = to be explained later)
 results_threshold_fraction_trees = 0.05
 
@@ -47,7 +46,7 @@ results_threshold_fraction_trees = 0.05
 # N = total numbre of simuations one wants to load from the reference table
 name.reference.table <- "reftableRF.bin"
 name.header.file <- "headerRF.txt"
-name.observed.dataset <- "statobsRF1234_saplia_sapnin_toknin_toklia.txt" # Note that this observed dataset may includes several lines (i.e. several vectors of observed data/sumstats) 
+name.observed.dataset <- "statobsRF.txt" # Note that this observed dataset may includes several lines (i.e. several vectors of observed data/sumstats) 
 #name.observed.dataset <- "statobsRF.txt"
 
 # Loading data using the scpecific fonction of abcrf
@@ -63,7 +62,7 @@ grouping.scenarios <- "NO"
 if (grouping.scenarios=="YES")
 {
 # Definition of the scenarios groups (if grouping = YES)
-group.list = list("3", "4", "5", "6", "7", "9")
+group.list = list("1","2","3")
 #group.list = list("7","9")
 #group.list = list(c("1", "2", "3", "4"), c("5", "6", "7", "8")) 
 #group.list = list("1","2","3","4")
@@ -121,6 +120,7 @@ dataTrain <- data.frame(scenario, sumstat)
 NOISE.datatrain <- matrix(runif(N.train*5), ncol=5)
 colnames(NOISE.datatrain) <- c("NOISE1", "NOISE2", "NOISE3", "NOISE4", "NOISE5")
 dataTrain <- cbind(dataTrain, NOISE.datatrain)
+print(dataTrain)
 
 for (i.run in 1:n.run) {
 

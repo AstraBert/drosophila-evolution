@@ -4,15 +4,17 @@ import matplotlib.pyplot as plt
 import pykrige.kriging_tools as kt
 from pykrige.ok import OrdinaryKriging
 from mpl_toolkits.basemap import Basemap  # For basemap functionality
+from matplotlib.colors import Normalize
+from matplotlib import cm
 
 p1 = "DrosSim"
 p2 = "DGN"
-p3 = "WEES_1"
+p3 = "CYP_1"
 continent = "AS"
 
 # Read your data
-df = pd.read_csv("/gatk_modified/userdata/abertelli/drosophila-evolution/data/all_f4stats_wsim.tsv", sep="\t")
-df_pools = pd.read_csv("/gatk_modified/userdata/abertelli/drosophila-evolution/results/pools.csv")
+df = pd.read_csv("../data/all_f4stats_wsim.tsv", sep="\t")
+df_pools = pd.read_csv("../results/pools.csv")
 pops = df_pools["NAME"].to_list() 
 conts = df_pools["CONTINENT"].to_list() 
 pops2cont = {pops[i]: conts[i] for i in range(len(pops))}
@@ -81,8 +83,11 @@ m.drawstates()
 xx, yy = np.meshgrid(gridx, gridy)
 x, y = m(xx, yy)
 
+vmin, vmax = min(data[:,2]), max(data[:,2])
+abs_max = max(abs(vmin), abs(vmax))
+norm = Normalize(vmin=-abs_max, vmax=abs_max)
 # Overlay the heatmap onto the map (make sure the heatmap is not covered)
-im = m.imshow(z, extent=[MINX, MAXX, MINY, MAXY], origin='lower', cmap='coolwarm', alpha=0.7)
+im = m.imshow(z, extent=[MINX, MAXX, MINY, MAXY], origin='lower', cmap="RdBu_r", alpha=0.7, norm=norm)
 
 # Add colorbar for the heatmap
 plt.colorbar(im, label='F4 Value')
