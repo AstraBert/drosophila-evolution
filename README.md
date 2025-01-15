@@ -481,6 +481,8 @@ text(pc1_2[,1], pc1_2[,2], labels = rownames(pc1_2), cex = 0.8, pos = 4)
 dev.off()
 ```
 
+![RandomAllelePCA](./imgs/randomallele.png)
+
 ### Kriging
 
 Kriging interpolation of F4 statistics values for the populations was obtained by firstly downloading all the F4 statistics from R, manipulating the resulting table programmatically (not showed) into a neat TSV, and then plotting them with the `pykrige` and `basemap` python packages:
@@ -495,7 +497,7 @@ python3 $wd/scripts/python/KrigingWithMap.py
 conda deactivate
 ```
 
-Remembe to change lines 8-11 if you want different populations:
+Remember to change lines 8-11 if you want different populations:
 
 ```python
 p1 = "DrosSim"
@@ -504,15 +506,15 @@ p3 = "WEES_1"
 continent = "AS"
 ```
 
-Use this image as reference:
+Use this image, from [Lipson,2020](https://doi.org/10.1111/1755-0998.13230), as reference:
 
-![f4stats](./imgs/f4statm.png)
+![f4stats](./imgs/f4view.png)
 
 And consider:
 
-- `p1` as PopO
-- `p2` as PopC
-- `p3` as PopA
+- `p1` as A
+- `p2` as B
+- `p3` as D
 - `"AS"` stands for Asia, `"EU"` stands for Europe, and indicates the continent on which you want to see the kriging interpolation
 
 **These are te resulting images for Europe**:
