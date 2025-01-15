@@ -1,0 +1,3 @@
+scenario 1   4063 records
+scenario 2   3988 records
+scenario 3   3949 records

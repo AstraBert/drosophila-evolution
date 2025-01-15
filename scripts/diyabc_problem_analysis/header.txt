@@ -1,0 +1,80 @@
+POOL_PopData_df_poolseq_readmin_30.snp
+22 parameters and 3 summary statistics
+
+3 scenarios: 11 11 11
+scenario 1 [0.34] (10)
+N1 N2 N3 N4
+0 sample 1
+0 sample 2
+0 sample 3
+0 sample 4
+t34 merge 3 4
+t34 varNe 3 N34
+t23 merge 2 3
+t23 varNe 2 N23
+t12 merge 1 2
+t12 varNe 1 N12
+scenario 2 [0.33] (10)
+N1 N2 N3 N4
+0 sample 1
+0 sample 2
+0 sample 3
+0 sample 4
+t32 merge 2 3 
+t32 varNe 2 N32
+t24 merge 2 4
+t24 varNe 2 N24
+t10 merge 1 2
+t10 varNe 2 N10
+scenario 3 [0.33] (10)
+N1 N2 N3 N4
+0 sample 1
+0 sample 2
+0 sample 3
+0 sample 4
+t31 merge 1 3
+t31 varNe 1 N31
+t21 merge 1 2
+t21 varNe 1 N21
+t14 merge 1 4
+t14 varNe 1 N14
+
+historical parameters priors (22,6)
+N1 N LU[100000,1000000,0.0,0.0]
+N2 N LU[100000,1000000,0.0,0.0]
+N3 N LU[100000,1000000,0.0,0.0]
+N4 N LU[100000,1000000,0.0,0.0]
+N34 N LU[100000,1000000,0.0,0.0]
+N23 N LU[100000,1000000,0.0,0.0]
+N12 N LU[100000,1000000,0.0,0.0]
+N32 N LU[100000,1000000,0.0,0.0]
+N24 N LU[100000,1000000,0.0,0.0]
+N10 N LU[100000,1000000,0.0,0.0]
+N31 N LU[100000,1000000,0.0,0.0]
+N21 N LU[100000,1000000,0.0,0.0]
+N14 N LU[100000,1000000,0.0,0.0]
+t34 T LU[1500,225000,0.0,0.0]
+t23 T LU[1500,225000,0.0,0.0]
+t12 T LU[1500,225000,0.0,0.0]
+t32 T LU[1500,225000,0.0,0.0]
+t24 T LU[1500,225000,0.0,0.0]
+t10 T LU[1500,225000,0.0,0.0]
+t31 T LU[1500,225000,0.0,0.0]
+t21 T LU[1500,225000,0.0,0.0]
+t14 T LU[1500,225000,0.0,0.0]
+t23>t34
+t12>t23
+t24>t32
+t10>t24
+t21>t31
+t14>t21
+DRAW UNTIL
+
+loci description (1)
+2346 <A> G1 from 1
+
+group summary statistics (1)
+group G1 (3)
+ML1p 1 2 3
+
+scenario N1 N2 N3 N4 N34 N23 N12 t34 t23 t12 N31 N21 N14 t31 t21 t14 N32 N24 N10 t32 t24 t10    ML1p_1        ML1p_2        ML1p_3
