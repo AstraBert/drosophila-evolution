@@ -5,7 +5,8 @@ dfpool <- read.table("POOL_PopData.snp", skip = 2, header = FALSE, nrows = 19998
 cat("Initial dimension of dfpool:", dim(dfpool), "\n")
 
 # Define the minimum number of reads for each SNP in each of the 4 populations
-n.reads.min = 20 
+n.reads.min = 20
+n.reads.max = 500
 
 # Compute the sums for each row
 dfpool$sum12 <- dfpool$V1 + dfpool$V2
@@ -17,7 +18,7 @@ dfpool$sum78 <- dfpool$V7 + dfpool$V8
 dfpoolsum <- dfpool
 
 # Remove rows based on the criterion (we need at least 50X, so n.reads.min = 50 reads for each SNP in all 4 populations)
-dfpoolsel <- dfpoolsum[!(dfpoolsum$sum12 < n.reads.min | dfpoolsum$sum34 < n.reads.min | dfpoolsum$sum56 < n.reads.min | dfpoolsum$sum78 < n.reads.min), ]
+dfpoolsel <- dfpoolsum[!(dfpoolsum$sum12 < n.reads.min | dfpoolsum$sum34 < n.reads.min | dfpoolsum$sum56 < n.reads.min | dfpoolsum$sum78 < n.reads.min | dfpoolsum$sum12 > n.reads.max | dfpoolsum$sum34 > n.reads.max | dfpoolsum$sum56 > n.reads.max | dfpoolsum$sum78 > n.reads.max),]
 
 # Check the dimension of dfpoolsel
 cat("Dimension after selection of dfpoolsel:", dim(dfpoolsel), "\n")
