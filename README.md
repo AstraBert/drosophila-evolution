@@ -508,7 +508,7 @@ continent = "AS"
 
 Use this image, from [Lipson,2020](https://doi.org/10.1111/1755-0998.13230), as reference:
 
-![f4stats](./imgs/f4view.png)
+![f4stats](./imgs/f4view.PNG)
 
 And consider:
 
