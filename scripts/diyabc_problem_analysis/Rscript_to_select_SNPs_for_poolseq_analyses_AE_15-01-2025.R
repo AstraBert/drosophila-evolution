@@ -1,5 +1,5 @@
 # Read the text file after the first two lines
-dfpool <- read.table("POOL_PopData.snp", skip = 2, header = FALSE, nrows = 19998)
+dfpool <- read.table("POOL_PopData.snp", skip = 2, header = FALSE)
 
 # Check the dimension of dfpool
 cat("Initial dimension of dfpool:", dim(dfpool), "\n")

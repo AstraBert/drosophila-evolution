@@ -1,4 +1,4 @@
-POOL_PopData.snp
+POOL_PopData_2.snp
 22 parameters and 130 summary statistics
 
 3 scenarios: 11 11 11
@@ -71,7 +71,7 @@ t14>t21
 DRAW UNTIL
 
 loci description (1)
-100 <A> G1 from 1
+8000 <A> G1 from 1
 
 group summary statistics (130)
 group G1 (130)
