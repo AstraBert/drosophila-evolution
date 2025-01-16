@@ -14,17 +14,20 @@ if __name__ == "__main__":
     dest_dros = vcf.join(df, on=["Chromosome", "Position", "RefAllele", "AltAllele"], how="inner")
     dgn = dest_dros["DGN"].to_list()
     dgn_allelic_status = [0 if el.split(":")[0]=="1/1" or el.split(":")[0]=="./." else 40 for el in dgn]
-    cnxj = dest_dros["DGN"].to_list()
+    cnxj = dest_dros["CNXJ"].to_list()
     cnxj_allelic_status = [0 if el.split(":")[0]=="1/1" or el.split(":")[0]=="./." else 25 for el in cnxj]
-    cnother = dest_dros["DGN"].to_list()
+    cnother = dest_dros["CnOther"].to_list()
     cnother_allelic_status = [0 if el.split(":")[0]=="1/1" or el.split(":")[0]=="./." else 50 for el in cnother]
-    cnqtp = dest_dros["DGN"].to_list()
+    cnqtp = dest_dros["CnQTP"].to_list()
     cnqtp_allelic_status = [0 if el.split(":")[0]=="1/1" or el.split(":")[0]=="./." else 50 for el in cnother]
-    isr = dest_dros["DGN"].to_list()
-    dest_dros["DGN"] = dgn_allelic_status
-    dest_dros["CNXJ"] = cnxj_allelic_status
-    dest_dros["CnOther"] = cnother_allelic_status
-    dest_dros["CnQTP"] = cnqtp_allelic_status
+    isr = dest_dros["ISR"].to_list()
+    isr_allelic_status = [0 if el.split(":")[0]=="1/1" or el.split(":")[0]=="./." else 32 for el in cnother]
+    dest_dros = dest_dros.with_columns([
+        pl.lit(dgn_allelic_status).alias("DGN"),
+        pl.lit(cnxj_allelic_status).alias("CNXJ"),
+        pl.lit(cnother_allelic_status).alias("CnOther"),
+        pl.lit(cnqtp_allelic_status).alias("CnQTP")
+    ])
     dff = dest_dros.select(["DGN", "CNXJ", "CnOther", "CnQTP", "ISR"])
     dff.write_csv("drosevol_readcount.csv")
     
