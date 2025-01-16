@@ -8,14 +8,23 @@ if __name__ == "__main__":
     vcf = read_vcf("drosevol.noneurope.vcf.gz")
     vcf.rename({"#CHROM": "Chromosome", "POS": "Position", "REF": "RefAllele", "ALT": "AltAllele"})
     vcf.drop(["ID", "QUAL", "FILTER", "INFO", "FORMAT"])
+    print(vcf.head())
     df = pl.read_csv("dest_eu_snps.tsv", separator="\t", columns=["Chromosome", "Position", "RefAllele", "AltAllele"])
+    print(df.head())
     dest_dros = vcf.join(df, on=["Chromosome", "Position", "RefAllele", "AltAllele"], how="inner")
-    m = dest_dros["DGN"].to_list()
-    dest_dros["DGN"] = pl.Series([40 for i in range(len(m))])
-    dest_dros["CNXJ"] = pl.Series([25 for i in range(len(m))])
-    dest_dros["CnOther"] = pl.Series([50 for i in range(len(m))])
-    dest_dros["CnQTP"] = pl.Series([50 for i in range(len(m))])
-    dest_dros["ISR"] = pl.Series([32 for i in range(len(m))])
+    dgn = dest_dros["DGN"].to_list()
+    dgn_allelic_status = [0 if el.split(":")[0]=="1/1" or el.split(":")[0]=="./." else 40 for el in dgn]
+    cnxj = dest_dros["DGN"].to_list()
+    cnxj_allelic_status = [0 if el.split(":")[0]=="1/1" or el.split(":")[0]=="./." else 25 for el in cnxj]
+    cnother = dest_dros["DGN"].to_list()
+    cnother_allelic_status = [0 if el.split(":")[0]=="1/1" or el.split(":")[0]=="./." else 50 for el in cnother]
+    cnqtp = dest_dros["DGN"].to_list()
+    cnqtp_allelic_status = [0 if el.split(":")[0]=="1/1" or el.split(":")[0]=="./." else 50 for el in cnother]
+    isr = dest_dros["DGN"].to_list()
+    dest_dros["DGN"] = pl.Series(dgn_allelic_status)
+    dest_dros["CNXJ"] = pl.Series(cnxj_allelic_status)
+    dest_dros["CnOther"] = pl.Series(cnother_allelic_status)
+    dest_dros["CnQTP"] = pl.Series(cnqtp_allelic_status)
     dff = dest_dros.select(["DGN", "CNXJ", "CnOther", "CnQTP", "ISR"])
     dff.write_csv("drosevol_readcount.csv")
     
