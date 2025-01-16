@@ -13,15 +13,40 @@ if __name__ == "__main__":
     print(df.head())
     dest_dros = vcf.join(df, on=["Chromosome", "Position", "RefAllele", "AltAllele"], how="inner")
     dgn = dest_dros["DGN"].to_list()
-    dgn_allelic_status = [0 if el.split(":")[0]=="1/1" or el.split(":")[0]=="./." else 40 for el in dgn]
+    dgn_allelic_status = [
+        0 if el.split(":")[0] == "1/1" or el.split(":")[0] == "./."
+        else 20 if el.split(":")[0] == "0/1" or el.split(":")[0] == "1/0"
+        else 40
+        for el in dgn
+    ]
     cnxj = dest_dros["CNXJ"].to_list()
-    cnxj_allelic_status = [0 if el.split(":")[0]=="1/1" or el.split(":")[0]=="./." else 25 for el in cnxj]
+    cnxj_allelic_status = [
+        0 if el.split(":")[0] == "1/1" or el.split(":")[0] == "./."
+        else 13 if el.split(":")[0] == "0/1" or el.split(":")[0] == "1/0"
+        else 25
+        for el in cnxj
+    ]
     cnother = dest_dros["CnOther"].to_list()
-    cnother_allelic_status = [0 if el.split(":")[0]=="1/1" or el.split(":")[0]=="./." else 50 for el in cnother]
+    cnother_allelic_status = [
+        0 if el.split(":")[0] == "1/1" or el.split(":")[0] == "./."
+        else 25 if el.split(":")[0] == "0/1" or el.split(":")[0] == "1/0"
+        else 50
+        for el in cnother
+    ]
     cnqtp = dest_dros["CnQTP"].to_list()
-    cnqtp_allelic_status = [0 if el.split(":")[0]=="1/1" or el.split(":")[0]=="./." else 50 for el in cnqtp]
+    cnqtp_allelic_status = [
+        0 if el.split(":")[0] == "1/1" or el.split(":")[0] == "./."
+        else 25 if el.split(":")[0] == "0/1" or el.split(":")[0] == "1/0"
+        else 50
+        for el in cnqtp
+    ]
     isr = dest_dros["ISR"].to_list()
-    isr_allelic_status = [0 if el.split(":")[0]=="1/1" or el.split(":")[0]=="./." else 32 for el in isr]
+    isr_allelic_status = [
+        0 if el.split(":")[0] == "1/1" or el.split(":")[0] == "./."
+        else 16 if el.split(":")[0] == "0/1" or el.split(":")[0] == "1/0"
+        else 32
+        for el in cnqtp
+    ]
     f = open("drosevol_readcount.csv", "w")
     f.write("DGN,CNXJ,CnOther,CnQTP,ISR\n")
     for el in range(len(isr_allelic_status)):
