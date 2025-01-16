@@ -19,15 +19,12 @@ if __name__ == "__main__":
     cnother = dest_dros["CnOther"].to_list()
     cnother_allelic_status = [0 if el.split(":")[0]=="1/1" or el.split(":")[0]=="./." else 50 for el in cnother]
     cnqtp = dest_dros["CnQTP"].to_list()
-    cnqtp_allelic_status = [0 if el.split(":")[0]=="1/1" or el.split(":")[0]=="./." else 50 for el in cnother]
+    cnqtp_allelic_status = [0 if el.split(":")[0]=="1/1" or el.split(":")[0]=="./." else 50 for el in cnqtp]
     isr = dest_dros["ISR"].to_list()
-    isr_allelic_status = [0 if el.split(":")[0]=="1/1" or el.split(":")[0]=="./." else 32 for el in cnother]
-    dest_dros = dest_dros.with_columns([
-        pl.lit(dgn_allelic_status).alias("DGN"),
-        pl.lit(cnxj_allelic_status).alias("CNXJ"),
-        pl.lit(cnother_allelic_status).alias("CnOther"),
-        pl.lit(cnqtp_allelic_status).alias("CnQTP")
-    ])
-    dff = dest_dros.select(["DGN", "CNXJ", "CnOther", "CnQTP", "ISR"])
-    dff.write_csv("drosevol_readcount.csv")
+    isr_allelic_status = [0 if el.split(":")[0]=="1/1" or el.split(":")[0]=="./." else 32 for el in isr]
+	f = open("drosevol_readcount.csv", "w")
+	f.write("DGN,CNXJ,CnOther,CnQTP,ISR\n")
+	for el in range(len(isr_allelic_status)):
+		f.write(f"{dgn_allelic_status[el]},{cnxj_allelic_status[el]},{cnother_allelic_status[el]},{cnqtp_allelic_status[el]},{isr_allelic_status[el]}\n")
+	f.close()		
     
