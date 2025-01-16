@@ -1,6 +1,6 @@
 import polars as pl
 
-csv = pl.read_csv("snps_info.tsv", separator="\t")
+csv = pl.read_csv("dest_eu_snps.tsv", separator="\t")
 sync = pl.read_csv("dros_sim.sync.gz", separator="\t")
 
 csv = csv.select(pl.col("Chromosome"), pl.col("Position").cast(pl.Int64), pl.col("RefAllele"), pl.col("AltAllele"))
@@ -18,7 +18,7 @@ drossim = drossim.with_columns([
 
 counts = drossim["RefAlleleMatch"].to_list()
 counts = [str(count)+"\n" for count in counts]
-f = open("drossim_snps_2.csv", "w")
-counts = ["Pool21\n"]+counts
+f = open("drossim_snps_3.csv", "w")
+counts = ["DrosSim\n"]+counts
 f.writelines(counts)
 f.close()

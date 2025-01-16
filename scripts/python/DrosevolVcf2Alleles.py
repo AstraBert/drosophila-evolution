@@ -9,9 +9,15 @@ if __name__ == "__main__":
     vcf = vcf.rename({"#CHROM": "Chromosome", "POS": "Position", "REF": "RefAllele", "ALT": "AltAllele"})
     vcf = vcf.drop(["ID", "QUAL", "FILTER", "INFO", "FORMAT"])
     print(vcf.head())
-    df = pl.read_csv("dest_eu_snps.tsv", separator="\t", columns=["Chromosome", "Position", "RefAllele", "AltAllele"])
+    df = pl.read_csv("dest_eu_snps.tsv", separator="\t")
     print(df.head())
     dest_dros = vcf.join(df, on=["Chromosome", "Position", "RefAllele", "AltAllele"], how="inner")
+	selected_snps = dest_dros["id"].to_list()
+    t = open("selected_dest_eu_snps.csv", "w")
+	t.write("POS\n")
+	selected_snps = [str(snp)+"\n" for snp in selected_snps]
+	t.writelines(selected_snps)
+	t.close()
     dgn = dest_dros["DGN"].to_list()
     dgn_allelic_status = [
         0 if el.split(":")[0] == "1/1" or el.split(":")[0] == "./."
