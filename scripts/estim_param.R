@@ -326,7 +326,8 @@ for (parameter_of_interest in combined_list) {
   cat("Parameter #",param.nbr," over a total of",length(combined_list), "parameters to estimate", "\n")
   y <- reference.table$params[indicesTrain, parameter_of_interest]
   ytest <- reference.table$params[indicesTest, parameter_of_interest]
-  
+  print("LENGTH OF YTEST")
+  print(length(ytest))
   # # Cas particulier avec les param compound ra
   # if (param_original== TRUE) {
   #   if (parameter_of_interest %in% list_original_parameters) {
