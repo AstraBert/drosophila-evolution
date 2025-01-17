@@ -47,16 +47,15 @@ name.header.file <- "headerRF.txt"
 #name.observed.dataset <- "statobsRF_target_dataset.mss.dataNANNE.dat_US-Wat_US-Sok_US-Haw_JP-Sap_CN-Lan_BR-Poa.txt"
 name.observed.dataset <- "statobsRF.txt"
 
-reference.table <- readRefTable(filename = name.reference.table, header=name.header.file, N=N.load.reftable)
-
-
 ### RF parameter
 selected.model=1
 N.train <- 4000 # Je vais entrainer des forêts sur N.train données
 Ntest <- 1000  # Tests datasets to compute MNAE, MSE, etc sera fait sur Ntest data of the reference.table not used for training
 # WARNING: PLS: done on ncomp_total = 0.1 * nstats puis selection of n comp PLS so that 0.99 variance totals des ncomp_total
-N.load.reftable = 12000
+N.load.reftable = 4000
 ntree=1000 #### nbre of trees tree to do the RF
+
+reference.table <- readRefTable(filename = name.reference.table, header=name.header.file, N=N.load.reftable)
 
 # Computation options
 param_original = TRUE
