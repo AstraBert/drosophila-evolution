@@ -42,6 +42,7 @@ output_file_name = "estimated_params.txt"
 
 # Key file names
 name.reference.table <- "reftableRF.bin"
+reference.table <- readRefTable(filename = name.reference.table, header=name.header.file)
 name.header.file <- "headerRF.txt"
 #name.observed.dataset <- "statobsRF_all_statobs_vectors.txt" # Note that this observed dataset may includes several lines (i.e. several vectors of observed data/sumstats) 
 #name.observed.dataset <- "statobsRF_target_dataset.mss.dataNANNE.dat_US-Wat_US-Sok_US-Haw_JP-Sap_CN-Lan_BR-Poa.txt"
