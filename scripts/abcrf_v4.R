@@ -34,7 +34,7 @@ n_cores <- detectCores()
 how.many.cores.used.for.computation = n_cores-2
 
 ###### output text file that will include various numerical outputs
-output.file = "test_for_astra.txt"
+output.file = "diyabc_4_test.txt"
 #output.file = "nanne_dataset_pour_graph_lda_OK.txt"
 n.run = 1 # Most people do a single RF run (n.run=1)...I prefere to do several runs (e.g. n.run=10) to better appreciate the robustness of my conclusions
 
