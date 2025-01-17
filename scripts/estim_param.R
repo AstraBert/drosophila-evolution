@@ -50,7 +50,7 @@ name.observed.dataset <- "statobsRF.txt"
 ### RF parameter
 selected.model=1
 N.train <- 4000 # Je vais entrainer des forêts sur N.train données
-Ntest <- 1000  # Tests datasets to compute MNAE, MSE, etc sera fait sur Ntest data of the reference.table not used for training
+Ntest <- 800  # Tests datasets to compute MNAE, MSE, etc sera fait sur Ntest data of the reference.table not used for training
 # WARNING: PLS: done on ncomp_total = 0.1 * nstats puis selection of n comp PLS so that 0.99 variance totals des ncomp_total
 N.load.reftable = 4000
 ntree=1000 #### nbre of trees tree to do the RF
@@ -326,8 +326,8 @@ for (parameter_of_interest in combined_list) {
   cat("Parameter #",param.nbr," over a total of",length(combined_list), "parameters to estimate", "\n")
   y <- reference.table$params[indicesTrain, parameter_of_interest]
   ytest <- reference.table$params[indicesTest, parameter_of_interest]
-  print("LENGTH OF YTEST")
-  print(length(ytest))
+  cat("LENGTH OF YTEST")
+  cat(length(ytest))
   # # Cas particulier avec les param compound ra
   # if (param_original== TRUE) {
   #   if (parameter_of_interest %in% list_original_parameters) {
