@@ -47,7 +47,7 @@ name.header.file <- "headerRF.txt"
 #name.observed.dataset <- "statobsRF_target_dataset.mss.dataNANNE.dat_US-Wat_US-Sok_US-Haw_JP-Sap_CN-Lan_BR-Poa.txt"
 name.observed.dataset <- "statobsRF.txt"
 
-reference.table <- readRefTable(filename = name.reference.table, header=name.header.file)
+reference.table <- readRefTable(filename = name.reference.table, header=name.header.file, N=N.load.reftable)
 
 
 ### RF parameter
@@ -72,6 +72,9 @@ if (param_original==TRUE) {
   
   # Liste des colonnes initiales
   colnames(reference.table$params)
+  print(reference.table$params)
+  reference.table.dim <- dim(reference.table$params)
+  print(reference.table.dim)
   # Créer la liste à partir des noms de colonnes de reference.table$params
   list_original_parameters <- as.list(colnames(reference.table$params))
   # Combiner le contenu de la liste en un vecteur
