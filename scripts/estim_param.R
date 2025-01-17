@@ -56,7 +56,7 @@ N.load.reftable = 12000
 ntree=1000 #### nbre of trees tree to do the RF
 
 # Computation options
-param_original = FALSE
+param_original = TRUE
 param_compound = FALSE
 PLS=FALSE
 Graphical_density_representation=FALSE
