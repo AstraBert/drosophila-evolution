@@ -57,7 +57,7 @@ ntree=1000 #### nbre of trees tree to do the RF
 
 # Computation options
 param_original = FALSE
-param_compound = TRUE
+param_compound = FALSE
 PLS=FALSE
 Graphical_density_representation=FALSE
 
