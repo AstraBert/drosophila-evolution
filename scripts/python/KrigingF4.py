@@ -12,11 +12,11 @@ from matplotlib import cm
 continent = "EU"
 
 df_pools = pd.read_csv("data/f4_stats_all/dest_drosevol_latlong.csv")
-df_pools = df_pools[(df_pools["Continent"] == "EU") & (df_pools["sampleId"] != "FI_Pir_Aka_1_2021-09-17") & (df_pools["sampleId"] != "CNXJ")]
+df_pools = df_pools[((df_pools["Continent"] == "EU") | (df_pools["Continent"] == "AS")) & (df_pools["sampleId"] != "ISR") & (df_pools["sampleId"] != "CNXJ")]
 pops = df_pools["sampleId"].to_list()
 lats = df_pools["lat"].to_list()
 longs = df_pools["long"].to_list()
-df_stats = pl.read_csv("data/f4_stats_all/f4_cnxj_fin.csv")
+df_stats = pl.read_csv("data/f4_stats_all/f4_cnxj_isr.csv")
 df_stats = df_stats.filter(pl.col("Pop").is_in(pops))
 pops1 = df_stats["Pop"].to_list()
 stats = df_stats["f4"].to_list()
@@ -103,5 +103,5 @@ plt.ylabel('Latitude')
 
 # Save and show the plot
 plt.tight_layout()
-plt.savefig(f"imgs/F4_wonorm_cnxjfin_EU.png", dpi=300, transparent=True)  # Save with transparent background
+plt.savefig(f"imgs/F4_wonorm_cnxjisr_world.png", dpi=300, transparent=True)  # Save with transparent background
 plt.show()

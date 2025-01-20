@@ -29,19 +29,19 @@ csv.insert_column(2, pl.Series("Pop2", pops2))
 
 # Define constants
 A1 = "DrosSim"
-B3 = "CNXJ"
-D2 = "FI_Pir_Aka_1_2021-09-17"
+B3 = "DGN"
+D2 = "ISR"
 C4 = "whatever"
 expression = f"0.5*({A1},{C4} + {D2},{B3} - {A1},{B3} - {D2},{C4})"
 
 # Filter data based on conditions
 drossim_whatever = csv.filter((pl.col("Pop1") == "DrosSim") | (pl.col("Pop2") == "DrosSim"))
 pt_whatever = csv.filter((pl.col("Pop1") == D2) | (pl.col("Pop2") == D2))
-drossim_cnxj = csv.filter((pl.col("Pop2") == "DrosSim") & (pl.col("Pop1") == "CNXJ"))["Estimate"].to_list()[0]
-pt_cnxj = csv.filter((pl.col("Pop2") == "CNXJ") & (pl.col("Pop1") == D2))["Estimate"].to_list()[0]
+drossim_cnxj = csv.filter((pl.col("Pop2") == "DrosSim") & (pl.col("Pop1") == B3))["Estimate"].to_list()[0]
+pt_cnxj = csv.filter(((pl.col("Pop2") == B3) & (pl.col("Pop1") == D2)) | ((pl.col("Pop1") == B3) & (pl.col("Pop2") == D2)))["Estimate"].to_list()[0]
 
 # Update population list
-poops += ["ISR", "CnOther", "CnQTP"]
+poops += ["CnOther", "CnQTP", "ISR"]
 poops.remove(D2)
 
 # Calculate f4 statistics
