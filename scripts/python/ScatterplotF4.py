@@ -38,7 +38,7 @@ print(data)
 
 # Create the map with Basemap
 plt.figure(figsize=(12, 10))
-ax = plt.gca() # Get the current axes
+ax = plt.gca()  # Get the current axes
 m = Basemap(ax=ax, projection='merc', llcrnrlat=MINY, urcrnrlat=MAXY, llcrnrlon=MINX, urcrnrlon=MAXX, resolution='i')
 m.drawcoastlines()
 m.drawcountries()
@@ -51,24 +51,27 @@ vmin, vmax = min(data[:, 2]), max(data[:, 2])
 abs_max = max(abs(vmin), abs(vmax))
 norm = Normalize(vmin=-abs_max, vmax=abs_max)
 
+
 # Prepare scatter plot data
 x_coords = []
 y_coords = []
-colors = []
+f4_values = []
 for k in pops2every:
     xpt, ypt = m(pops2every[k][1], pops2every[k][0])
-    color = cm.RdBu_r(norm(pops2every[k][2]))
     x_coords.append(xpt)
     y_coords.append(ypt)
-    colors.append(color)
+    f4_values.append(pops2every[k][2]) # Store the f4 value to use in color mapping
 
-# Create scatter plot
-scatter = plt.scatter(x_coords, y_coords, c=colors, marker='o', s=100)
+# Create scalar mappable
+sm = plt.cm.ScalarMappable(cmap="RdBu_r", norm=norm)
+
+
+# Create scatter plot, map the values to colors, and set the colormap
+scatter = plt.scatter(x_coords, y_coords, c=f4_values, cmap=sm.cmap, norm=sm.norm, marker='o', s=100)
 
 # Add colorbar for the F4 values
-sm = plt.cm.ScalarMappable(cmap="RdBu_r", norm=norm)
-sm.set_array([])  # Set an empty array as the scalar mappable needs an array even if we are not using it for the colors
-plt.colorbar(sm, label='F4 Value')
+plt.colorbar(scatter, label='F4 Value')
+
 
 # Title and labels
 plt.title(f'Outgroup: D. simulans, PopC: DGN - Zambia, PopA: China - Other')
