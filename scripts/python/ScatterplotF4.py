@@ -1,0 +1,71 @@
+import pandas as pd
+import numpy as np
+import polars as pl
+import matplotlib.pyplot as plt
+from mpl_toolkits.basemap import Basemap
+from matplotlib.colors import Normalize
+from matplotlib import cm
+
+# Load data
+df_pools = pd.read_csv("data/f4_stats_all/dest_drosevol_latlong.csv")
+df_pools = df_pools[((df_pools["Continent"] == "EU") | (df_pools["Continent"] == "AS")) & (df_pools["sampleId"] != "ISR") & (df_pools["sampleId"] != "CNXJ")]
+pops = df_pools["sampleId"].to_list()
+lats = df_pools["lat"].to_list()
+longs = df_pools["long"].to_list()
+df_stats = pl.read_csv("data/f4_stats_all/f4_cnxj_isr.csv")
+df_stats = df_stats.filter(pl.col("Pop").is_in(pops))
+pops1 = df_stats["Pop"].to_list()
+stats = df_stats["f4"].to_list()
+
+# Create dictionaries for mapping
+pops2stats = {pops1[i]: [stats[i]] for i in range(len(pops1))}
+pops2coord = {pops[i]: [lats[i], longs[i]] for i in range(len(pops))}
+pops2every = {}
+for k in pops2coord:
+    l1 = pops2coord[k]
+    l2 = pops2stats[k]
+    pops2every.update({k: l1 + l2})
+
+# Define plot boundaries
+MINY = min(lats) - 10
+MAXY = max(lats) + 10
+MINX = min(longs) - 10
+MAXX = max(longs) + 10
+
+data = np.array([pops2every[k] for k in pops2every])
+print(data)
+
+
+# Create the map with Basemap
+plt.figure(figsize=(12, 10))
+m = Basemap(projection='merc', llcrnrlat=MINY, urcrnrlat=MAXY, llcrnrlon=MINX, urcrnrlon=MAXX, resolution='i')
+m.drawcoastlines()
+m.drawcountries()
+m.drawmapboundary(fill_color='none')
+m.drawrivers()
+m.drawstates()
+
+# Scatter plot of the data points
+vmin, vmax = min(data[:, 2]), max(data[:, 2])
+abs_max = max(abs(vmin), abs(vmax))
+norm = Normalize(vmin=-abs_max, vmax=abs_max)
+
+for k in pops2every:
+    xpt, ypt = m(pops2every[k][1], pops2every[k][0])
+    color = cm.RdBu_r(norm(pops2every[k][2])) # Get color based on F4 value
+    plt.scatter(xpt, ypt, c=[color], marker='o', s=100)
+
+# Add colorbar for the F4 values
+sm = plt.cm.ScalarMappable(cmap="RdBu_r", norm=norm)
+sm.set_array([])
+plt.colorbar(sm, label='F4 Value')
+
+# Title and labels
+plt.title(f'Outgroup: D. simulans, PopC: DGN - Zambia, PopA: China - Other')
+plt.xlabel('Longitude')
+plt.ylabel('Latitude')
+
+# Save and show the plot
+plt.tight_layout()
+plt.savefig(f"imgs/F4_scatterplot_cnxj_isr_world.png", dpi=300, transparent=True)  # Save with transparent background
+plt.show()
