@@ -8,14 +8,14 @@ from matplotlib import cm
 
 # Load data
 df_pools = pd.read_csv("data/f4_stats_all/dest_drosevol_latlong.csv")
-df_pools = df_pools[((df_pools["Continent"] == "EU") | (df_pools["Continent"] == "AS")) & (df_pools["sampleId"] != "ISR") & (df_pools["sampleId"] != "CNXJ")]
+df_pools = df_pools[((df_pools["Continent"] == "EU") | (df_pools["Continent"] == "AS")) & (df_pools["sampleId"] != "DGN") & (df_pools["sampleId"] != "CnOther")]
 pops = df_pools["sampleId"].to_list()
 lats = df_pools["lat"].to_list()
 longs = df_pools["long"].to_list()
-df_stats = pl.read_csv("data/f4_stats_all/f4_cnxj_isr.csv")
+df_stats = pl.read_csv("data/f4_stats_all/Dest_F4_stats.csv")
 df_stats = df_stats.filter(pl.col("Pop").is_in(pops))
 pops1 = df_stats["Pop"].to_list()
-stats = df_stats["f4"].to_list()
+stats = df_stats["F4"].to_list()
 
 # Create dictionaries for mapping
 pops2stats = {pops1[i]: [stats[i]] for i in range(len(pops1))}
@@ -74,11 +74,10 @@ plt.colorbar(scatter, label='F4 Value')
 
 
 # Title and labels
-plt.title(f'Outgroup: D. simulans, PopC: DGN - Zambia, PopA: China - Other')
 plt.xlabel('Longitude')
 plt.ylabel('Latitude')
 
 # Save and show the plot
 plt.tight_layout()
-plt.savefig(f"imgs/F4_scatterplot_cnxj_isr_world.png", dpi=300, transparent=True)  # Save with transparent background
+plt.savefig(f"imgs/F4_scatterplot_world.png", dpi=300, transparent=True)  # Save with transparent background
 plt.show()
