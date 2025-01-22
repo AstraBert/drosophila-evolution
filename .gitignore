@@ -5,6 +5,7 @@ data/dest*
 data/diyabc_inputs*/
 data/simulation*/
 data/dros_sim/
+data/wrong_sample_headers/
 data_files/
 results/
 imgs/output.asc

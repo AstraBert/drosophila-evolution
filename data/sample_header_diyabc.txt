@@ -1,5 +1,5 @@
 POOL_PopData_2.snp
-46 parameters and 130 summary statistics
+25 parameters and 130 summary statistics
 
 7 scenarios: 11 11 11 11 11 11 11
 scenario 1 [0.15] (10)
@@ -8,86 +8,86 @@ N1 N2 N3 N4
 0 sample 2
 0 sample 3
 0 sample 4
-t34 merge 3 4
-t34 varNe 3 N34
-t23 merge 2 3
-t23 varNe 2 N23
-t12 merge 1 2
-t12 varNe 1 N12
+t1 merge 3 4
+t1 varNe 3 N34
+t2 merge 2 3
+t2 varNe 2 N23
+t2 merge 1 2
+t2 varNe 1 N12
 scenario 2 [0.15] (10)
 N1 N2 N3 N4
 0 sample 1
 0 sample 2
 0 sample 3
 0 sample 4
-t32 merge 2 4 
-t32 varNe 2 N32
-t24 merge 2 3
-t24 varNe 2 N24
-t10 merge 1 2
-t10 varNe 1 N10
+t1 merge 2 4 
+t1 varNe 2 N34
+t2 merge 2 3
+t2 varNe 2 N23
+t2 merge 1 2
+t2 varNe 1 N12
 scenario 3 [0.14] (10)
 N1 N2 N3 N4
 0 sample 1
 0 sample 2
 0 sample 3
 0 sample 4
-t31 merge 2 3
-t31 varNe 2 N31
-t21 merge 2 4
-t21 varNe 2 N21
-t14 merge 1 2
-t14 varNe 1 N14
+t1 merge 2 3
+t1 varNe 2 N34
+t2 merge 2 4
+t2 varNe 2 N23
+t3 merge 1 2
+t3 varNe 1 N12
 scenario 4 [0.14] (10)
 N1 N2 N3 N4
 0 sample 1
 0 sample 2
 0 sample 3
 0 sample 4
-t41 merge 1 4
-t41 varNe 1 N41
-t13 merge 1 3
-t13 varNe 1 N13
-t11 merge 1 2
-t11 varNe 1 N11
+t1s4 merge 1 4
+t1s4 varNe 1 N41
+t2s4 merge 1 3
+t2s4 varNe 1 N13
+t3s4 merge 1 2
+t3s4 varNe 1 N11
 scenario 5 [0.14] (10)
 N1 N2 N3 N4
 0 sample 1
 0 sample 2
 0 sample 3
 0 sample 4
-t51 merge 3 4
-t51 varNe 3 N51
-t35 merge 1 3
-t35 varNe 1 N35
-t15 merge 1 2
-t15 varNe 1 N15
+t1s567 merge 3 4
+t1s567 varNe 3 N5
+t2s567 merge 1 3
+t2s567 varNe 1 N6
+t3s567 merge 1 2
+t3s567 varNe 1 N7
 scenario 6 [0.14] (10)
 N1 N2 N3 N4
 0 sample 1
 0 sample 2
 0 sample 3
 0 sample 4
-t64 merge 2 4
-t64 varNe 2 N64
-t36 merge 1 2
-t36 varNe 1 N36
-t16 merge 1 3
-t16 varNe 1 N16
+t1s567 merge 2 4
+t1s567 varNe 2 N5
+t2s567 merge 1 2
+t2s567 varNe 1 N6
+t3s567 merge 1 3
+t3s567 varNe 1 N7
 scenario 7 [0.14] (10)
 N1 N2 N3 N4
 0 sample 1
 0 sample 2
 0 sample 3
 0 sample 4
-t74 merge 2 3
-t74 varNe 2 N74
-t37 merge 1 2
-t37 varNe 1 N37
-t17 merge 1 4
-t17 varNe 1 N17
+t1s567 merge 2 3
+t1s567 varNe 2 N5
+t2s567 merge 1 2
+t2s567 varNe 1 N6
+t2s567 merge 1 4
+t2s567 varNe 1 N7
 
-historical parameters priors (46,14)
+historical parameters priors (25,3)
 N1 N LU[10000,10000000,0.0,0.0]
 N2 N LU[10000,10000000,0.0,0.0]
 N3 N LU[10000,10000000,0.0,0.0]
@@ -95,63 +95,31 @@ N4 N LU[10000,10000000,0.0,0.0]
 N34 N LU[10000,10000000,0.0,0.0]
 N23 N LU[10000,10000000,0.0,0.0]
 N12 N LU[10000,10000000,0.0,0.0]
-N32 N LU[10000,10000000,0.0,0.0]
-N24 N LU[10000,10000000,0.0,0.0]
-N10 N LU[10000,10000000,0.0,0.0]
-N31 N LU[10000,10000000,0.0,0.0]
-N21 N LU[10000,10000000,0.0,0.0]
-N14 N LU[10000,10000000,0.0,0.0]
 N41 N LU[10000,10000000,0.0,0.0]
 N13 N LU[10000,10000000,0.0,0.0]
 N11 N LU[10000,10000000,0.0,0.0]
-N51 N LU[10000,10000000,0.0,0.0]
-N35 N LU[10000,10000000,0.0,0.0]
-N15 N LU[10000,10000000,0.0,0.0]
-N64 N LU[10000,10000000,0.0,0.0]
-N36 N LU[10000,10000000,0.0,0.0]
-N16 N LU[10000,10000000,0.0,0.0]
-N74 N LU[10000,10000000,0.0,0.0]
-N37 N LU[10000,10000000,0.0,0.0]
-N17 N LU[10000,10000000,0.0,0.0]
+N5 N LU[10000,10000000,0.0,0.0]
+N6 N LU[10000,10000000,0.0,0.0]
+N7 N LU[10000,10000000,0.0,0.0]
 t34 T LU[150,750000,0.0,0.0]
 t23 T LU[150,750000,0.0,0.0]
 t12 T LU[150,750000,0.0,0.0]
-t32 T LU[150,750000,0.0,0.0]
-t24 T LU[150,750000,0.0,0.0]
-t10 T LU[150,750000,0.0,0.0]
-t31 T LU[150,750000,0.0,0.0]
-t21 T LU[150,750000,0.0,0.0]
-t14 T LU[150,750000,0.0,0.0]
-t41 T LU[150,750000,0.0,0.0]
-t13 T LU[150,750000,0.0,0.0]
-t11 T LU[150,750000,0.0,0.0]
-t51 T LU[150,750000,0.0,0.0]
-t35 T LU[150,750000,0.0,0.0]
-t15 T LU[150,750000,0.0,0.0]
-t64 T LU[150,750000,0.0,0.0]
-t36 T LU[150,750000,0.0,0.0]
-t16 T LU[150,750000,0.0,0.0]
-t74 T LU[150,750000,0.0,0.0]
-t37 T LU[150,750000,0.0,0.0]
-t17 T LU[150,750000,0.0,0.0]
-t23>t34
-t12>t23
-t24>t32
-t10>t24
-t21>t31
-t14>t21
-t13>t41
-t11>t13
-t35>t51
-t15>t35
-t36>t64
-t16>t36
-t37>t74
-t17>t37
+t1 T LU[150,750000,0.0,0.0]
+t2 T LU[150,750000,0.0,0.0]
+t3 T LU[150,750000,0.0,0.0]
+t1s4 T LU[150,750000,0.0,0.0]
+t2s4 T LU[150,750000,0.0,0.0]
+t3s4 T LU[150,750000,0.0,0.0]
+t1s567 T LU[150,750000,0.0,0.0]
+t2s567 T LU[150,750000,0.0,0.0]
+t3s567 T LU[150,750000,0.0,0.0]
+t2>t1
+t3>t2
+t2s567>t1s567
 DRAW UNTIL
 
 loci description (1)
-8000 <A> G1 from 1
+5000 <A> G1 from 1
 
 group summary statistics (130)
 group G1 (130)
