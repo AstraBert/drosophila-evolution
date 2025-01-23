@@ -1,0 +1,245 @@
+ ############## MODEL CHOICE analysis using random forest ###############  
+
+Name of the statobs file: statobsRF.txt 
+Number of statobs in the file = 1 
+Name of the reference table file: reftableRF.bin 
+Name of the headerfile file: headerRF.txt 
+Number of simulations loaded from the reference table = 70000 
+Number of scenarios (i.e. models) in the reference table = 14 
+Number of simulations available for each scenario from the loaded reference table = 5112 5031 5027 4958 4986 4983 4967 5004 5023 4899 4902 5010 5066 5032 
+Number of parameters in the reference table = 10 10 10 10 10 10 10 12 12 12 13 13 13 14 
+Number of summary statistics in the reference table (without LDA axes) = 130 
+Number of simulations in the TRAINING DATASET used to built rf trees = 70000 
+Number of trees in the forest = 1000 
+Number of cores available =  128 
+Number of cores used for computation = 126 
+Analysis of each scenario independently (no grouping or selelection of scenarios) 
+Number of ANALYSED scenarios (i.e. models) using RF = 14 
+n.run = 1 
+
+############################################################################################# 
+--------------------> i.run = 1 
+
+
+RF TRAINING step using all scenarios separately 
+Growing trees.. Progress: 4%. Estimated remaining time: 13 minutes, 50 seconds.
+Growing trees.. Progress: 13%. Estimated remaining time: 7 minutes, 6 seconds.
+Growing trees.. Progress: 20%. Estimated remaining time: 6 minutes, 7 seconds.
+Growing trees.. Progress: 28%. Estimated remaining time: 5 minutes, 12 seconds.
+Growing trees.. Progress: 36%. Estimated remaining time: 4 minutes, 36 seconds.
+Growing trees.. Progress: 43%. Estimated remaining time: 4 minutes, 5 seconds.
+Growing trees.. Progress: 51%. Estimated remaining time: 3 minutes, 29 seconds.
+Growing trees.. Progress: 60%. Estimated remaining time: 2 minutes, 50 seconds.
+Growing trees.. Progress: 66%. Estimated remaining time: 2 minutes, 25 seconds.
+Growing trees.. Progress: 75%. Estimated remaining time: 1 minute, 46 seconds.
+Growing trees.. Progress: 86%. Estimated remaining time: 57 seconds.
+
+PRIOR ERROR RATES (using the Out-of-Bag statistical procedure): we provide mean Out-of-Bag prior error rate and matrix of errors with the true scenario number as rows and the chosen scenarios as columns 
+
+Call:
+ abcrf(formula = scenario ~ ., data = dataTrain, lda = TRUE, ntree = ntree, paral = TRUE, ncores = how.many.cores.used.for.computation, min.node.size = 1, save.memory = FALSE) 
+includes the axes of a preliminary LDA
+
+Number of simulations: 70000
+Out-of-bag prior error rate: 75.3929%
+
+Confusion matrix:
+     1   2   3   4   5   6   7    8    9   10  11   12   13  14 class.error
+1  790 650 644 591 663 660 615   49   59  114  57   69   96  55   0.8454617
+2  693 617 656 637 649 616 602   80   71   90  53   93   93  81   0.8773604
+3  733 600 672 640 649 577 637   64   52  116  32   79   88  88   0.8663219
+4  710 636 692 556 644 589 582   72   72  101  55   74   94  81   0.8878580
+5  700 596 650 599 650 630 617   62   72  108  48   70  109  75   0.8696350
+6  758 599 627 590 651 615 627   67   61  101  52   81   87  67   0.8765804
+7  694 581 688 592 647 643 607   71   80   91  44   94   84  51   0.8777934
+8  133 128 127 114  98 128 102 1932  420  211 670  179  342 420   0.6139089
+9  135 115 103 120  97  96 121  498 1915  313 646  333  188 343   0.6187537
+10  61  38  65  41  29  47  38   60   93 3892  63  208  173  91   0.2055522
+11 128  91 115 109  89 107 112 1061  916  250 910  256  310 448   0.8143615
+12 151 130 149  99 128 106 133  215  529  341 234 1605  775 415   0.6796407
+13 142 125 121 128 112 130  99  524  158  269 265  734 1700 559   0.6644295
+14 128 127 138 113 107 103 113  747  426  262 519  621  864 764   0.8481717
+Numerical values of Importance Measures of the summary statistics (i.e. explanatory variables) are stored in the file named importance_measures_of_summary statistics_SORTED.txt 
+
+Growing trees.. Progress: 76%. Estimated remaining time: 9 seconds.
+RF MODEL CHOICE PREDICTION on the observed dataset(s): we provide the index of the selected model (i.e. scenario), the votes for each model (over the total number of trees in the forest) and the posterior probability for the selected model 
+ selected model votes model1 votes model2 votes model3 votes model4
+             12           11           10           11           10
+ votes model5 votes model6 votes model7 votes model8 votes model9 votes model10
+            6           13           13           36          108           169
+ votes model11 votes model12 votes model13 votes model14 post.proba
+            70           286           149           108      0.492
+
+
+
+############################################################################################# 
+############################################################################################# 
+ABSTRACT over the n.run for each vector of STATOBS 
+############################################################################################# 
+############################################################################################# 
+
+Recalling what are the different statobs lines 
+Statobs_1 =     ML1p_1        ML1p_2        ML1p_3        ML1p_4       ML2p_1.2      ML2p_1.3      ML2p_1.4      ML2p_2.3      ML2p_2.4      ML2p_3.4     ML3p_1.2.3    ML3p_1.2.4    ML3p_1.3.4    ML3p_2.3.4      HWm_1         HWm_2         HWm_3         HWm_4         HWv_1         HWv_2         HWv_3         HWv_4        HBm_1.2       HBm_1.3       HBm_1.4       HBm_2.3       HBm_2.4       HBm_3.4       HBv_1.2       HBv_1.3       HBv_1.4       HBv_2.3       HBv_2.4       HBv_3.4       FST1m_1       FST1m_2       FST1m_3       FST1m_4       FST1v_1       FST1v_2       FST1v_3       FST1v_4      FST2m_1.2     FST2m_1.3     FST2m_1.4     FST2m_2.3     FST2m_2.4     FST2m_3.4     FST2v_1.2     FST2v_1.3     FST2v_1.4     FST2v_2.3     FST2v_2.4     FST2v_3.4      NEIm_1.2      NEIm_1.3      NEIm_1.4      NEIm_2.3      NEIm_2.4      NEIm_3.4      NEIv_1.2      NEIv_1.3      NEIv_1.4      NEIv_2.3      NEIv_2.4      NEIv_3.4     AMLm_1.2.3    AMLm_2.1.3    AMLm_3.1.2    AMLm_1.2.4    AMLm_2.1.4    AMLm_4.1.2    AMLm_1.3.4    AMLm_3.1.4    AMLm_4.1.3    AMLm_2.3.4    AMLm_3.2.4    AMLm_4.2.3    AMLv_1.2.3    AMLv_2.1.3    AMLv_3.1.2    AMLv_1.2.4    AMLv_2.1.4    AMLv_4.1.2    AMLv_1.3.4    AMLv_3.1.4    AMLv_4.1.3    AMLv_2.3.4    AMLv_3.2.4    AMLv_4.2.3   FST3m_1.2.3   FST3m_1.2.4   FST3m_1.3.4   FST3m_2.3.4   FST3v_1.2.3   FST3v_1.2.4   FST3v_1.3.4   FST3v_2.3.4   FST4m_1.2.3.4  FST4v_1.2.3.4   F3m_1.2.3     F3m_2.1.3     F3m_3.1.2     F3m_1.2.4     F3m_2.1.4     F3m_4.1.2     F3m_1.3.4     F3m_3.1.4     F3m_4.1.3     F3m_2.3.4     F3m_3.2.4     F3m_4.2.3     F3v_1.2.3     F3v_2.1.3     F3v_3.1.2     F3v_1.2.4     F3v_2.1.4     F3v_4.1.2     F3v_1.3.4     F3v_3.1.4     F3v_4.1.3     F3v_2.3.4     F3v_3.2.4     F3v_4.2.3    F4m_1.2.3.4   F4m_1.3.2.4   F4m_1.4.2.3   F4v_1.2.3.4   F4v_1.3.2.4   F4v_1.4.2.3  
+
+Summary for Statobs = 1 
+       S1           S2           S3           S4           S5          S6    
+ Min.   :11   Min.   :10   Min.   :11   Min.   :10   Min.   :6   Min.   :13  
+ 1st Qu.:11   1st Qu.:10   1st Qu.:11   1st Qu.:10   1st Qu.:6   1st Qu.:13  
+ Median :11   Median :10   Median :11   Median :10   Median :6   Median :13  
+ Mean   :11   Mean   :10   Mean   :11   Mean   :10   Mean   :6   Mean   :13  
+ 3rd Qu.:11   3rd Qu.:10   3rd Qu.:11   3rd Qu.:10   3rd Qu.:6   3rd Qu.:13  
+ Max.   :11   Max.   :10   Max.   :11   Max.   :10   Max.   :6   Max.   :13  
+       S7           S8           S9           S10           S11    
+ Min.   :13   Min.   :36   Min.   :108   Min.   :169   Min.   :70  
+ 1st Qu.:13   1st Qu.:36   1st Qu.:108   1st Qu.:169   1st Qu.:70  
+ Median :13   Median :36   Median :108   Median :169   Median :70  
+ Mean   :13   Mean   :36   Mean   :108   Mean   :169   Mean   :70  
+ 3rd Qu.:13   3rd Qu.:36   3rd Qu.:108   3rd Qu.:169   3rd Qu.:70  
+ Max.   :13   Max.   :36   Max.   :108   Max.   :169   Max.   :70  
+      S12           S13           S14           Prob            Win    
+ Min.   :286   Min.   :149   Min.   :108   Min.   :0.492   Min.   :12  
+ 1st Qu.:286   1st Qu.:149   1st Qu.:108   1st Qu.:0.492   1st Qu.:12  
+ Median :286   Median :149   Median :108   Median :0.492   Median :12  
+ Mean   :286   Mean   :149   Mean   :108   Mean   :0.492   Mean   :12  
+ 3rd Qu.:286   3rd Qu.:149   3rd Qu.:108   3rd Qu.:0.492   3rd Qu.:12  
+ Max.   :286   Max.   :149   Max.   :108   Max.   :0.492   Max.   :12  
+  Prior_error    
+ Min.   :0.7539  
+ 1st Qu.:0.7539  
+ Median :0.7539  
+ Mean   :0.7539  
+ 3rd Qu.:0.7539  
+ Max.   :0.7539  
+
+
+
+Winner scenarios for Statobs = 1 
+[1] 12
+
+
+
+  Win.Scen.ID occur
+1          12     1
+
+Mean vote numbers for each statobs 
+
+Statobs # 1 
+   Scenario Mean.Votes
+1         1         11
+2         2         10
+3         3         11
+4         4         10
+5         5          6
+6         6         13
+7         7         13
+8         8         36
+9         9        108
+10       10        169
+11       11         70
+12       12        286
+13       13        149
+14       14        108
+
+
+Final results without threshold:
+Global mean number of votes over all statobs:
+   Scenario Mean.Votes
+1         1         11
+2         2         10
+3         3         11
+4         4         10
+5         5          6
+6         6         13
+7         7         13
+8         8         36
+9         9        108
+10       10        169
+11       11         70
+12       12        286
+13       13        149
+14       14        108
+
+### End of Results ###
+############################################################################################# 
+############################################################################################# 
+########### OTHER PRESENTATION OF FINAL RESULTS WITHOUT ANY THRESHOLD ###################### 
+############################################################################################# 
+############################################################################################# 
+
+DataFrame for mean number of votes with TotalTrees row 
+     Scenario Statobs1
+1           1       11
+2           2       10
+3           3       11
+4           4       10
+5           5        6
+6           6       13
+7           7       13
+8           8       36
+9           9      108
+10         10      169
+11         11       70
+12         12      286
+13         13      149
+14         14      108
+15 TotalTrees     1000
+nDataFrame for mean fraction of votes with Total% row 
+        Scenario Statobs1
+1              1    0.011
+2              2    0.010
+3              3    0.011
+4              4    0.010
+5              5    0.006
+6              6    0.013
+7              7    0.013
+8              8    0.036
+9              9    0.108
+10            10    0.169
+11            11    0.070
+12            12    0.286
+13            13    0.149
+14            14    0.108
+15 TotalFraction    1.000
+
+### End of Results ###
+############################################################################################# 
+############################################################################################# 
+########### OTHER PRESENTATION OF FINAL RESULTS USING A DEFINED THRESHOLD          ########## 
+############################################################################################# 
+############################################################################################# 
+ntree = 1000 
+results_threshold_fraction_trees= 0.05 
+threshold in min number of trees = 50 
+
+Sub-dataframe for the scenarios with mean number of votes >  50 
+   Scenario Statobs1
+9         9      108
+10       10      169
+11       11       70
+12       12      286
+13       13      149
+14       14      108
+
+Sub-dataframe for the scenarios with mean fraction of votes >  0.05 
+   Scenario Statobs1
+9         9    0.108
+10       10    0.169
+11       11    0.070
+12       12    0.286
+13       13    0.149
+14       14    0.108
+
+Sum of the nbre of votes for scenario relaining after threshold 
+           Column Sum
+Statobs1 Statobs1 890
+
+Sum of the nbre of votes for scenario relaining after threshold 
+           Column  Sum
+Statobs1 Statobs1 0.89
+############################################################################################# 
+Drawing figures for the last of the i.run = 1 
+############################################################################################# 
+Press <ENTER> to Continue
+THREE ILLUSTRATIVE GRAPHICS have been produced and saved in three different files: FALSEFile named prior_errors_vs_number_of_trees.png: Graphic providing prior error rates for forests with different number of trees and computed using an Out-of-Bag procedure, e.g. Fig. 3 in Pudlo et al. 2016 
+File named graph_lda.pdf = LDA projections of the reference table for the different scenarios plus the observed dataset cf. black star in the figure 
+File name graph_varImpPlot.pdf = the contributions of the 30 most important statistics to the RF (e.g. Fig. S6 and Fig. S7 in Pudlo et al. 2016) 

@@ -1,0 +1,33 @@
+ ############## PARAMETER ESTIMATION using random forest ###############  
+
+Name of the statobs file: statobsRF.txt 
+Number of statobs in the statobs file = 1 
+Name of the reference table file: reftableRF.bin 
+Name of the headerfile file: headerRF.txt 
+Number of simulations loaded from the reference table = 12000 
+Number of scenarios (i.e. models) in the reference table = 3 
+Number of simulations available for each scenario from the loaded reference table = 4108 3954 3938 
+Number of parameters in the reference table = 10 10 10 
+Number of summary statistics in the reference table (without LDA axes) = 130 
+Selected model for parameter estimation =  1 
+Number of simulations in the TRAINING DATASET used to built rf trees = 4000 
+Number of trees in the forest = 1000 
+Number of test datasets that will be used to compute NMAE= 1000 
+Nbre of test dataset that can be possibly used to compute NMAE= 108 
+Number of cores available =  128 
+Number of cores used for computation = 125 
+Selected model= 1 
+N train= 4000 
+N tree:  1000 
+N test_calcul_NMAE= 1000 
+Original parameters estimated =  t34 t23 t12 t32 t24 t10 t31 t21 t14 N1 N2 N3 N4 N24 N23 N12 N32 N24 N10 N31 N21 N14 
+Parameters in fine estimated =  t34 t23 t12 t32 t24 t10 t31 t21 t14 N1 N2 N3 N4 N24 N23 N12 N32 N24 N10 N31 N21 N14 
+
+
+
+###################################################################################################################### 
+################################### PROCESSING ESTIMATION OF PARAMETER : t34 ######################################## 
+###################################################################################################################### 
+
+RF analysis - parameter  t34 
+Parameter # 1  over a total of 22 parameters to estimate 

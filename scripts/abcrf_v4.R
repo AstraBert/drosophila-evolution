@@ -40,7 +40,7 @@ n.run = 1 # Most people do a single RF run (n.run=1)...I prefere to do several r
 
 ###### Key parameters to inform in order to run RF  
 # Number of simulations taken from the training dataset (reftable) that will be used to built RF trees
-N.train <- 30000
+N.train <- 70000
 # Number of trees in the forest
 ntree <- 1000
 # Threshold results (a gadget to use RF output in a specific way = pruning when many scenarios are compared = to be explained later)
@@ -73,8 +73,8 @@ if (grouping.scenarios=="YES")
 
 # Loading data from key files produced by diyabcRF  using the specific fonction of abcrf (reference.table)
 # N = total numbre of simuations one wants to load from the reference table
-reference.table <- readRefTable(filename = name.reference.table, header=name.header.file) #, N=40000)
-
+reference.table <- readRefTable(filename = name.reference.table, header=name.header.file)
+cat("ciao!")
 # Loading the statobs file
 # Check the presence of the element "fin" in the file name.observed.dataset
 if (file.exists(name.observed.dataset)) {

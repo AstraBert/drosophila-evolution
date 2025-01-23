@@ -2,7 +2,9 @@ data/bamfiles
 data/reference
 data/mapping
 data/dest*
-data/diyabc_inputs*/
+data/diyabc_inputs*/POOL_*
+data/diyabc_inputs*/reftable*
+data/diyabc_inputs*/RNG*
 data/simulation*/
 data/dros_sim/
 data/wrong_sample_headers/
