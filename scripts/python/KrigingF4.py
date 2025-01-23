@@ -12,14 +12,14 @@ from matplotlib import cm
 continent = "EU"
 
 df_pools = pd.read_csv("data/f4_stats_all/dest_drosevol_latlong.csv")
-df_pools = df_pools[((df_pools["Continent"] == "EU") | (df_pools["Continent"] == "AS")) & (df_pools["sampleId"] != "ISR") & (df_pools["sampleId"] != "CNXJ")]
+df_pools = df_pools[(df_pools["Continent"] == "EU") & (df_pools["sampleId"] != "DGN") & (df_pools["sampleId"] != "CnOther")]
 pops = df_pools["sampleId"].to_list()
 lats = df_pools["lat"].to_list()
 longs = df_pools["long"].to_list()
-df_stats = pl.read_csv("data/f4_stats_all/f4_cnxj_isr.csv")
+df_stats = pl.read_csv("data/f4_stats_all/Dest_F4_stats.csv")
 df_stats = df_stats.filter(pl.col("Pop").is_in(pops))
 pops1 = df_stats["Pop"].to_list()
-stats = df_stats["f4"].to_list()
+stats = df_stats["F4"].to_list()
 pops2stats = {pops1[i]: [stats[i]] for i in range(len(pops1))}
 pops2coord = {pops[i]: [lats[i], longs[i]] for i in range(len(pops))}
 pops2every = {}
@@ -44,7 +44,7 @@ OK = OrdinaryKriging(
     data[:, 0],
     data[:, 1],
     data[:, 2],
-    variogram_model="linear",
+    variogram_model="gaussian",
     verbose=False,
     enable_plotting=False,
 )
@@ -63,10 +63,8 @@ m = Basemap(projection='merc', llcrnrlat=MINY, urcrnrlat=MAXY, llcrnrlon=MINX, u
 
 # Draw coastlines, countries, and other map elements (without background color)
 m.drawcoastlines()
-m.drawcountries()
 m.drawmapboundary(fill_color='none')  # Make the map boundary transparent
-m.drawrivers()
-m.drawstates()
+
 
 # Convert grid points to map projection coordinates
 xx, yy = np.meshgrid(gridx, gridy)
@@ -76,7 +74,7 @@ vmin, vmax = min(data[:,2]), max(data[:,2])
 abs_max = max(abs(vmin), abs(vmax))
 norm = Normalize(vmin=-abs_max, vmax=abs_max)
 # Overlay the heatmap onto the map (make sure the heatmap is not covered)
-im = m.imshow(z, extent=[MINX, MAXX, MINY, MAXY], origin='lower', cmap="RdBu_r", alpha=0.7)
+im = m.imshow(z, extent=[MINX, MAXX, MINY, MAXY], origin='lower', cmap="viridis", alpha=0.7)
 
 # Add colorbar for the heatmap
 plt.colorbar(im, label='F4 Value')
@@ -97,11 +95,10 @@ for k in pops2every:
     # )
 
 # Title and labels
-plt.title(f'Outgroup: D. simulans, PopC: DGN - Zambia, PopA: China - Other')
 plt.xlabel('Longitude')
 plt.ylabel('Latitude')
 
 # Save and show the plot
 plt.tight_layout()
-plt.savefig(f"imgs/F4_wonorm_cnxjisr_world.png", dpi=300, transparent=True)  # Save with transparent background
+plt.savefig(f"imgs/F4_dgncnother.png", dpi=300, transparent=True)  # Save with transparent background
 plt.show()
