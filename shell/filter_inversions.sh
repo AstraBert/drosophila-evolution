@@ -1,8 +1,10 @@
 wd="/home/abert/media1/projects/drosophila-evolution/data/simulation_vcfs"
 
-source activate gatk_modified
+eval "$(conda shell.bash hook)"
 
-for i in {1..4}
+conda activate gatk_modified
+
+for j in {1..4}
 do
     bcftools filter -O z \
     -o $wd/subsample_${j}_noinv.vcf.gz \

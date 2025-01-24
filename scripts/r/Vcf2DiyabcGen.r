@@ -16,7 +16,7 @@ vcfdata <- vcf2pooldata(vcf.file=vcf_file, min.maf="0.05", poolsizes=c(40,50,80,
 pooldata2diyabc(
     vcfdata,
     writing.dir = writing_dir,
-    prefix = "PopData",
+    prefix = "NoInvData",
     diyabc.mrc = 5,
 )
 
