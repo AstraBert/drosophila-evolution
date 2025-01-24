@@ -1,6 +1,8 @@
-load("/gatk_modified/userdata/abertelli/drosophila-evolution/results/all_pops_data.RData") # -> all.pops.data
+require(poolfstat)
 
-poolcsv <- read.csv("/gatk_modified/userdata/abertelli/drosophila-evolution/results/pools.csv")
+load("results/all_pops_data_wosim.RData") # -> all.pops.data
+
+poolcsv <- read.csv("results/pools1.csv")
 
 png("randomallele.png", width=1000, height=1000)
 
