@@ -4,9 +4,9 @@ import pandas as pd
 
 plt.style.use("seaborn-v0_8-paper")
 
-groups = {"Western": ["ES", "FR", "GB", "GR", "DK", "CH", "NL", "SE"], "Western Border": ["DE", "IT"], "Eastern Border": ["HU", "PL", "RS", "AT"], "Eastern": ["UA", "BY", "RU", "FI"]}
+groups = {"Western": ["ES", "FR", "GB", "GR", "DK", "CH", "NL", "SE"], "Western Border": ["DE", "IT"], "Eastern Border": ["HU", "PL", "RS", "AT"], "Eastern": ["UA", "BY", "RU", "FI"], "Middle East": ["TR","ISR"]}
 
-df_stats = pd.read_csv("data/f4_stats_all/f4_dgn_trk_noinv.csv")
+df_stats = pd.read_csv("data/f4_stats_all/f4_dgn_cnother_noinv.csv")
 pops = df_stats["Pop"].to_list()
 stats = df_stats["f4"].to_list()
 
@@ -22,7 +22,7 @@ for i in range(len(pops)):
 xlabs = [key for key in data]
 yvals = [mean(data[key]) for key in data]
 yerrs = [stdev(data[key]) for key in data]
-colors = ["#5cd65c", "#85e085", "#ffb84d", "#ff9900"]
+colors = ["#5cd65c", "#85e085", "#ffb84d", "#ff9900", "#e4080a"]
 
 fig, ax = plt.subplots(figsize=(10,5))
 bars = ax.bar(xlabs, yvals, yerr=yerrs, color=colors)
@@ -39,5 +39,5 @@ for bar in bars:
     )
 
 ax.set_title("Average F4 per European Clusters")
-fig.savefig("imgs/f4_noinv/F4_barplot_dgntrk.png")
+fig.savefig("imgs/f4_noinv/F4_barplot_dgncnother.png")
 fig.show()
