@@ -1,7 +1,7 @@
 import polars as pl
 
 # Read CSV files
-csv = pl.read_csv("f2stats.csv")
+csv = pl.read_csv("F2stats_noinv.csv")
 csv = csv.rename({"": "Pools"})
 df = pl.read_csv("dest_samples.csv")
 
@@ -30,7 +30,7 @@ csv.insert_column(2, pl.Series("Pop2", pops2))
 # Define constants
 A1 = "DrosSim"
 B3 = "DGN"
-D2 = "ISR"
+D2 = "TR_Ank_Yes_1_2021-09-20"
 C4 = "whatever"
 expression = f"0.5*({A1},{C4} + {D2},{B3} - {A1},{B3} - {D2},{C4})"
 
@@ -54,4 +54,5 @@ for pop in poops:
 
 # Create DataFrame and write to CSV
 dff = pl.DataFrame({"Pop": poops, "f4": f4stats})
-dff.write_csv("f4_cnxj_fin.csv")
+dff.write_csv("f4_dgn_trk_noinv.csv")
+

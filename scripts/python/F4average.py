@@ -6,9 +6,9 @@ plt.style.use("seaborn-v0_8-paper")
 
 groups = {"Western": ["ES", "FR", "GB", "GR", "DK", "CH", "NL", "SE"], "Western Border": ["DE", "IT"], "Eastern Border": ["HU", "PL", "RS", "AT"], "Eastern": ["UA", "BY", "RU", "FI"]}
 
-df_stats = pd.read_csv("data/f4_stats_all/Dest_F4_stats.csv")
+df_stats = pd.read_csv("data/f4_stats_all/f4_dgn_trk_noinv.csv")
 pops = df_stats["Pop"].to_list()
-stats = df_stats["F4"].to_list()
+stats = df_stats["f4"].to_list()
 
 data = {key: [] for key in groups}
 
@@ -39,5 +39,5 @@ for bar in bars:
     )
 
 ax.set_title("Average F4 per European Clusters")
-fig.savefig("imgs/F4_barplot.png")
+fig.savefig("imgs/f4_noinv/F4_barplot_dgntrk.png")
 fig.show()

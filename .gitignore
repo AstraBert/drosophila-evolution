@@ -2,13 +2,13 @@ data/bamfiles
 data/reference
 data/mapping
 data/dest*
-data/diyabc_inputs*/POOL_*
-data/diyabc_inputs*/reftable*
-data/diyabc_inputs*/RNG*
+data/diyabc_inputs*/
 data/diyabc_noinv*/NoInv*
 data/diyabc_noinv*/POOL_*
 data/diyabc_noinv*/RNG*
 data/diyabc_noinv*/reftable*
+data/diyabc_noinv*/.Rhistory
+data/diyabc_noinv*/Rplots.pdf
 data/simulation*/
 data/dros_sim/
 data/wrong_sample_headers/
