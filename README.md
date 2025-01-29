@@ -8,7 +8,7 @@
 This repository collects the data, the code and the analysis workflow for the project.
 
 >[!IMPORTANT]
-> README is about to undergo a thorough restructuring
+> README is about to undergo a thorough restructuring: expect important changes
 
 ## Environment
 
