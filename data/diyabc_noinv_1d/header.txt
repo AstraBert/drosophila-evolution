@@ -1,0 +1,69 @@
+POOL_PopData_2.snp
+15 parameters and 4 summary statistics
+
+3 scenarios: 11 10 10
+scenario 1 [0.333333] (10)
+N1 N2 N3 N4
+0 sample 1
+0 sample 2
+0 sample 3
+0 sample 4
+t34 merge 3 4
+t34 varNe 3 N34
+t23 merge 2 3
+t23 varNe 2 N23
+t12 merge 1 2
+t12 varNe 1 Nanc
+scenario 2 [0.333333] (10)
+N1 N2 N3 N4
+0 sample 1
+0 sample 2
+0 sample 3
+0 sample 4
+ta split 3 2 4 raa
+t1 merge 4 2
+t1 varNe 4 N5
+t2 merge 1 4
+t2 varNe 1 Nanc
+scenario 3 [0.333333] (10)
+N1 N2 N3 N4
+0 sample 1
+0 sample 2
+0 sample 3
+0 sample 4
+ta split 3 1 4 raa
+t1 merge 4 2
+t1 varNe 4 N5
+t2 merge 1 4
+t2 varNe 1 Nanc
+
+historical parameters priors (15,4)
+N1 N LU[10000,10000000,0.0,0.0]
+N2 N LU[10000,10000000,0.0,0.0]
+N3 N LU[10000,10000000,0.0,0.0]
+N4 N LU[10000,10000000,0.0,0.0]
+N5 N LU[10000,10000000,0.0,0.0]
+N34 N LU[10000,10000000,0.0,0.0]
+N23 N LU[10000,10000000,0.0,0.0]
+Nanc N LU[10000,10000000,0.0,0.0]
+ta T UN[150,15000,0.0,0.0]
+raa A LU[0.01,0.5,0.0,0.0]
+t34 T LU[150,750000,0.0,0.0] 
+t23 T LU[150,750000,0.0,0.0]
+t12 T LU[150,750000,0.0,0.0] 
+t1 T LU[150,750000,0.0,0.0]
+t2 T LU[150,750000,0.0,0.0] 
+t23>t34
+t12>t23
+t1>ta
+t2>t1
+DRAW UNTIL
+
+loci description (1)
+8000 <A> G1 from 1
+
+group summary statistics (130)
+group G1 (130)
+ML1p 1 2 3 4
+
+scenario N1 N2 N3 N4 ta raa t1 N5 t2 Nanc t34 N34 t23 N23 t12   ML1p_1        ML1p_2        ML1p_3        ML1p_4
