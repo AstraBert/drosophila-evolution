@@ -7,6 +7,9 @@
 
 This repository collects the data, the code and the analysis workflow for the project.
 
+>[!IMPORTANT]
+> README is about to undergo a thorough restructuring
+
 ## Environment
 
 There are two possibilities to launch the development environment packaged for this project:
