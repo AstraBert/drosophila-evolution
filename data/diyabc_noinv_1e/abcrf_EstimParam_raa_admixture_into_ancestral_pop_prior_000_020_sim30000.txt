@@ -1,0 +1,45 @@
+ ############## PARAMETER ESTIMATION using random forest ###############  
+
+Name of the statobs file: statobsRF.txt 
+Number of statobs in the statobs file = 1 
+Name of the reference table file: reftableRF.bin 
+Name of the headerfile file: headerRF.txt 
+Number of simulations loaded from the reference table = 12000 
+Number of scenarios (i.e. models) in the reference table = 6 
+Number of simulations available for each scenario from the loaded reference table = 2029 2028 2022 1889 2023 2009 
+Number of parameters in the reference table = 10 10 11 10 12 10 
+Number of summary statistics in the reference table (without LDA axes) = 130 
+Selected model for parameter estimation =  1 
+Number of simulations in the TRAINING DATASET used to built rf trees = 2000 
+Number of trees in the forest = 1000 
+Number of test datasets that will be used to compute NMAE= 0 
+Nbre of test dataset that can be possibly used to compute NMAE= 29 
+Number of cores available =  128 
+Number of cores used for computation = 125 
+Selected model= 1 
+N train= 2000 
+N tree:  1000 
+N test_calcul_NMAE= 0 
+Original parameters estimated =  raa 
+Parameters in fine estimated =  raa 
+
+
+
+###################################################################################################################### 
+################################### PROCESSING ESTIMATION OF PARAMETER : raa ######################################## 
+###################################################################################################################### 
+
+RF analysis - parameter  raa 
+Parameter # 1  over a total of 1 parameters to estimate 
+
+ERROR METRICS 
+
+Call:
+ regAbcrf(formula = r ~ ., data = train.NOISE, ntree = ntree,      paral = TRUE, ncores = how.many.cores.used.for.computation,      min.node.size = 5) 
+
+Number of simulations: 2000
+Number of trees: 1000
+Number of variables tried at each split: 45
+
+Out-of-bag prior mean squared error: 3.41019e+12
+Out-of-bag prior normalized mean absolute error: 5.932414
