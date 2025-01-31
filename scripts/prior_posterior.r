@@ -40,7 +40,7 @@ file.header = "headerRF.txt"
 file.obs.poi = "statobsRF.txt"
 
 # Parameter values to implement
-nparticules.reftable <- 12000
+nparticules.reftable <- 60000
 compute.pval.stats.prior = TRUE
 compute.pval.stats.posterior = TRUE  # If we want to compute the p-values of the summary statistics for each scenario
 if (compute.pval.stats.posterior) Threshold.SumStats.Distrib = 0.05 # Threshold to determine the number of (best) particles SELECTED for computing SumStats p-values (equal to 1 for prior checking)

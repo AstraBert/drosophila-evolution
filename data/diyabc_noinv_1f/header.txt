@@ -1,0 +1,114 @@
+POOL_PopData_2.snp
+22 parameters and 4 summary statistics
+
+6 scenarios: 11 10 10 10 11 10
+scenario 1 [0.1666667] (11)
+N1 N2 N3 N4
+0 sample 1
+0 sample 2
+0 sample 3
+0 sample 4
+t34 merge 3 4
+t34 varNe 3 N34
+t23 merge 2 3
+t23 varNe 2 N23
+t12 merge 1 2
+t12 varNe 1 Nanc
+scenario 2 [0.1666667] (10)
+N1 N2 N3 N4
+0 sample 1
+0 sample 2
+0 sample 3
+0 sample 4
+tas2 split 3 2 4 raa
+t1 merge 4 2
+t1 varNe 4 N5
+t2 merge 1 4
+t2 varNe 1 Nanc
+scenario 3 [0.1666667] (10)
+N1 N2 N3 N4    N5
+0 sample 1
+0 sample 2
+0 sample 3
+0 sample 4
+tas3 split 3 4 5 raa
+t0 merge 4 5
+t1 merge 2 4
+t2 merge 1 2
+t2 varNe 1 Nanc
+scenario 4 [0.1666667] (10)
+N1 N2 N3 N4    N5
+0 sample 1
+0 sample 2
+0 sample 3
+0 sample 4
+tas4 split 4 5 3 raa
+t1 merge 2 3
+t1 merge 5 2
+t2 merge 1 5
+t2 varNe 1 Nanc
+scenario 5 [0.1666667] (11)
+N1 N2 N3 N4    N5 N6
+0 sample 1
+0 sample 2
+0 sample 3
+0 sample 4
+tas4 split 4 6 3 raa1
+tas4 split 6 5 1 raa2
+t1 merge 2 3
+t1 merge 5 2
+t2 merge 1 5
+t2 varNe 1 Nanc
+scenario 6 [0.1666667] (10)
+N1 N2 N3 N4
+0 sample 1
+0 sample 2
+0 sample 3
+0 sample 4
+tas5 split 3 2 4 raa
+t1 merge 4 2
+t1 varNe 4 N5
+t2 merge 1 4
+t2 varNe 1 Nanc
+
+historical parameters priors (22,8)
+N1 N LU[10000,10000000,0.0,0.0]
+N2 N LU[10000,10000000,0.0,0.0]
+N3 N LU[10000,10000000,0.0,0.0]
+N4 N LU[10000,10000000,0.0,0.0]
+N5 N LU[10000,10000000,0.0,0.0]
+N6 N LU[10000,10000000,0.0,0.0]
+N34 N LU[10000,10000000,0.0,0.0]
+N23 N LU[10000,10000000,0.0,0.0]
+Nanc N LU[10000,10000000,0.0,0.0]
+tas2 T UN[10000,22000,0.0,0.0]
+tas3 T UN[68000,77000,0.0,0.0]
+tas4 T UN[22000,32000,0.0,0.0]
+tas5 T UN[100,10000,0.0,0.0]
+raa A LU[0.05,0.50,0.0,0.0]	
+raa1 A LU[0.05,0.95,0.0,0.0]		
+raa2 A LU[0.05,0.95,0.0,0.0]
+t34 T LU[150,750000,0.0,0.0] 
+t23 T LU[150,750000,0.0,0.0]
+t12 T LU[150,750000,0.0,0.0]
+t1 T LU[150,750000,0.0,0.0]
+t2 T LU[150,750000,0.0,0.0]
+t0 T LU[150,750000,0.0,0.0]
+t23>t34
+t12>t23
+t1>tas2
+t0>tas3
+t1>t0
+t1>tas4
+t1>tas5
+t2>t1
+DRAW UNTIL
+
+loci description (1)
+2000 <A> G1 from 1
+
+group summary statistics (4)
+group G1 (4)
+ML1p 1 2 3 4
+
+scenario N1 N2 N3 N4 tas2 tas3 tas4 raa raa1 raa2 tas5 t0 t1 N5 N6 t2 Nanc t34 N34 t23 N23 t12   ML1p_1        ML1p_2        ML1p_3        ML1p_4
