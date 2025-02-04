@@ -1,5 +1,5 @@
 POOL_PopData_2.snp
-22 parameters and 130 summary statistics
+10 parameters and 130 summary statistics
 
 1 scenarios: 10
 scenario 1 [1.0] (10)
@@ -20,7 +20,7 @@ N2 N LU[10000,10000000,0.0,0.0]
 N3 N LU[10000,10000000,0.0,0.0]
 N4 N LU[10000,10000000,0.0,0.0]
 ta T UN[100,10000,0.0,0.0]
-raa A LU[0.05,0.50,0.0,0.0]	
+raa A UN[0.01,0.03,0.0,0.0]	
 t1 T LU[150,750000,0.0,0.0]
 N5 N LU[10000,10000000,0.0,0.0]
 t2 T LU[150,750000,0.0,0.0]

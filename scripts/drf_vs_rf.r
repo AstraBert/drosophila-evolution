@@ -33,7 +33,7 @@ nbre.threads.used.for.computation = n_cores-2
 # Saving results
 save <- TRUE  # Set save to TRUE or FALSE
 if (save == TRUE) {
-  output_file_name = "DRF_astra_EstimParam_ta_raa_t2000_sim50000_nSNP2000_GOOD.txt"
+  output_file_name = "DRF_vs_RF.txt"
   #output_file_name = "test1.txt"
 }
 
