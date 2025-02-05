@@ -43,27 +43,18 @@ file.reference.sim = "reftableRF.bin"
 file.header = "headerRF.txt"
 name.reference.table <- "reftableRF.bin"
 name.header.file <- "headerRF.txt"
-#name.observed.dataset <- "statobsRF_all_statobs_vectors.txt" # Note that this observed dataset may includes several lines (i.e. several vectors of observed data/sumstats) 
-#name.observed.dataset <- "statobsRF_target_dataset.mss.dataNANNE.dat_US-Wat_US-Sok_US-Haw_JP-Sap_CN-Lan_BR-Poa.txt"
 name.observed.dataset <- "statobsRF.txt"
 
 # Selected model, dimension of n.pods & DRF - RF running parameters
 selected.model=1
 n.pods=1 ## If statobs contain a single row of statobs then n.pods=1 
-# n.tree and n.train configurations to be explored
-# vector.n.train=c(500,2000,4000,10000,20000,50000)
-# vector.n.tree <- list(1000, 2000)
-# vector.n.train <- list(10000)
-# vector.n.tree <- list(500, 1000, 1500, 2000, 3000, 5000)
-vector.n.train <- list(50000)
+vector.n.train <- list(49000)
 vector.n.tree <- list(2000)
-# N.load.reftable = total number of simuations one wants to load from the reference table
-N.load.reftable = 51000
-# N.train = 2000 # A affiner
+N.load.reftable = 50000
 
 # Computation options
 DRF=TRUE
-RF=FALSE
+RF=TRUE
 param_original = TRUE
 param_compound = FALSE
 CORRELATIONS_COMPILATION_GRAPH=TRUE
@@ -73,50 +64,6 @@ PRECISION.METRICS.FOR.MEAN.COMPUTATIONS=FALSE
 ANNEX.COMPUTATION.FOR.DRF.RF.EVALUATION.ala.NAF=FALSE
 POST_TREATMENTS_HPD_MONO_plus_BI_PLOT_and_more =FALSE
 PLS=FALSE
-
-#### Reading pods for fixed-values parameter sets
-# # pods.fixed.parameter.values <- rep(c(7000, 2000, 1000, 1000, 3000, 4000, 0.3), time = 10000) # set1
-# pods.fixed.parameter.values <- rep(c(1000, 500, 2000, 300, 3000, 5000, 0.2), time = 10000)  # set2
-# #file.name.fixed.pods = "reftableRF - pods_set1.bin"
-# file.name.fixed.pods = "reftableRF - pods_set2.bin"
-# param.pods <- matrix(pods.fixed.parameter.values, nrow = 10000, ncol = 7, byrow = TRUE)
-# param.pods <- as.data.frame(param.pods)
-# colnames(param.pods) <- c("N12", "N3", "N4", "t124", "t23", "t12", "ra")
-# param.pods = param.pods[1:n.pods,]
-# #dim(param.pods)
-# #head(param.pods)
-# data.pods <- readRefTable(filename = file.name.fixed.pods, header=file.header, N=n.pods)
-# stats.pods = as.data.frame(data.pods$stats)
-# # dim(stats.pods)
-# # head(stats.pods,n=5)
-# #stats.pods = read.table("pods_param_set1_first_records_of_the_reference_table_0.txt", header=TRUE, skip=7)
-# #stats.pods <- stat.pods[1:n.pods,-1]
-# #dim(stats.pods)
-# #head(stats.pods,n=5)
-
-# ########## Reading pods data from the reftable (initial code)###############
-# # data.pods <- readRefTable(filename = file.reference.sim, header=file.header, N=n.pods)
-# # Loading the statobs file
-# # Check the presence of the element "fin" in the file name.observed.dataset
-# if (file.exists(name.observed.dataset)) {
-#   # Read all lines from the file
-#   lines <- readLines(name.observed.dataset)
-#   # Check if "fin" is present in the file
-#   fin_index <- which(grepl("fin", lines))
-#   if (length(fin_index) > 0) {
-#     # Skip all lines before and including the line containing "fin"
-#     data_start <- fin_index[length(fin_index)] + 1
-#     # Read the following lines with header = TRUE
-#     stat.obs <- read.table(text = paste(lines[data_start:length(lines)], collapse = "\n"), header = TRUE)
-#     #stat.obs <- read.table(text = paste(lines[data_start:length(lines)], collapse = "\n"), header = TRUE,  nrows = 1)
-#   } else {
-#     # If "fin" is not found, read the entire file with header = TRUE
-#     stat.obs <- read.table(name.observed.dataset, header = TRUE)
-#     #stat.obs <- read.table(name.observed.dataset, header = TRUE, nrows = 1)
-#   }
-# } else {
-#   stop(paste("The file", name.observed.dataset, "does not exist."))
-# }
 
 # Loading statObs and reference.table files
 # N=N.load.reftable = total number of simuations one wants to load from the reference table
@@ -152,87 +99,20 @@ reference.table$params <- reference.table$params[indexesModel,]
 reference.table$params <- reference.table$params[, colSums(is.na(reference.table$params)) == 0] # Virer les param avec des NA (autre scenario que celui selected)
 colnames(reference.table$params)
 
-# # Complements (optional)
-# # Combien on a de données au final
-# N <- length(reference.table$scenarios) 
-# # Combien de stats
-# N.stats <- ncol(reference.table$stats)
-# # Combien de param
-# N.param <- ncol(reference.table$params)
-# # Nombre de données potentielles pour faire des tests
-# N.test_possible <- N - N.train # datatests = potentiellement toutes les donnees n'ayant pas servis pour entrainement
-# 
-# # Randomization of data after selecting those of a given scenario - set.seed(1) # If one want some controle
-# indicesTrain <- sample(1:N, N.train, replace=FALSE) # indices d'entrainement
-# indicesTest <- c(1:N)[-indicesTrain] # indices de test
 
 ########## Connecting the INITIAL SCRIPT AND NEW SCRIPT training set data and StatObs data ###############
 PARAMS.FULL <- reference.table$params 
-#dim(PARAMS.FULL)
 STATS.FULL <- reference.table$stats
 #dim(STATS.FULL)
 N.rec <- nrow(PARAMS.FULL) # the number simulations
 N.rec
 colnames(PARAMS.FULL)
-#head(PARAMS.FULL, n = 10)
-#head(STATS.FULL, n = 10)
 stats.pods = as.data.frame(stat.obs)
 ###########################################
 
 # ########## Reading pods data from the reftable ###############
 data.pods <- readRefTable(filename = file.reference.sim, header=file.header, N=n.pods)
-# dim(data.pods$stats)
-# dim(data.pods$params)
-# head(data.pods$params, n = 10)
-# head(data.pods$stats, n = 10)
 param.pods = as.data.frame(data.pods$params)
-# # File names
-# file.reference.sim = "reftableRF.bin"
-# file.header = "headerRF.txt"
-# stats.pods = as.data.frame(data.pods$stats)
-# # File names
-# file.reference.sim = "reftableRF.bin"
-# file.header = "headerRF.txt"
-
-# ########## Reading training set data ###############
-# reftable <- readRefTable(filename = file.reference.sim, header=file.header)
-# PARAMS.FULL <- as.data.frame(reftable$params[, ]) 
-# #dim(PARAMS.FULL)
-# STATS.FULL <- as.data.frame(reftable$stats[, ])
-# #dim(STATS.FULL)
-# N.rec <- reftable$nrec # the number simulations
-# #N.rec
-# #colnames(PARAMS.FULL)
-# #head(PARAMS.FULL, n = 10)
-# #head(STATS.FULL, n = 10)
-
-################################################################################
-### Compound parameters  #######################################################
-################################################################################
-
-# list_compound_parameters <- "None" # Compound parameters for admixture rates
-# if (param_compound == TRUE) {
-#   param1 <- PARAMS.FULL[, "raaas1"]
-#   param2 <- PARAMS.FULL[, "raaas2"]
-#   # Définir les objets composés
-#   ra.Wat.SA <- as.data.frame(1 - param1)
-#   ra.Gan2.SA <- as.data.frame(param2 * param1)
-#   ra.nc.SA <- as.data.frame((1 - param2) * param1)
-#   ra.watGan2.SA <- as.data.frame(ra.Wat.SA + ra.Gan2.SA)
-#   
-#   # Liste des paramètres composés
-#   colnames(ra.Wat.SA)="ra.Wat.SA"
-#   colnames(ra.Gan2.SA)="ra.Gan2.SA"
-#   colnames(ra.nc.SA)="ra.nc.SA"
-#   colnames(ra.watGan2.SA)="ra.watGan2.SA"
-#   list_compound_parameters <- c("ra.Wat.SA", "ra.Gan2.SA", "ra.nc.SA", "ra.watGan2.SA")
-#   
-#   PARAMS.FULL = cbind(PARAMS.FULL, ra.Wat.SA, ra.Gan2.SA, ra.nc.SA, ra.watGan2.SA)
-#   param.list = colnames(PARAMS.FULL)
-#   
-#   # dim(PARAMS.FULL)
-#   # head(PARAMS.FULL, n=3)
-# }
 
 ########## List of original Parameters to estimate
 list_original_parameters = "NONE"
@@ -245,23 +125,6 @@ if (param_original==TRUE) {
   list_original_parameters <- as.list(colnames(reference.table$params))
   # Combiner le contenu de la liste en un vecteur
   list_original_parameters <- unlist(list_original_parameters, use.names = FALSE)
-  #print(list_original_parameters)
-  
-  #list_original_parameters = c("raan1","raan2", "raawat", "raasd", "raaas1", "raaas2")
-  # list_original_parameters = c("DBc1", "NBc1", "DBc2", "NBc2", "DBc3", "NBc3", "DBarg", "NBarg",
-  #                              "DBbra", "NBbra", "DBas1", "NBas1", "DBnc", "NBnc", "DBwis", "NBwis",
-  #                              "DBgen", "NBgen", "DBcol", "NBcol", "DBan3", "NBan3", "DBsd", "NBsd",
-  #                              "DBsok", "NBsok", "DBan2", "NBan2","DBan1", "NBan1", "DBh", "NBh", "DBGhw", "NBGhw")
-  # list_original_parameters <- c(
-  #   "Nwat", "Nsok", "Nhw", "Nsap", "Nlia", "Nsd", "Nnc", "Nwis", "Ngen",
-  #   "Ncol", "Nbra", "Narg", "Ncl1", "Ncl2", "Ncl3", "NGan2", "NGan1", "NGhw", "NGan3", "NGas1", "NGas2",
-  #   "NAC", "tc1", "tc2", "tc3", "DBc1", "NBc1", "DBc2", "NBc2", "DBc3", "NBc3", "targ", "DBarg", 
-  #   "NBarg", "tbra", "DBbra", "NBbra", "tas1", "DBas1", "NBas1", "raaas1", "raaas2", "tnc", "DBnc",
-  #   "NBnc", "twis", "DBwis", "NBwis", "tgen", "DBgen", "NBgen", "tcol", "DBcol", "NBcol", "tan3",
-  #   "DBan3", "NBan3", "tsd", "DBsd", "NBsd", "raasd", "twat", "DBwat", "NBwat", "raawat", "tsok",
-  #   "DBsok", "NBsok", "tan2", "DBan2", "NBan2", "raan2", "tan1", "DBan1", "NBan1", "raan1", "th",
-  #   "DBh", "NBh", "tGhw", "DBGhw", "NBGhw", "tj", "tc", "µmic_1", "pmic_1", "snimic_1"
-  # )
 }
 
 ########## Compound parameters for Bottleneck Intensity #################
@@ -301,15 +164,10 @@ if (param_compound == TRUE) {
   # Supprimer les colonnes vides, le cas échéant (si des colonnes manquent)
   BI_binomes_dataframe <- BI_binomes_dataframe[, colnames(BI_binomes_dataframe) != ""]
   # Afficher le dataframe final contenant tous les binômes
-  # dim(BI_binomes_dataframe)
-  # head(BI_binomes_dataframe, n=3)
-  # colnames(BI_binomes_dataframe)
   
   list_compound_parameters <- colnames(BI_binomes_dataframe)
   PARAMS.FULL = cbind(PARAMS.FULL,BI_binomes_dataframe)
-  # dim(PARAMS.FULL)
-  # head(PARAMS.FULL, n=3)
-  # colnames(PARAMS.FULL)
+
 }
 
 # Combiner les deux listes original.param et compound.param en une seule si necessaire
