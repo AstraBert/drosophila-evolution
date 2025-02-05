@@ -14,8 +14,8 @@ Number of simulations in the TRAINING DATASET used to built rf trees = 11000
 Number of trees in the forest = 1000 
 Number of test datasets that will be used to compute NMAE= 1000 
 Nbre of test dataset that can be possibly used to compute NMAE= 1000 
-Number of cores available =  128 
-Number of cores used for computation = 125 
+Number of cores available =  22 
+Number of cores used for computation = 19 
 Selected model= 1 
 N train= 11000 
 N tree:  1000 
@@ -31,3 +31,60 @@ Parameters in fine estimated =  ta raa
 
 RF analysis - parameter  ta 
 Parameter # 1  over a total of 2 parameters to estimate 
+Growing trees.. Progress: 71%. Estimated remaining time: 12 seconds.
+
+ERROR METRICS 
+
+Call:
+ regAbcrf(formula = r ~ ., data = train.NOISE, ntree = ntree,      paral = TRUE, ncores = how.many.cores.used.for.computation,      min.node.size = 5) 
+
+Number of simulations: 11000
+Number of trees: 1000
+Number of variables tried at each split: 45
+
+Out-of-bag prior mean squared error: 317448.9
+Out-of-bag prior normalized mean absolute error: 0.2831512
+
+RESULTS + NOISE (NO PLS)
+  Parameter     Mean Median   Q5  Q95 post.NMAE.median post.NMAE.mean
+1        ta 1884.049   1795 1052 2916        0.3177121      0.3237497
+  prior.NMAE.median prior.NMAE.mean Coverage.OOB
+1         0.2779029       0.2831512    0.8943636
+
+
+###################################################################################################################### 
+################################### PROCESSING ESTIMATION OF PARAMETER : raa ######################################## 
+###################################################################################################################### 
+
+RF analysis - parameter  raa 
+Parameter # 2  over a total of 2 parameters to estimate 
+Growing trees.. Progress: 60%. Estimated remaining time: 20 seconds.
+
+ERROR METRICS 
+
+Call:
+ regAbcrf(formula = r ~ ., data = train.NOISE, ntree = ntree,      paral = TRUE, ncores = how.many.cores.used.for.computation,      min.node.size = 5) 
+
+Number of simulations: 11000
+Number of trees: 1000
+Number of variables tried at each split: 45
+
+Out-of-bag prior mean squared error: 0.002224963
+Out-of-bag prior normalized mean absolute error: 0.3303004
+
+RESULTS + NOISE (NO PLS)
+  Parameter      Mean    Median         Q5      Q95 post.NMAE.median
+2       raa 0.1285103 0.1127642 0.05625191 0.234251        0.4376541
+  post.NMAE.mean prior.NMAE.median prior.NMAE.mean Coverage.OOB
+2      0.4713871         0.3215593       0.3303004    0.9163636
+
+###################################################################################################################### 
+################################### ALL PARAMETER ESTIMATION RESULTS + NOISE (NO PLS)             #################### 
+###################################################################################################################### 
+
+ Parameter         Mean       Median           Q5         Q95 post.NMAE.median
+        ta 1884.0495000 1795.0000000 1.052000e+03 2916.000000        0.3177121
+       raa    0.1285103    0.1127642 5.625191e-02    0.234251        0.4376541
+ post.NMAE.mean prior.NMAE.median prior.NMAE.mean Coverage.OOB
+      0.3237497         0.2779029       0.2831512    0.8943636
+      0.4713871         0.3215593       0.3303004    0.9163636

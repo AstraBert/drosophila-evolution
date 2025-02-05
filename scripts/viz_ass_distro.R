@@ -33,9 +33,9 @@ quantile(d, probs = q)
 
 # distribution LogUnif
 cat("d <- runif(1000000,log(1),log(20000))", "\n") # Added
-d <- runif(1000000, log(1), log(20000))
+d <- runif(1000000, log(100000), log(10000000))
 d <- exp(d)
-plot(density(d))
+# plot(density(d))
 summary(d)
 quantile(d, probs = q)
 
