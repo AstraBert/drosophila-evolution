@@ -31,7 +31,7 @@ csv.insert_column(2, pl.Series("Pop2", pops2))
 A1 = "CnOther"
 B3 = "DGN"
 D2 = "DrosSim"
-C4 = "TR_Ank_Yes_1_2021-10-16"
+C4 = "FI_Pir_Aka_1_2021-09-17"
 expression = f"0.5*({A1},{C4} + {D2},{B3} - {A1},{B3} - {D2},{C4})"
 
 # Filter data based on conditions
@@ -51,4 +51,4 @@ for el in other_f4s:
 	f4_ratios.append(abs(1-ratio))
 pseudo_df = {"Pop": f4_csv["Pop"].to_list(),"f4ratio":f4_ratios}
 df = pl.DataFrame(pseudo_df)
-df.write_csv("f4ratios_dgn_cnother_trk.csv")
+df.write_csv("f4ratios_dgn_cnother_fin.csv")

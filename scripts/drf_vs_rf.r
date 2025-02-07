@@ -54,7 +54,7 @@ N.load.reftable = 50000
 
 # Computation options
 DRF=TRUE
-RF=TRUE
+RF=FALSE
 param_original = TRUE
 param_compound = FALSE
 CORRELATIONS_COMPILATION_GRAPH=TRUE
@@ -292,6 +292,14 @@ cat("\n")
 ###########################################################################################################
 ####################### STARTING LOOP OVER n.tree and n.train   ###########################################
 ###########################################################################################################
+open_conns <- showConnections(all = TRUE)
+open_conns_df <- as.data.frame(open_conns)
+unused_conns <- as.numeric(rownames(open_conns_df[open_conns_df$isopen == "closed", , drop=FALSE]))
+if (length(unused_conns) > 0) {
+	sapply(unused_conns, close)
+}
+cat("Closed", length(unused_conns), "unused connections\n")
+
 k=0
 for (i in 1:dim.n.tree) {
   for (j in 1:dim.n.train) {
@@ -340,6 +348,7 @@ for (i in 1:dim.n.tree) {
       
       # Extraire les informations de pref.rf for storage
       output <- capture.output(pred.rf) # Capture les sorties affichées en console
+	  cat("Made if after output")
       # Identifier et extraire les lignes contenant des informations particulières
       NMAE_prior_mean <- as.numeric(sub(".*mean: ", "", grep("Prior out-of-bag normalized mean absolute error computed with mean", output, value = TRUE)))
       NMAE_prior_median <- as.numeric(sub(".*median: ", "", grep("Prior out-of-bag normalized mean absolute error computed with median", output, value = TRUE)))
@@ -365,6 +374,15 @@ for (i in 1:dim.n.tree) {
      }
     }
     ##########################################################################
+
+open_conns <- showConnections(all = TRUE)
+open_conns_df <- as.data.frame(open_conns)
+unused_conns <- as.numeric(rownames(open_conns_df[open_conns_df$isopen == "closed", , drop=FALSE]))
+if (length(unused_conns) > 0) {
+	sapply(unused_conns, close)
+}
+cat("Closed", length(unused_conns), "unused connections\n")
+
     
     if (DRF==TRUE) {
     ####### DRF computation ###################################################################

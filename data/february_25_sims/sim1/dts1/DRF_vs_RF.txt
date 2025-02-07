@@ -15,13 +15,40 @@ Number of cores used for computation = 126
 Original parameters estimated =  N1 N2 N3 N4 ti raa raa1 ta raa2 t1 N5 t2 Nanc 
 Parameters in fine estimated =  N1 N2 N3 N4 ti raa raa1 ta raa2 t1 N5 t2 Nanc 
 DRF analysis =  TRUE 
-RF analysis =  TRUE 
+RF analysis =  FALSE 
 
+Closed 0 unused connections
 
 ANALYSIS with n.tree = 2000 n.train = 49000 
   
+Closed 0 unused connections
+  
+DRF analysis 
 
-RF analysis - parameter  N1 
-Parameter # 1  over a total of 13 parameters to estimate 
-Growing trees.. Progress: 38%. Estimated remaining time: 49 seconds.
-Growing trees.. Progress: 82%. Estimated remaining time: 13 seconds.
+###################################################################################################################### 
+################################### ALL PARAMETER ESTIMATION RESULTS (NO NOISE - NO PLS)         #################### 
+###################################################################################################################### 
+
+DRF Estimation 
+
+             Mean       Median           Q5          Q95
+N1   2.522792e+05 8.167275e+04 1.381150e+04 9.485058e+05
+N2   6.229330e+05 1.075135e+05 1.438482e+04 3.494422e+06
+N3   1.696177e+06 4.891038e+05 1.751367e+04 7.982639e+06
+N4   6.742817e+05 1.166646e+05 1.401946e+04 4.129565e+06
+ti   3.051149e+03 2.512000e+03 3.041395e+02 7.504278e+03
+raa  2.066530e-01 1.909768e-01 6.027527e-02 4.343592e-01
+raa1 2.111873e-01 1.773110e-01 5.695773e-02 4.496302e-01
+ta   5.906663e+03 6.118000e+03 1.892692e+03 9.687455e+03
+raa2 2.168227e-01 1.893758e-01 5.805408e-02 4.475002e-01
+t1   2.169231e+04 1.336930e+04 3.744700e+03 6.652992e+04
+N5   1.749026e+05 7.752906e+04 1.416350e+04 6.487500e+05
+t2   1.707962e+05 1.099777e+05 2.531034e+04 5.462670e+05
+Nanc 5.289253e+06 5.154135e+06 1.208144e+06 9.510873e+06
+
+###################################################################################################################### 
+###################################################################################################################### 
+[1] 13 13
+[1] "Nombre de paires de paramètres conservées : 78"
+[1] "Nombre de paires de paramètres conservées : 78"
+[1] "Nombre de paires de paramètres conservées : 78"
