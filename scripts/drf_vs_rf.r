@@ -48,8 +48,8 @@ name.observed.dataset <- "statobsRF.txt"
 # Selected model, dimension of n.pods & DRF - RF running parameters
 selected.model=1
 n.pods=1 ## If statobs contain a single row of statobs then n.pods=1 
-vector.n.train <- list(49000)
-vector.n.tree <- list(2000)
+vector.n.train <- list(20000)
+vector.n.tree <- list(1000)
 N.load.reftable = 50000
 
 # Computation options

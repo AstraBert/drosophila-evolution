@@ -1,0 +1,52 @@
+ ############## PARAMETER ESTIMATION using DRF & RF ###############  
+
+Name of the statobs file: statobsRF.txt 
+Number of statobs in the statobs file = 1 
+Name of the reference table file: reftableRF.bin 
+Name of the headerfile file: headerRF.txt 
+Number of simulations loaded from the reference table = 50000 
+Number of scenarios (i.e. models) in the reference table = 1 
+Number of simulations available for each scenario from the loaded reference table = 50000 
+Number of parameters in the reference table = 13 
+Number of summary statistics in the reference table (without LDA axes) = 130 
+Selected model for parameter estimation =  1 
+Number of cores available =  22 
+Number of cores used for computation = 20 
+Original parameters estimated =  N1 N2 N3 N4 ti raa raa1 ta raa2 t1 N5 t2 Nanc 
+Parameters in fine estimated =  N1 N2 N3 N4 ti raa raa1 ta raa2 t1 N5 t2 Nanc 
+DRF analysis =  TRUE 
+RF analysis =  FALSE 
+
+
+ANALYSIS with n.tree = 1000 n.train = 20000 
+  
+  
+DRF analysis 
+
+###################################################################################################################### 
+################################### ALL PARAMETER ESTIMATION RESULTS (NO NOISE - NO PLS)         #################### 
+###################################################################################################################### 
+
+DRF Estimation 
+
+             Mean       Median           Q5          Q95
+N1   2.854968e+05 7.142544e+04 1.427105e+04 1.164481e+06
+N2   7.363229e+05 1.136581e+05 1.625142e+04 4.201397e+06
+N3   1.826706e+06 4.556287e+05 1.885600e+04 7.773727e+06
+N4   6.523316e+05 1.077708e+05 1.276920e+04 3.666028e+06
+ti   3.044161e+03 2.634500e+03 3.114400e+02 7.447484e+03
+raa  2.268043e-01 2.043472e-01 5.916830e-02 4.511509e-01
+raa1 2.023432e-01 1.745691e-01 5.424943e-02 4.432763e-01
+ta   5.630856e+03 5.477267e+03 1.890579e+03 9.652341e+03
+raa2 2.257023e-01 2.104479e-01 5.893212e-02 4.495159e-01
+t1   2.246719e+04 1.302333e+04 3.654280e+03 7.067700e+04
+N5   2.027057e+05 9.480646e+04 1.449200e+04 7.278804e+05
+t2   1.810113e+05 1.159730e+05 2.922743e+04 5.855073e+05
+Nanc 4.926593e+06 4.441238e+06 9.414800e+05 9.458880e+06
+
+###################################################################################################################### 
+###################################################################################################################### 
+[1] 13 13
+[1] "Nombre de paires de paramètres conservées : 78"
+[1] "Nombre de paires de paramètres conservées : 78"
+[1] "Nombre de paires de paramètres conservées : 78"

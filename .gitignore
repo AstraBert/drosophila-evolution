@@ -18,6 +18,9 @@ data/simulation*/
 data/dros_sim/
 data/wrong_sample_headers/
 data_files/
+data/february_25_sims/sim*/dts*/sim/
+data/february_25_sims/sim*/dts*/diyabc-RF-linux-v1.1.54
+data/february_25_sims/sim*/dts2/reftableRF.bin
 results/
 imgs/output.asc
 docker.log
