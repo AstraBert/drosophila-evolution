@@ -1,5 +1,5 @@
 POOL_PopData_2.snp
-14 parameters and 130 summary statistics
+17 parameters and 130 summary statistics
 
 5 scenarios: 14 14 14 14 14
 scenario 1 [0.2] (14)
@@ -78,7 +78,7 @@ t3s5 varNe 2 N8
 t4s5 merge 1 2
 t4s5 varNe 1 Nanc
 
-historical parameters priors (16,5)
+historical parameters priors (17,5)
 N1 N LU[10000,10000000,0.0,0.0]
 N2 N LU[10000,10000000,0.0,0.0]
 N3 N LU[10000,10000000,0.0,0.0]
@@ -87,6 +87,7 @@ N5 N LU[10000,10000000,0.0,0.0]
 N6 N LU[10000,10000000,0.0,0.0]
 N7 N LU[10000,10000000,0.0,0.0]
 N8 N LU[10000,10000000,0.0,0.0]
+Nanc N LU[10000,10000000,0.0,0.0]
 t1 T LU[150,750000,0.0,0.0]
 t2 T LU[150,750000,0.0,0.0]
 t3 T LU[150,750000,0.0,0.0]
