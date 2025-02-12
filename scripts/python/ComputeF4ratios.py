@@ -28,7 +28,7 @@ csv.insert_column(1, pl.Series("Pop1", pops1))
 csv.insert_column(2, pl.Series("Pop2", pops2))
 
 # Define constants
-A1 = "CnOther"
+A1 = "PT_Por_Rec_1_2018-10-18"
 B3 = "DGN"
 D2 = "DrosSim"
 C4 = "FI_Pir_Aka_1_2021-09-17"
@@ -43,7 +43,7 @@ pt_cnxj = csv.filter(((pl.col("Pop2") == B3) & (pl.col("Pop1") == D2)) | ((pl.co
 f4 = 0.5*(drossim_trk + pt_cnxj - drossim_cnxj - pt_trk)
 print(f"F4({A1},{D2};{B3},{C4}):", f4)
 
-f4_csv = pl.read_csv("f4ratios_dgn_cnother.csv")
+f4_csv = pl.read_csv("f4ratios_dgn_pt.csv")
 other_f4s = f4_csv["f4"].to_list()
 f4_ratios=[]
 for el in other_f4s:
@@ -51,4 +51,4 @@ for el in other_f4s:
 	f4_ratios.append(abs(1-ratio))
 pseudo_df = {"Pop": f4_csv["Pop"].to_list(),"f4ratio":f4_ratios}
 df = pl.DataFrame(pseudo_df)
-df.write_csv("f4ratios_dgn_cnother_fin.csv")
+df.write_csv("f4ratios_dgn_pt_fin.csv")

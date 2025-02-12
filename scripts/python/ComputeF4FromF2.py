@@ -28,7 +28,7 @@ csv.insert_column(1, pl.Series("Pop1", pops1))
 csv.insert_column(2, pl.Series("Pop2", pops2))
 
 # Define constants
-A1 = "CnOther"
+A1 = "PT_Por_Rec_1_2018-10-18"
 B3 = "DGN"
 D2 = "DrosSim"
 C4 = "whatever"
@@ -37,11 +37,11 @@ expression = f"0.5*({A1},{C4} + {D2},{B3} - {A1},{B3} - {D2},{C4})"
 # Filter data based on conditions
 drossim_whatever = csv.filter((pl.col("Pop1") == A1) | (pl.col("Pop2") == A1))
 pt_whatever = csv.filter((pl.col("Pop1") == D2) | (pl.col("Pop2") == D2))
-drossim_cnxj = csv.filter((pl.col("Pop2") == "DrosSim") & (pl.col("Pop1") == B3))["Estimate"].to_list()[0]
+drossim_cnxj = csv.filter(((pl.col("Pop2") == A1) | (pl.col("Pop1") == A1)) & ((pl.col("Pop1") == B3) | (pl.col("Pop2") == B3)))["Estimate"].to_list()[0]
 pt_cnxj = csv.filter(((pl.col("Pop2") == B3) & (pl.col("Pop1") == D2)) | ((pl.col("Pop1") == B3) & (pl.col("Pop2") == D2)))["Estimate"].to_list()[0]
 
 # Update population list
-poops += ["CnOther", "CnQTP", "ISR"]
+poops += ["CnOther", "CnQTP", "CNXJ", "ISR"]
 if D2 in poops:
 	poops.remove(D2)
 
@@ -55,5 +55,5 @@ for pop in poops:
 
 # Create DataFrame and write to CSV
 dff = pl.DataFrame({"Pop": poops, "f4": f4stats})
-dff.write_csv("f4ratios_dgn_cnother.csv")
+dff.write_csv("f4ratios_dgn_pt.csv")
 
