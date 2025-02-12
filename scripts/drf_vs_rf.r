@@ -33,7 +33,7 @@ nbre.threads.used.for.computation = n_cores-2
 # Saving results
 save <- TRUE  # Set save to TRUE or FALSE
 if (save == TRUE) {
-  output_file_name = "DRF_vs_RF.txt"
+  output_file_name = "DRF.txt"
   #output_file_name = "test1.txt"
 }
 
@@ -48,9 +48,9 @@ name.observed.dataset <- "statobsRF.txt"
 # Selected model, dimension of n.pods & DRF - RF running parameters
 selected.model=1
 n.pods=1 ## If statobs contain a single row of statobs then n.pods=1 
-vector.n.train <- list(20000)
+vector.n.train <- list(19000)
 vector.n.tree <- list(1000)
-N.load.reftable = 50000
+N.load.reftable = 20000
 
 # Computation options
 DRF=TRUE

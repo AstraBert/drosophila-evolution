@@ -89,7 +89,7 @@ n.ref.prior.all <- c(500, 1000, 2000) # total number of points in the reference 
 
 # n.ref.hp.all <- c(100*1000) # total number of points in the reference dataset for the post and freq gof
 # n.post.all <- c(1000) # number of points kept in the posterior # On ne parle plus de epsilon mais equivalent
-n.ref.hp.all <- c(50*1000) # total number of points in the reference dataset for the post and freq gof
+n.ref.hp.all <- c(20*1000) # total number of points in the reference dataset for the post and freq gof
 n.post.all <- c(500) # number of points kept in the posterior # On ne parle plus de epsilon mais equivalent
 # n.ref.hp.all <- c(50*1000, 100*1000) # total number of points in the reference dataset for the post and freq gof
 # n.post.all <- c(500, 1000, 2000) # number of points kept in the posterior # On ne parle plus de epsilon mais equivalent
