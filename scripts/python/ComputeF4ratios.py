@@ -31,7 +31,7 @@ csv.insert_column(2, pl.Series("Pop2", pops2))
 A1 = "PT_Por_Rec_1_2018-10-18"
 B3 = "DGN"
 D2 = "DrosSim"
-C4 = "FI_Pir_Aka_1_2021-09-17"
+C4 = "ISR"
 expression = f"0.5*({A1},{C4} + {D2},{B3} - {A1},{B3} - {D2},{C4})"
 
 # Filter data based on conditions

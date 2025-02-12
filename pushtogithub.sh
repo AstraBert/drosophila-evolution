@@ -1,5 +1,5 @@
 echo "Started sleeping"
-sleep 9000
+sleep 1800
 echo "Finished sleeping"
 git add .
 git commit -m "updates"
