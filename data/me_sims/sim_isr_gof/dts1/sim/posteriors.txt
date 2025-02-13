@@ -1,0 +1,15 @@
+#################### POSTERIOR GOF - analysed scenario  1 ################# 
+Work directory = /mnt/c/Users/Bertelli/drosophila-evolution/data/me_sims/sim_isr_gof/dts1 
+myseed = 1162 
+k_all = 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 
+k_range = 5 20 
+
+Name of the reference table: reftableRF.bin 
+Name of the observed dataset: statobsRF.txt 
+Name of the replica observed dataset: statobsRF_replica.txt 
+Number of simulations loaded from the reference table: 20000 
+Number of scenarios (i.e. models) in the reference table: 1 
+Number of simulations available for each scenario from the loaded reference table: 20000 
+Number of parameters recovered from the reference table: 13 
+Number of summary statistics in the reference table: 292 
+

@@ -12,12 +12,12 @@ DIYABC_CMD <- "./diyabc-RF-linux-v1.1.54 -p ./"
 get_parameter_order <- function(scenario = paste0(1:6)) {
   #scenario <- paste0(scen.ref)
   param_order <- switch(scenario,
-                        "1" = c("scenario", "N1", "N2", "N3", "N4", "raa", "ta", "t1", "N5", "t2", "Nanc"),
-                        "2" = c("scenario", "N1", "N2", "N3", "N4", "raa", "ta", "t1", "N5", "t2", "Nanc"),
-                        "3" = c("scenario", "N1", "N2", "N3", "N4", "raa", "ta", "t1", "N5", "t2", "Nanc"),
-                        "4" = c("scenario", "N1", "N2", "N3", "N4", "raa", "ta", "t1", "N5", "t2", "Nanc"),
-                        "5" = c("scenario", "N1", "N2", "N3", "N4", "raa", "ta", "t1", "N5", "t2", "Nanc"),
-                        "6" = c("scenario", "N1", "N2", "N3", "N4", "raa", "ta", "t1", "N5", "t2", "Nanc"))
+                        "1" = c("scenario", "N1", "N2", "N3", "N4", "N5", "N6", "N7", "Nanc", "raa", "ta", "t1", "t2", "t3"),
+                        "2" = c("scenario", "N1", "N2", "N3", "N4", "N5", "N6", "N7", "Nanc", "raa", "ta", "t1", "t2", "t3"),
+                        "3" = c("scenario", "N1", "N2", "N3", "N4", "N5", "N6", "N7", "Nanc", "raa", "ta", "t1", "t2", "t3"),
+                        "4" = c("scenario", "N1", "N2", "N3", "N4", "N5", "N6", "N7", "Nanc", "raa", "ta", "t1", "t2", "t3"),
+                        "5" = c("scenario", "N1", "N2", "N3", "N4", "N5", "N6", "N7", "Nanc", "raa", "ta", "t1", "t2", "t3"),
+                        "6" = c("scenario", "N1", "N2", "N3", "N4", "N5", "N6", "N7", "Nanc", "raa", "ta", "t1", "t2", "t3"),)
   return(param_order)
 }
 
