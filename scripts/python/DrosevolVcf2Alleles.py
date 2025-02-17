@@ -1,18 +1,18 @@
 import polars as pl
 
 def read_vcf(vcffile: str) -> pl.DataFrame:
-    df = pl.read_csv(vcffile, separator="\t", n_threads=22, skip_rows=1911)
+    df = pl.read_csv(vcffile, separator="\t", n_threads=22, skip_rows=1912)
     return df
 
 if __name__ == "__main__":
     sync = pl.read_csv("dros_sim.sync.gz", separator="\t")
     sync = sync.rename({"CHROM": "Chromosome", "POS": "Position", "ALL": "DrosSim"})
     sync = sync.drop("COUNT")
-    vcf = read_vcf("drosevol.noneurope.noinv.vcf.gz")
+    vcf = read_vcf("drosevol.noneurope.noinv.nohet.vcf.gz")
     vcf = vcf.rename({"#CHROM": "Chromosome", "POS": "Position", "REF": "RefAllele", "ALT": "AltAllele"})
     vcf = vcf.drop(["ID", "QUAL", "FILTER", "INFO", "FORMAT"])
     print(vcf.head())
-    df = pl.read_csv("dest.europe.trk.noinv_snpinfo.csv", separator="\t")
+    df = pl.read_csv("dest_nohet_snps.csv", separator=",")
     print(df.head())
     dest_dros = vcf.join(df, on=["Chromosome", "Position", "RefAllele", "AltAllele"], how="inner")
     dest_dros_sim = dest_dros.join(sync, on=["Chromosome", "Position"], how="inner") 
@@ -65,7 +65,7 @@ if __name__ == "__main__":
         else 32
         for el in cnqtp
     ]
-    f = open("drosevol_readcount_noinv.csv", "w")
+    f = open("drosevol_readcount_noinv_nohet.csv", "w")
     f.write("DGN,CNXJ,CnOther,CnQTP,ISR,DrosSim\n")
     for el in range(len(isr_allelic_status)):
         f.write(f"{dgn_allelic_status[el]},{cnxj_allelic_status[el]},{cnother_allelic_status[el]},{cnqtp_allelic_status[el]},{isr_allelic_status[el]},{drossim_allelic_status[el]}\n")
