@@ -1,0 +1,42 @@
+#################### PRIOR GOF ################# 
+Work directory = /mnt/c/Users/Bertelli/drosophila-evolution/data/sim_het/sim_1/dts1 
+myseed = 1162 
+k_all = 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 
+k_range = 5 20 
+nboot = 500 
+
+Name of the reference table: reftableRF.bin 
+Name of the observed dataset: statobsRF.txt 
+Number of simulations loaded from the reference table: 20000 
+Number of scenarios (i.e. models) in the reference table: 1 
+Number of simulations available for each scenario from the loaded reference table: 20000 
+Number of parameters recovered from the reference table: 13 
+Number of summary statistics in the reference table: 292 
+
+
+########################################################## 
+PRIOR GOF analyzed scenario = 1 
+
+--------------> n.sim = 500 - n.calib = 250 
+[1] "00:04:01.63"
+
+Prior GoF analysis
+Using the lof with k = max
+Number of lines in the reference table: 500 ;
+Number of calibration point: 250 ;
+Range of k values in the original object: k in [5, 20] ;
+Number of target observations: 1 ;
+Table of median, lower and upper 95% HPD pvalues on 500 bootstrap replicates:
+     median  lwr   upr
+[1,]   0.06 0.02 0.096
+
+Prior GoF analysis
+Using the kNN with k = 1
+Number of lines in the reference table: 500 ;
+Number of calibration point: 250 ;
+Range of k values in the original object: k in [5, 20] ;
+Number of target observations: 1 ;
+Table of median, lower and upper 95% HPD pvalues on 500 bootstrap replicates:
+     median   lwr   upr
+[1,]  0.176 0.128 0.216
+

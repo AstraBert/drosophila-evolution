@@ -1,0 +1,33 @@
+ ############## PARAMETER ESTIMATION using DRF & RF ###############  
+
+Name of the statobs file: statobsRF.txt 
+Number of statobs in the statobs file = 1 
+Name of the reference table file: reftableRF.bin 
+Name of the headerfile file: headerRF.txt 
+Number of simulations loaded from the reference table = 20000 
+Number of scenarios (i.e. models) in the reference table = 1 
+Number of simulations available for each scenario from the loaded reference table = 20000 
+Number of parameters in the reference table = 13 
+Number of summary statistics in the reference table (without LDA axes) = 292 
+Selected model for parameter estimation =  1 
+Number of cores available =  22 
+Number of cores used for computation = 20 
+Original parameters estimated =  N1 N2 N3 N4 N5 ta raa t1 N6 t2 N7 t3 Nanc 
+Parameters in fine estimated =  N1 N2 N3 N4 N5 ta raa t1 N6 t2 N7 t3 Nanc 
+DRF analysis =  FALSE 
+RF analysis =  TRUE 
+
+Closed 0 unused connections
+
+ANALYSIS with n.tree = 1000 n.train = 19000 
+  
+
+RF analysis - parameter  N1 
+Parameter # 1  over a total of 13 parameters to estimate 
+Growing trees.. Progress: 13%. Estimated remaining time: 3 minutes, 35 seconds.
+Growing trees.. Progress: 26%. Estimated remaining time: 2 minutes, 54 seconds.
+Growing trees.. Progress: 41%. Estimated remaining time: 2 minutes, 14 seconds.
+Growing trees.. Progress: 56%. Estimated remaining time: 1 minute, 36 seconds.
+Growing trees.. Progress: 72%. Estimated remaining time: 1 minute, 2 seconds.
+Growing trees.. Progress: 88%. Estimated remaining time: 26 seconds.
+Growing trees.. Progress: 100%. Estimated remaining time: 0 seconds.

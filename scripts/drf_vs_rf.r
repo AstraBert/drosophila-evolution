@@ -33,7 +33,7 @@ nbre.threads.used.for.computation = n_cores-2
 # Saving results
 save <- TRUE  # Set save to TRUE or FALSE
 if (save == TRUE) {
-  output_file_name = "DRF.txt"
+  output_file_name = "RF.txt"
   #output_file_name = "test1.txt"
 }
 
