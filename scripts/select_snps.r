@@ -6,7 +6,7 @@ cat("Initial dimension of dfpool:", dim(dfpool), "\n")
 
 # Define the minimum number of reads for each SNP in each of the 4 populations
 n.reads.min = 20
-n.reads.max = 700
+n.reads.max = 900
 
 # Compute the sums for each row
 dfpool$sum12 <- dfpool$V1 + dfpool$V2

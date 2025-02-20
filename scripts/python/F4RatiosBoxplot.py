@@ -12,7 +12,7 @@ groups = {
     "Middle East": ["TR", "ISR"]
 }
 
-df_stats = pd.read_csv("data/f4_stats_all/f4ratios_dgn_cnother_fin.csv")
+df_stats = pd.read_csv("data/f4_stats_all/f4ratios_dgn_cnother_fin_nohet.csv")
 pops = df_stats["Pop"].to_list()
 stats = df_stats["f4ratio"].to_list()
 
@@ -44,8 +44,8 @@ for i, median_val in enumerate(medians):
 	ax.text(i + 1, 0, f"{median_val:.5f}", ha="center", va="bottom", fontsize=8, fontweight="bold")
 
 ax.set_ylabel("F4 Ratio")
-ax.set_title("F4 Ratio Distribution per European Clusters (Finland)")
+ax.set_title("F4 Ratio Distribution per European Clusters (Finland) - No heterochromatic regions")
 
-fig.savefig("imgs/f4ratios/F4_boxplot_dgncnotherfin.png")
+fig.savefig("imgs/f4ratios/F4_boxplot_dgncnotherfin_nohet.png")
 fig.show()
 

@@ -5,14 +5,14 @@ import subprocess as sp
 f = open("POOL_PopData_1.txt")
 lines = f.readlines()
 random.shuffle(lines)
-if len(lines) < 10000:
+if len(lines) < 12000:
 	limit = ceil(len(lines)/2)
 	first_block = lines[:limit]
 	second_block = lines[-limit:]
 else:
-	first_block = lines[:10000]
+	first_block = lines[:12000]
 	random.shuffle(lines)
-	second_block = lines[-10000:]	
+	second_block = lines[-12000:]	
 print("First block contains:", len(first_block), " SNPs")
 print("Second block contains:", len(second_block), " SNPs")
 g = open("POOL_PopData_1a.txt","w")

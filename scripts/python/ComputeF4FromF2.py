@@ -1,8 +1,8 @@
 import polars as pl
 
 # Read CSV files
-csv = pl.read_csv("F2stats_noinv.csv")
-csv = csv.rename({"": "Pools"})
+csv = pl.read_csv("f2_nohet.csv")
+csv = csv.rename({"PoolName": "Pools"})
 df = pl.read_csv("dest_samples.csv")
 
 # Create mappings from pools to populations
@@ -28,7 +28,7 @@ csv.insert_column(1, pl.Series("Pop1", pops1))
 csv.insert_column(2, pl.Series("Pop2", pops2))
 
 # Define constants
-A1 = "PT_Por_Rec_1_2018-10-18"
+A1 = "CnOther"
 B3 = "DGN"
 D2 = "DrosSim"
 C4 = "whatever"
@@ -55,5 +55,5 @@ for pop in poops:
 
 # Create DataFrame and write to CSV
 dff = pl.DataFrame({"Pop": poops, "f4": f4stats})
-dff.write_csv("f4ratios_dgn_pt.csv")
+dff.write_csv("f4ratios_dgn_cnother_nohet.csv")
 
