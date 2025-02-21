@@ -1,5 +1,5 @@
 POOL_PopData_2.snp
-17 parameters and 130 summary statistics
+13 parameters and 130 summary statistics
 
 1 scenarios: 14
 scenario 2 [1.0] (14)
