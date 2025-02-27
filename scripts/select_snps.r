@@ -1,5 +1,5 @@
 # Read the text file after the first two lines
-dfpool <- read.table("NoInvData.diyabc", skip = 2, header = FALSE)
+dfpool <- read.table("NoMAFData.diyabc", skip = 2, header = FALSE)
 
 # Check the dimension of dfpool
 cat("Initial dimension of dfpool:", dim(dfpool), "\n")
@@ -35,7 +35,7 @@ df_poolseq_readmin <- dfpoolsel[, 1:10]
 cat("Dimension of df_poolseq_readmin:", dim(df_poolseq_readmin), "\n")
 
 # Output file name
-output.file.name = paste0("POOL_PopData_1.txt")
+output.file.name = paste0("POOL_PopData.txt")
 
 # Write the dataframe to a text file
 write.table(

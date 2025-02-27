@@ -11,14 +11,14 @@ if (length(args) == 0) {
 vcf_file <- args[1]
 writing_dir <- args[2]
 
-vcfdata <- vcf2pooldata(vcf.file=vcf_file, min.maf="0.05", poolsizes=c(40,50,80,80,80))
+vcfdata <- vcf2pooldata(vcf.file=vcf_file, min.maf="-1", poolsizes=c(40,50,80,80,80))
 vcfdata.snps <- vcfdata@snp.info
-write.csv(vcfdata.snps, file="selected_snps.csv")
+write.csv(vcfdata.snps, file="selected_snps_noMAF.csv")
 
 pooldata2diyabc(
     vcfdata,
     writing.dir = writing_dir,
-    prefix = "NoInvData",
+    prefix = "NoMAFData",
     diyabc.mrc = 5,
 )
 

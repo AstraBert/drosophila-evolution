@@ -36,11 +36,11 @@ how.many.cores.used.for.computation = n_cores-2
 ###### output text file that will include various numerical outputs
 output.file = "diyabc_4_test.txt"
 #output.file = "nanne_dataset_pour_graph_lda_OK.txt"
-n.run = 1 # Most people do a single RF run (n.run=1)...I prefere to do several runs (e.g. n.run=10) to better appreciate the robustness of my conclusions
+n.run = 10 # Most people do a single RF run (n.run=1)...I prefere to do several runs (e.g. n.run=10) to better appreciate the robustness of my conclusions
 
 ###### Key parameters to inform in order to run RF  
 # Number of simulations taken from the training dataset (reftable) that will be used to built RF trees
-N.train <- 26000
+N.train <- 10000
 # Number of trees in the forest
 ntree <- 1000
 # Threshold results (a gadget to use RF output in a specific way = pruning when many scenarios are compared = to be explained later)
