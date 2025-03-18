@@ -18,6 +18,7 @@ usage() {
     exit 1
 }
 
+eval "$(conda shell.bash hook)"
 
 reference_file=""
 read_1=""
@@ -127,12 +128,12 @@ bwa-mem2 mem \
     samtools view -@ $threads -Sbh -q 20 -F 0x100 - |
     samtools sort -@ $threads - >$outputdir/$sample.sorted_merged.bam
 
+echo "Deduplicating"
+echo "0%-------------------->         100%"
+
 conda deactivate
 
 conda activate picard
-
-echo "Deduplicating"
-echo "0%-------------------->         100%"
 
 picard MarkDuplicates \
     REMOVE_DUPLICATES=true \

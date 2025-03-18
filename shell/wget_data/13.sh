@@ -1,1 +1,1 @@
-wget http://berglandlab.uvadcos.io/dest_mapped/DESTv1/TR_Ank_Yes_1_2016-10-13/TR_Ank_Yes_1_2016-10-13.mel.bam
+wget http://berglandlab.pods.uvarc.io/dest_mapped/DESTv2/ES_Gra_Ben_1_2017-10-05/ES_Gra_Ben_1_2017-10-05.mel.bam

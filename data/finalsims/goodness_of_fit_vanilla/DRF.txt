@@ -1,0 +1,54 @@
+ ############## PARAMETER ESTIMATION using DRF & RF ###############  
+
+Name of the statobs file: statobsRF.txt 
+Number of statobs in the statobs file = 1 
+Name of the reference table file: reftableRF.bin 
+Name of the headerfile file: headerRF.txt 
+Number of simulations loaded from the reference table = 60000 
+Number of scenarios (i.e. models) in the reference table = 1 
+Number of simulations available for each scenario from the loaded reference table = 60000 
+Number of parameters in the reference table = 13 
+Number of summary statistics in the reference table (without LDA axes) = 292 
+Selected model for parameter estimation =  1 
+Number of cores available =  128 
+Number of cores used for computation = 126 
+Original parameters estimated =  N1 N2 N3 N4 N5 t1 N6 t2 N7 t3 N8 t4 Nanc 
+Parameters in fine estimated =  N1 N2 N3 N4 N5 t1 N6 t2 N7 t3 N8 t4 Nanc 
+DRF analysis =  TRUE 
+RF analysis =  FALSE 
+
+Closed 0 unused connections
+
+ANALYSIS with n.tree = 1000 n.train = 59000 
+  
+Closed 0 unused connections
+  
+DRF analysis 
+
+###################################################################################################################### 
+################################### ALL PARAMETER ESTIMATION RESULTS (NO NOISE - NO PLS)         #################### 
+###################################################################################################################### 
+
+DRF Estimation 
+
+           Mean     Median        Q5       Q95
+N1   3726667.87 3277541.00 149306.00 9299387.0
+N2    552864.78  251134.00  16692.33 2031102.6
+N3   1562300.80  494601.00  16784.67 6575699.6
+N4   1104047.40  378527.92  16894.08 5747856.4
+N5   2586852.62 1543972.71  35499.67 8336782.3
+t1     30921.20   22842.44  15343.83   73237.8
+N6   2833029.77 1620849.57  38627.50 8811253.2
+t2     48790.85   37598.33  18300.67  123583.0
+N7   1793676.99  692218.45  28714.33 7445517.0
+t3     94604.62   73601.39  27252.10  252245.3
+N8    542791.86  219662.00  21659.50 2105923.2
+t4    287534.57  248967.00  69131.00  649669.3
+Nanc 2731599.73 2004279.07 205712.75 8012564.3
+
+###################################################################################################################### 
+###################################################################################################################### 
+[1] 13 13
+[1] "Nombre de paires de paramètres conservées : 78"
+[1] "Nombre de paires de paramètres conservées : 78"
+[1] "Nombre de paires de paramètres conservées : 78"

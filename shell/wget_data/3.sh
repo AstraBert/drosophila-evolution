@@ -1,1 +1,1 @@
-wget http://berglandlab.uvadcos.io/dest_mapped/DESTv2/PL_Lub_Lub_1_2019-09-10/PL_Lub_Lub_1_2019-09-10.mel.bam
+wget http://berglandlab.pods.uvarc.io/dest_mapped/DESTv2/UA_Che_Uma_1_2017-09-16/UA_Che_Uma_1_2017-09-16.mel.bam

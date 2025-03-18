@@ -1,0 +1,544 @@
+ ############## MODEL CHOICE analysis using random forest ###############  
+
+Name of the statobs file: statobsRF.txt 
+Number of statobs in the file = 1 
+Name of the reference table file: reftableRF.bin 
+Name of the headerfile file: headerRF.txt 
+Number of simulations loaded from the reference table = 20060 
+Number of scenarios (i.e. models) in the reference table = 10 
+Number of simulations available for each scenario from the loaded reference table = 1980 2124 1948 1982 1953 1993 2005 2021 2096 1958 
+Number of parameters in the reference table = 13 13 13 13 13 13 13 13 13 13 
+Number of summary statistics in the reference table (without LDA axes) = 292 
+Number of simulations in the TRAINING DATASET used to built rf trees = 20000 
+Number of trees in the forest = 1000 
+Number of cores available =  128 
+Number of cores used for computation = 126 
+Analysis of each scenario independently (no grouping or selelection of scenarios) 
+Number of ANALYSED scenarios (i.e. models) using RF = 10 
+n.run = 10 
+
+############################################################################################# 
+--------------------> i.run = 1 
+
+
+RF TRAINING step using all scenarios separately 
+
+PRIOR ERROR RATES (using the Out-of-Bag statistical procedure): we provide mean Out-of-Bag prior error rate and matrix of errors with the true scenario number as rows and the chosen scenarios as columns 
+
+Call:
+ abcrf(formula = scenario ~ ., data = dataTrain, lda = TRUE, ntree = ntree, paral = TRUE, ncores = how.many.cores.used.for.computation, min.node.size = 1, save.memory = FALSE) 
+includes the axes of a preliminary LDA
+
+Number of simulations: 20000
+Out-of-bag prior error rate: 35.52%
+
+Confusion matrix:
+      1    2    3    4    5    6    7    8    9   10 class.error
+1  1558  131  101   11    6   10   15   50    9   80   0.2095383
+2   126 1388   91   18   11  262   76   49    9   88   0.3446648
+3   139  120 1010   18   18   29   26   32    9  538   0.4791129
+4    14   20   11 1481  120  124   35  125   29   18   0.2508852
+5     7   13   12  120 1063  132   33   43  509   16   0.4543121
+6    11  297   11  154   83 1187  129   43   49   20   0.4017137
+7    16   57   12   30   51   86 1469  130  129   19   0.2651326
+8    62   25    8  180   62   19  128 1389  115   28   0.3110119
+9    17   13   11   46  418   27  150  140 1256   14   0.3996176
+10   92   52  559   23   12   25   43   39   16 1095   0.4401840
+Numerical values of Importance Measures of the summary statistics (i.e. explanatory variables) are stored in the file named importance_measures_of_summary statistics_SORTED.txt 
+
+RF MODEL CHOICE PREDICTION on the observed dataset(s): we provide the index of the selected model (i.e. scenario), the votes for each model (over the total number of trees in the forest) and the posterior probability for the selected model 
+ selected model votes model1 votes model2 votes model3 votes model4
+             10           88           75          296           30
+ votes model5 votes model6 votes model7 votes model8 votes model9 votes model10
+           29           18           36           40           35           353
+ post.proba
+       0.58
+
+
+############################################################################################# 
+--------------------> i.run = 2 
+
+
+RF TRAINING step using all scenarios separately 
+
+PRIOR ERROR RATES (using the Out-of-Bag statistical procedure): we provide mean Out-of-Bag prior error rate and matrix of errors with the true scenario number as rows and the chosen scenarios as columns 
+
+Call:
+ abcrf(formula = scenario ~ ., data = dataTrain, lda = TRUE, ntree = ntree, paral = TRUE, ncores = how.many.cores.used.for.computation, min.node.size = 1, save.memory = FALSE) 
+includes the axes of a preliminary LDA
+
+Number of simulations: 20000
+Out-of-bag prior error rate: 35.45%
+
+Confusion matrix:
+      1    2    3    4    5    6    7    8    9   10 class.error
+1  1558  129  104    9    3   14   14   53    9   78   0.2095383
+2   133 1376   90   14    9  256   78   56   15   91   0.3503305
+3   137  127 1010   15   21   28   20   40    7  534   0.4791129
+4    13   23   11 1484  113  123   26  136   32   16   0.2493677
+5     6   14    9  119 1056  130   39   45  512   18   0.4579055
+6    11  282   18  149   91 1192  128   46   46   21   0.3991935
+7    16   59   12   27   52   82 1474  140  120   17   0.2626313
+8    64   24   13  160   59   21  139 1406  103   27   0.3025794
+9    16   13    6   46  438   15  157  139 1245   17   0.4048757
+10   89   46  561   21   10   26   45   35   14 1109   0.4330266
+Numerical values of Importance Measures of the summary statistics (i.e. explanatory variables) are stored in the file named importance_measures_of_summary statistics_SORTED.txt 
+
+RF MODEL CHOICE PREDICTION on the observed dataset(s): we provide the index of the selected model (i.e. scenario), the votes for each model (over the total number of trees in the forest) and the posterior probability for the selected model 
+ selected model votes model1 votes model2 votes model3 votes model4
+             10           88           80          297           27
+ votes model5 votes model6 votes model7 votes model8 votes model9 votes model10
+           23           14           36           52           37           346
+ post.proba
+      0.514
+
+
+############################################################################################# 
+--------------------> i.run = 3 
+
+
+RF TRAINING step using all scenarios separately 
+
+PRIOR ERROR RATES (using the Out-of-Bag statistical procedure): we provide mean Out-of-Bag prior error rate and matrix of errors with the true scenario number as rows and the chosen scenarios as columns 
+
+Call:
+ abcrf(formula = scenario ~ ., data = dataTrain, lda = TRUE, ntree = ntree, paral = TRUE, ncores = how.many.cores.used.for.computation, min.node.size = 1, save.memory = FALSE) 
+includes the axes of a preliminary LDA
+
+Number of simulations: 20000
+Out-of-bag prior error rate: 35.605%
+
+Confusion matrix:
+      1    2    3    4    5    6    7    8    9   10 class.error
+1  1553  123   98    7   11   14   17   58    6   84   0.2120751
+2   127 1382   93   16   13  261   85   47   11   83   0.3474976
+3   138  124 1023   11   17   31   19   40   10  526   0.4724085
+4    17   21   10 1476  115  125   30  127   34   22   0.2534143
+5     7   12   10  114 1063  142   35   40  504   21   0.4543121
+6    12  298   15  157   89 1175  127   47   45   19   0.4077621
+7    23   63    8   28   49   83 1462  132  129   22   0.2686343
+8    69   27   13  179   64   21  138 1375  107   23   0.3179563
+9    16    9   11   46  424   20  157  140 1255   14   0.4000956
+10   85   52  548   28   13   23   42   35   15 1115   0.4299591
+Numerical values of Importance Measures of the summary statistics (i.e. explanatory variables) are stored in the file named importance_measures_of_summary statistics_SORTED.txt 
+
+RF MODEL CHOICE PREDICTION on the observed dataset(s): we provide the index of the selected model (i.e. scenario), the votes for each model (over the total number of trees in the forest) and the posterior probability for the selected model 
+ selected model votes model1 votes model2 votes model3 votes model4
+             10          105           78          279           22
+ votes model5 votes model6 votes model7 votes model8 votes model9 votes model10
+           28           17           29           45           53           344
+ post.proba
+      0.534
+
+
+############################################################################################# 
+--------------------> i.run = 4 
+
+
+RF TRAINING step using all scenarios separately 
+
+PRIOR ERROR RATES (using the Out-of-Bag statistical procedure): we provide mean Out-of-Bag prior error rate and matrix of errors with the true scenario number as rows and the chosen scenarios as columns 
+
+Call:
+ abcrf(formula = scenario ~ ., data = dataTrain, lda = TRUE, ntree = ntree, paral = TRUE, ncores = how.many.cores.used.for.computation, min.node.size = 1, save.memory = FALSE) 
+includes the axes of a preliminary LDA
+
+Number of simulations: 20000
+Out-of-bag prior error rate: 35.22%
+
+Confusion matrix:
+      1    2    3    4    5    6    7    8    9   10 class.error
+1  1564  123  101   10    4   13   13   56   11   76   0.2064942
+2   125 1372   86   21   10  276   84   45   11   88   0.3522191
+3   138  129 1012   12   19   31   20   35   10  533   0.4780815
+4    24   15   10 1479  111  127   29  130   36   16   0.2518968
+5     6   14    9  122 1081  129   40   39  490   18   0.4450719
+6    12  280   18  141   92 1207  124   43   45   22   0.3916331
+7    21   61    9   25   55   83 1471  132  121   21   0.2641321
+8    64   23   12  175   62   30  136 1388  100   26   0.3115079
+9    17   15   11   42  410   18  149  155 1260   15   0.3977055
+10   85   57  543   19   14   29   39   31   17 1122   0.4263804
+Numerical values of Importance Measures of the summary statistics (i.e. explanatory variables) are stored in the file named importance_measures_of_summary statistics_SORTED.txt 
+
+RF MODEL CHOICE PREDICTION on the observed dataset(s): we provide the index of the selected model (i.e. scenario), the votes for each model (over the total number of trees in the forest) and the posterior probability for the selected model 
+ selected model votes model1 votes model2 votes model3 votes model4
+             10           87           70          301           30
+ votes model5 votes model6 votes model7 votes model8 votes model9 votes model10
+           22           15           30           34           56           355
+ post.proba
+      0.543
+
+
+############################################################################################# 
+--------------------> i.run = 5 
+
+
+RF TRAINING step using all scenarios separately 
+
+PRIOR ERROR RATES (using the Out-of-Bag statistical procedure): we provide mean Out-of-Bag prior error rate and matrix of errors with the true scenario number as rows and the chosen scenarios as columns 
+
+Call:
+ abcrf(formula = scenario ~ ., data = dataTrain, lda = TRUE, ntree = ntree, paral = TRUE, ncores = how.many.cores.used.for.computation, min.node.size = 1, save.memory = FALSE) 
+includes the axes of a preliminary LDA
+
+Number of simulations: 20000
+Out-of-bag prior error rate: 35.55%
+
+Confusion matrix:
+      1    2    3    4    5    6    7    8    9   10 class.error
+1  1555  127  108   12    8   12   17   53    7   72   0.2110604
+2   135 1357   94   19   15  274   83   54    6   81   0.3593012
+3   142  118 1019   18   21   26   19   40    7  529   0.4744714
+4    18   15   11 1485  116  120   29  128   32   23   0.2488619
+5     9    8    6  121 1088  131   42   40  485   18   0.4414784
+6    11  290   11  154   91 1183  126   47   50   21   0.4037298
+7    18   60    9   30   54   82 1461  132  127   26   0.2691346
+8    64   25   10  171   57   24  141 1397  103   24   0.3070437
+9    14   13   10   51  436   13  152  151 1238   14   0.4082218
+10   88   56  550   18   14   21   47   39   16 1107   0.4340491
+Numerical values of Importance Measures of the summary statistics (i.e. explanatory variables) are stored in the file named importance_measures_of_summary statistics_SORTED.txt 
+
+RF MODEL CHOICE PREDICTION on the observed dataset(s): we provide the index of the selected model (i.e. scenario), the votes for each model (over the total number of trees in the forest) and the posterior probability for the selected model 
+ selected model votes model1 votes model2 votes model3 votes model4
+             10          105           76          269           24
+ votes model5 votes model6 votes model7 votes model8 votes model9 votes model10
+           23           21           49           45           59           329
+ post.proba
+      0.591
+
+
+############################################################################################# 
+--------------------> i.run = 6 
+
+
+RF TRAINING step using all scenarios separately 
+
+PRIOR ERROR RATES (using the Out-of-Bag statistical procedure): we provide mean Out-of-Bag prior error rate and matrix of errors with the true scenario number as rows and the chosen scenarios as columns 
+
+Call:
+ abcrf(formula = scenario ~ ., data = dataTrain, lda = TRUE, ntree = ntree, paral = TRUE, ncores = how.many.cores.used.for.computation, min.node.size = 1, save.memory = FALSE) 
+includes the axes of a preliminary LDA
+
+Number of simulations: 20000
+Out-of-bag prior error rate: 35.55%
+
+Confusion matrix:
+      1    2    3    4    5    6    7    8    9   10 class.error
+1  1561  126   91    3    7    9   13   62   11   88   0.2080162
+2   125 1374   87   15   10  268   78   49   12  100   0.3512748
+3   142  121 1003   13   20   36   20   35    4  545   0.4827231
+4    18   24    9 1477  117  119   27  130   34   22   0.2529084
+5     8   11   11  127 1078  132   35   44  485   17   0.4466119
+6    12  280   11  156   86 1190  136   48   42   23   0.4002016
+7    20   59   10   25   57   90 1457  137  122   22   0.2711356
+8    60   25   12  173   65   24  140 1389  102   26   0.3110119
+9    14   15   11   53  425   21  162  134 1243   14   0.4058317
+10   87   59  542   23   10   22   41   37   17 1118   0.4284254
+Numerical values of Importance Measures of the summary statistics (i.e. explanatory variables) are stored in the file named importance_measures_of_summary statistics_SORTED.txt 
+
+RF MODEL CHOICE PREDICTION on the observed dataset(s): we provide the index of the selected model (i.e. scenario), the votes for each model (over the total number of trees in the forest) and the posterior probability for the selected model 
+ selected model votes model1 votes model2 votes model3 votes model4
+             10           80           92          281           19
+ votes model5 votes model6 votes model7 votes model8 votes model9 votes model10
+           23           15           43           52           50           345
+ post.proba
+      0.556
+
+
+############################################################################################# 
+--------------------> i.run = 7 
+
+
+RF TRAINING step using all scenarios separately 
+
+PRIOR ERROR RATES (using the Out-of-Bag statistical procedure): we provide mean Out-of-Bag prior error rate and matrix of errors with the true scenario number as rows and the chosen scenarios as columns 
+
+Call:
+ abcrf(formula = scenario ~ ., data = dataTrain, lda = TRUE, ntree = ntree, paral = TRUE, ncores = how.many.cores.used.for.computation, min.node.size = 1, save.memory = FALSE) 
+includes the axes of a preliminary LDA
+
+Number of simulations: 20000
+Out-of-bag prior error rate: 35.425%
+
+Confusion matrix:
+      1    2    3    4    5    6    7    8    9   10 class.error
+1  1554  127   97   10    9   11   17   52    9   85   0.2115677
+2   128 1372   83   16   13  268   84   54   11   89   0.3522191
+3   140  118 1016   20   21   33   20   33    7  531   0.4760186
+4    18   21    9 1493  116  119   30  126   28   17   0.2448154
+5     8   13   10  126 1067  133   38   36  500   17   0.4522587
+6     8  294   17  157   97 1193  119   36   44   19   0.3986895
+7    20   56   12   24   54   80 1469  137  126   21   0.2651326
+8    62   20   11  168   55   23  136 1393  117   31   0.3090278
+9    15   15    8   53  415   26  154  138 1251   17   0.4020076
+10   89   57  551   20   14   20   46   36   16 1107   0.4340491
+Numerical values of Importance Measures of the summary statistics (i.e. explanatory variables) are stored in the file named importance_measures_of_summary statistics_SORTED.txt 
+
+RF MODEL CHOICE PREDICTION on the observed dataset(s): we provide the index of the selected model (i.e. scenario), the votes for each model (over the total number of trees in the forest) and the posterior probability for the selected model 
+ selected model votes model1 votes model2 votes model3 votes model4
+             10           97           86          272           26
+ votes model5 votes model6 votes model7 votes model8 votes model9 votes model10
+           24           10           39           45           48           353
+ post.proba
+      0.494
+
+
+############################################################################################# 
+--------------------> i.run = 8 
+
+
+RF TRAINING step using all scenarios separately 
+
+PRIOR ERROR RATES (using the Out-of-Bag statistical procedure): we provide mean Out-of-Bag prior error rate and matrix of errors with the true scenario number as rows and the chosen scenarios as columns 
+
+Call:
+ abcrf(formula = scenario ~ ., data = dataTrain, lda = TRUE, ntree = ntree, paral = TRUE, ncores = how.many.cores.used.for.computation, min.node.size = 1, save.memory = FALSE) 
+includes the axes of a preliminary LDA
+
+Number of simulations: 20000
+Out-of-bag prior error rate: 35.455%
+
+Confusion matrix:
+      1    2    3    4    5    6    7    8    9   10 class.error
+1  1556  126  104    7    8   11   16   55    8   80   0.2105530
+2   123 1365   91   17   14  278   78   49    9   94   0.3555241
+3   137  132 1011   14   20   30   18   37    8  532   0.4785972
+4    17   18   15 1482  117  124   26  133   30   15   0.2503794
+5    12   11    7  114 1071  131   39   41  506   16   0.4502053
+6    13  296   13  154   91 1175  131   50   43   18   0.4077621
+7    19   59    8   29   48   88 1469  130  127   22   0.2651326
+8    63   26    9  171   58   19  138 1400  102   30   0.3055556
+9    12   12   12   47  407   27  148  139 1272   16   0.3919694
+10   83   62  556   23   15   20   43   31   15 1108   0.4335378
+Numerical values of Importance Measures of the summary statistics (i.e. explanatory variables) are stored in the file named importance_measures_of_summary statistics_SORTED.txt 
+
+RF MODEL CHOICE PREDICTION on the observed dataset(s): we provide the index of the selected model (i.e. scenario), the votes for each model (over the total number of trees in the forest) and the posterior probability for the selected model 
+ selected model votes model1 votes model2 votes model3 votes model4
+             10          105           81          308           30
+ votes model5 votes model6 votes model7 votes model8 votes model9 votes model10
+           16           13           37           44           41           325
+ post.proba
+      0.546
+
+
+############################################################################################# 
+--------------------> i.run = 9 
+
+
+RF TRAINING step using all scenarios separately 
+
+PRIOR ERROR RATES (using the Out-of-Bag statistical procedure): we provide mean Out-of-Bag prior error rate and matrix of errors with the true scenario number as rows and the chosen scenarios as columns 
+
+Call:
+ abcrf(formula = scenario ~ ., data = dataTrain, lda = TRUE, ntree = ntree, paral = TRUE, ncores = how.many.cores.used.for.computation, min.node.size = 1, save.memory = FALSE) 
+includes the axes of a preliminary LDA
+
+Number of simulations: 20000
+Out-of-bag prior error rate: 35.765%
+
+Confusion matrix:
+      1    2    3    4    5    6    7    8    9   10 class.error
+1  1542  125  103   10    7   13   17   56    8   90   0.2176560
+2   133 1367   90   20   13  273   78   53    8   83   0.3545798
+3   142  115 1016   18   21   34   17   35    8  533   0.4760186
+4    13   19   10 1487  116  129   27  125   30   21   0.2478503
+5     6   11   12  116 1066  134   42   46  500   15   0.4527721
+6    13  288   11  149   94 1195  129   44   40   21   0.3976815
+7    16   61   11   25   54   90 1449  137  132   24   0.2751376
+8    66   19   11  179   55   26  137 1390  107   26   0.3105159
+9    15   14   11   42  443   21  151  152 1230   13   0.4120459
+10   88   57  550   25   14   22   44   34   17 1105   0.4350716
+Numerical values of Importance Measures of the summary statistics (i.e. explanatory variables) are stored in the file named importance_measures_of_summary statistics_SORTED.txt 
+
+RF MODEL CHOICE PREDICTION on the observed dataset(s): we provide the index of the selected model (i.e. scenario), the votes for each model (over the total number of trees in the forest) and the posterior probability for the selected model 
+ selected model votes model1 votes model2 votes model3 votes model4
+             10           93           90          285           22
+ votes model5 votes model6 votes model7 votes model8 votes model9 votes model10
+           30           13           36           59           37           335
+ post.proba
+      0.579
+
+
+############################################################################################# 
+--------------------> i.run = 10 
+
+
+RF TRAINING step using all scenarios separately 
+
+PRIOR ERROR RATES (using the Out-of-Bag statistical procedure): we provide mean Out-of-Bag prior error rate and matrix of errors with the true scenario number as rows and the chosen scenarios as columns 
+
+Call:
+ abcrf(formula = scenario ~ ., data = dataTrain, lda = TRUE, ntree = ntree, paral = TRUE, ncores = how.many.cores.used.for.computation, min.node.size = 1, save.memory = FALSE) 
+includes the axes of a preliminary LDA
+
+Number of simulations: 20000
+Out-of-bag prior error rate: 35.415%
+
+Confusion matrix:
+      1    2    3    4    5    6    7    8    9   10 class.error
+1  1554  128  100   11    8   16   17   48    7   82   0.2115677
+2   128 1374  102   15   12  260   84   57   11   75   0.3512748
+3   137  124 1015   14   19   31   22   33   10  534   0.4765343
+4    14   26   10 1485  117  113   32  128   37   15   0.2488619
+5     7   12   12  127 1089  121   40   33  491   16   0.4409651
+6    10  297   10  148   96 1191  127   42   37   26   0.3996976
+7    22   53   11   30   48   93 1462  134  123   23   0.2686343
+8    62   27   16  170   63   20  137 1392  104   25   0.3095238
+9    15   14    9   46  422   21  157  144 1252   12   0.4015296
+10   87   50  559   27   17   26   41   33   13 1103   0.4360941
+Numerical values of Importance Measures of the summary statistics (i.e. explanatory variables) are stored in the file named importance_measures_of_summary statistics_SORTED.txt 
+
+RF MODEL CHOICE PREDICTION on the observed dataset(s): we provide the index of the selected model (i.e. scenario), the votes for each model (over the total number of trees in the forest) and the posterior probability for the selected model 
+ selected model votes model1 votes model2 votes model3 votes model4
+             10          106           78          280           21
+ votes model5 votes model6 votes model7 votes model8 votes model9 votes model10
+           23           16           46           54           50           326
+ post.proba
+      0.577
+
+
+
+############################################################################################# 
+############################################################################################# 
+ABSTRACT over the n.run for each vector of STATOBS 
+############################################################################################# 
+############################################################################################# 
+
+Recalling what are the different statobs lines 
+Statobs_1 =     ML1p_1        ML1p_2        ML1p_3        ML1p_4        ML1p_5       ML2p_1.2      ML2p_1.3      ML2p_1.4      ML2p_1.5      ML2p_2.3      ML2p_2.4      ML2p_2.5      ML2p_3.4      ML2p_3.5      ML2p_4.5     ML3p_1.2.3    ML3p_1.2.4    ML3p_1.2.5    ML3p_1.3.4    ML3p_1.3.5    ML3p_1.4.5    ML3p_2.3.4    ML3p_2.3.5    ML3p_2.4.5    ML3p_3.4.5   ML4p_1.2.3.4  ML4p_1.2.3.5  ML4p_1.2.4.5  ML4p_1.3.4.5  ML4p_2.3.4.5     HWm_1         HWm_2         HWm_3         HWm_4         HWm_5         HWv_1         HWv_2         HWv_3         HWv_4         HWv_5        HBm_1.2       HBm_1.3       HBm_1.4       HBm_1.5       HBm_2.3       HBm_2.4       HBm_2.5       HBm_3.4       HBm_3.5       HBm_4.5       HBv_1.2       HBv_1.3       HBv_1.4       HBv_1.5       HBv_2.3       HBv_2.4       HBv_2.5       HBv_3.4       HBv_3.5       HBv_4.5       FST1m_1       FST1m_2       FST1m_3       FST1m_4       FST1m_5       FST1v_1       FST1v_2       FST1v_3       FST1v_4       FST1v_5      FST2m_1.2     FST2m_1.3     FST2m_1.4     FST2m_1.5     FST2m_2.3     FST2m_2.4     FST2m_2.5     FST2m_3.4     FST2m_3.5     FST2m_4.5     FST2v_1.2     FST2v_1.3     FST2v_1.4     FST2v_1.5     FST2v_2.3     FST2v_2.4     FST2v_2.5     FST2v_3.4     FST2v_3.5     FST2v_4.5      NEIm_1.2      NEIm_1.3      NEIm_1.4      NEIm_1.5      NEIm_2.3      NEIm_2.4      NEIm_2.5      NEIm_3.4      NEIm_3.5      NEIm_4.5      NEIv_1.2      NEIv_1.3      NEIv_1.4      NEIv_1.5      NEIv_2.3      NEIv_2.4      NEIv_2.5      NEIv_3.4      NEIv_3.5      NEIv_4.5     AMLm_1.2.3    AMLm_2.1.3    AMLm_3.1.2    AMLm_1.2.4    AMLm_2.1.4    AMLm_4.1.2    AMLm_1.2.5    AMLm_2.1.5    AMLm_5.1.2    AMLm_1.3.4    AMLm_3.1.4    AMLm_4.1.3    AMLm_1.3.5    AMLm_3.1.5    AMLm_5.1.3    AMLm_1.4.5    AMLm_4.1.5    AMLm_5.1.4    AMLm_2.3.4    AMLm_3.2.4    AMLm_4.2.3    AMLm_2.3.5    AMLm_3.2.5    AMLm_5.2.3    AMLm_2.4.5    AMLm_4.2.5    AMLm_5.2.4    AMLm_3.4.5    AMLm_4.3.5    AMLm_5.3.4    AMLv_1.2.3    AMLv_2.1.3    AMLv_3.1.2    AMLv_1.2.4    AMLv_2.1.4    AMLv_4.1.2    AMLv_1.2.5    AMLv_2.1.5    AMLv_5.1.2    AMLv_1.3.4    AMLv_3.1.4    AMLv_4.1.3    AMLv_1.3.5    AMLv_3.1.5    AMLv_5.1.3    AMLv_1.4.5    AMLv_4.1.5    AMLv_5.1.4    AMLv_2.3.4    AMLv_3.2.4    AMLv_4.2.3    AMLv_2.3.5    AMLv_3.2.5    AMLv_5.2.3    AMLv_2.4.5    AMLv_4.2.5    AMLv_5.2.4    AMLv_3.4.5    AMLv_4.3.5    AMLv_5.3.4   FST3m_1.2.3   FST3m_1.2.4   FST3m_1.2.5   FST3m_1.3.4   FST3m_1.3.5   FST3m_1.4.5   FST3m_2.3.4   FST3m_2.3.5   FST3m_2.4.5   FST3m_3.4.5   FST3v_1.2.3   FST3v_1.2.4   FST3v_1.2.5   FST3v_1.3.4   FST3v_1.3.5   FST3v_1.4.5   FST3v_2.3.4   FST3v_2.3.5   FST3v_2.4.5   FST3v_3.4.5   FST4m_1.2.3.4  FST4m_1.2.3.5  FST4m_1.2.4.5  FST4m_1.3.4.5  FST4m_2.3.4.5  FST4v_1.2.3.4  FST4v_1.2.3.5  FST4v_1.2.4.5  FST4v_1.3.4.5  FST4v_2.3.4.5    FSTGm_0       FSTGv_0      F3m_1.2.3     F3m_2.1.3     F3m_3.1.2     F3m_1.2.4     F3m_2.1.4     F3m_4.1.2     F3m_1.2.5     F3m_2.1.5     F3m_5.1.2     F3m_1.3.4     F3m_3.1.4     F3m_4.1.3     F3m_1.3.5     F3m_3.1.5     F3m_5.1.3     F3m_1.4.5     F3m_4.1.5     F3m_5.1.4     F3m_2.3.4     F3m_3.2.4     F3m_4.2.3     F3m_2.3.5     F3m_3.2.5     F3m_5.2.3     F3m_2.4.5     F3m_4.2.5     F3m_5.2.4     F3m_3.4.5     F3m_4.3.5     F3m_5.3.4     F3v_1.2.3     F3v_2.1.3     F3v_3.1.2     F3v_1.2.4     F3v_2.1.4     F3v_4.1.2     F3v_1.2.5     F3v_2.1.5     F3v_5.1.2     F3v_1.3.4     F3v_3.1.4     F3v_4.1.3     F3v_1.3.5     F3v_3.1.5     F3v_5.1.3     F3v_1.4.5     F3v_4.1.5     F3v_5.1.4     F3v_2.3.4     F3v_3.2.4     F3v_4.2.3     F3v_2.3.5     F3v_3.2.5     F3v_5.2.3     F3v_2.4.5     F3v_4.2.5     F3v_5.2.4     F3v_3.4.5     F3v_4.3.5     F3v_5.3.4    F4m_1.2.3.4   F4m_1.3.2.4   F4m_1.4.2.3   F4m_1.2.3.5   F4m_1.3.2.5   F4m_1.5.2.3   F4m_1.2.4.5   F4m_1.4.2.5   F4m_1.5.2.4   F4m_1.3.4.5   F4m_1.4.3.5   F4m_1.5.3.4   F4m_2.3.4.5   F4m_2.4.3.5   F4m_2.5.3.4   F4v_1.2.3.4   F4v_1.3.2.4   F4v_1.4.2.3   F4v_1.2.3.5   F4v_1.3.2.5   F4v_1.5.2.3   F4v_1.2.4.5   F4v_1.4.2.5   F4v_1.5.2.4   F4v_1.3.4.5   F4v_1.4.3.5   F4v_1.5.3.4   F4v_2.3.4.5   F4v_2.4.3.5   F4v_2.5.3.4  
+
+Summary for Statobs = 1 
+       S1              S2              S3              S4              S5      
+ Min.   : 80.0   Min.   :70.00   Min.   :269.0   Min.   :19.00   Min.   :16.0  
+ 1st Qu.: 88.0   1st Qu.:76.50   1st Qu.:279.2   1st Qu.:22.00   1st Qu.:23.0  
+ Median : 95.0   Median :79.00   Median :283.0   Median :25.00   Median :23.0  
+ Mean   : 95.4   Mean   :80.60   Mean   :286.8   Mean   :25.10   Mean   :24.1  
+ 3rd Qu.:105.0   3rd Qu.:84.75   3rd Qu.:296.8   3rd Qu.:29.25   3rd Qu.:27.0  
+ Max.   :106.0   Max.   :92.00   Max.   :308.0   Max.   :30.00   Max.   :30.0  
+       S6              S7             S8              S9             S10       
+ Min.   :10.00   Min.   :29.0   Min.   :34.00   Min.   :35.00   Min.   :325.0  
+ 1st Qu.:13.25   1st Qu.:36.0   1st Qu.:44.25   1st Qu.:38.00   1st Qu.:330.5  
+ Median :15.00   Median :36.5   Median :45.00   Median :49.00   Median :344.5  
+ Mean   :15.20   Mean   :38.1   Mean   :47.00   Mean   :46.60   Mean   :341.1  
+ 3rd Qu.:16.75   3rd Qu.:42.0   3rd Qu.:52.00   3rd Qu.:52.25   3rd Qu.:351.2  
+ Max.   :21.00   Max.   :49.0   Max.   :59.00   Max.   :59.00   Max.   :355.0  
+      Prob             Win      Prior_error    
+ Min.   :0.4940   Min.   :10   Min.   :0.3522  
+ 1st Qu.:0.5363   1st Qu.:10   1st Qu.:0.3543  
+ Median :0.5510   Median :10   Median :0.3549  
+ Mean   :0.5514   Mean   :10   Mean   :0.3550  
+ 3rd Qu.:0.5785   3rd Qu.:10   3rd Qu.:0.3555  
+ Max.   :0.5910   Max.   :10   Max.   :0.3577  
+
+
+
+Winner scenarios for Statobs = 1 
+ [1] 10 10 10 10 10 10 10 10 10 10
+
+
+
+  Win.Scen.ID occur
+1          10    10
+
+Mean vote numbers for each statobs 
+
+Statobs # 1 
+   Scenario Mean.Votes
+1         1       95.4
+2         2       80.6
+3         3      286.8
+4         4       25.1
+5         5       24.1
+6         6       15.2
+7         7       38.1
+8         8       47.0
+9         9       46.6
+10       10      341.1
+
+
+Final results without threshold:
+Global mean number of votes over all statobs:
+   Scenario Mean.Votes
+1         1       95.4
+2         2       80.6
+3         3      286.8
+4         4       25.1
+5         5       24.1
+6         6       15.2
+7         7       38.1
+8         8       47.0
+9         9       46.6
+10       10      341.1
+
+### End of Results ###
+############################################################################################# 
+############################################################################################# 
+########### OTHER PRESENTATION OF FINAL RESULTS WITHOUT ANY THRESHOLD ###################### 
+############################################################################################# 
+############################################################################################# 
+
+DataFrame for mean number of votes with TotalTrees row 
+     Scenario Statobs1
+1           1     95.4
+2           2     80.6
+3           3    286.8
+4           4     25.1
+5           5     24.1
+6           6     15.2
+7           7     38.1
+8           8     47.0
+9           9     46.6
+10         10    341.1
+11 TotalTrees   1000.0
+nDataFrame for mean fraction of votes with Total% row 
+        Scenario Statobs1
+1              1   0.0954
+2              2   0.0806
+3              3   0.2868
+4              4   0.0251
+5              5   0.0241
+6              6   0.0152
+7              7   0.0381
+8              8   0.0470
+9              9   0.0466
+10            10   0.3411
+11 TotalFraction   1.0000
+
+### End of Results ###
+############################################################################################# 
+############################################################################################# 
+########### OTHER PRESENTATION OF FINAL RESULTS USING A DEFINED THRESHOLD          ########## 
+############################################################################################# 
+############################################################################################# 
+ntree = 1000 
+results_threshold_fraction_trees= 0.05 
+threshold in min number of trees = 50 
+
+Sub-dataframe for the scenarios with mean number of votes >  50 
+   Scenario Statobs1
+1         1     95.4
+2         2     80.6
+3         3    286.8
+10       10    341.1
+
+Sub-dataframe for the scenarios with mean fraction of votes >  0.05 
+   Scenario Statobs1
+1         1   0.0954
+2         2   0.0806
+3         3   0.2868
+10       10   0.3411
+
+Sum of the nbre of votes for scenario relaining after threshold 
+           Column   Sum
+Statobs1 Statobs1 803.9
+
+Sum of the nbre of votes for scenario relaining after threshold 
+           Column    Sum
+Statobs1 Statobs1 0.8039
+############################################################################################# 
+Drawing figures for the last of the i.run = 10 
+############################################################################################# 
+Press <ENTER> to Continue
+THREE ILLUSTRATIVE GRAPHICS have been produced and saved in three different files: FALSEFile named prior_errors_vs_number_of_trees.png: Graphic providing prior error rates for forests with different number of trees and computed using an Out-of-Bag procedure, e.g. Fig. 3 in Pudlo et al. 2016 
+File named graph_lda.pdf = LDA projections of the reference table for the different scenarios plus the observed dataset cf. black star in the figure 
+File name graph_varImpPlot.pdf = the contributions of the 30 most important statistics to the RF (e.g. Fig. S6 and Fig. S7 in Pudlo et al. 2016) 

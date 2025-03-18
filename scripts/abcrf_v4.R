@@ -40,7 +40,7 @@ n.run = 10 # Most people do a single RF run (n.run=1)...I prefere to do several 
 
 ###### Key parameters to inform in order to run RF  
 # Number of simulations taken from the training dataset (reftable) that will be used to built RF trees
-N.train <- 10000
+N.train <- 40000
 # Number of trees in the forest
 ntree <- 1000
 # Threshold results (a gadget to use RF output in a specific way = pruning when many scenarios are compared = to be explained later)

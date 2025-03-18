@@ -64,7 +64,7 @@ folder <- swd
 myseed <- 1162
 set.seed(myseed)
 #################### Nbre of relicates cf. n.boot and nbre of cores for parallelization #########################################################
-n.boot = 500
+n.boot = 600
 # pour ncores.prior et ncores.posterior
 ncores.prior = 11
 # From Paul: Quand il essaie de paralléliser, il doit avoir la fonction simulate_swd sur tous les coeurs, ce qui n'est pas le cas par défaut.
@@ -89,7 +89,7 @@ n.ref.prior.all <- c(500, 1000, 2000) # total number of points in the reference 
 
 # n.ref.hp.all <- c(100*1000) # total number of points in the reference dataset for the post and freq gof
 # n.post.all <- c(1000) # number of points kept in the posterior # On ne parle plus de epsilon mais equivalent
-n.ref.hp.all <- c(20*1000) # total number of points in the reference dataset for the post and freq gof
+n.ref.hp.all <- c(60*1000) # total number of points in the reference dataset for the post and freq gof
 n.post.all <- c(500) # number of points kept in the posterior # On ne parle plus de epsilon mais equivalent
 # n.ref.hp.all <- c(50*1000, 100*1000) # total number of points in the reference dataset for the post and freq gof
 # n.post.all <- c(500, 1000, 2000) # number of points kept in the posterior # On ne parle plus de epsilon mais equivalent
@@ -428,7 +428,7 @@ cat("Number of summary statistics in the reference table:", ncol(refTable$stats)
         ################################################################################
         # Prepare simulation function
         #source("sim_human_AE-01-05-2024.R")
-        source("/mnt/c/Users/Bertelli/drosophila-evolution/scripts/sim_swd.R")
+        source("../../../scripts/sim_swd.R")
         path_to_headers <- swd
 
         seed <- myseed

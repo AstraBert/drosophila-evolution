@@ -1,15 +1,17 @@
-wd=/gatk_modified/userdata/abertelli/drosophila-evolution
+eval "$(conda shell.bash hook)"
+
+wd=/home/abert/media1/projects/drosophila-evolution
 
 source activate gatk_modified
 
 bcftools mpileup \
-    -C 50 \
     -Ou \
-    -f $wd/data/reference/dmel-6.59.fa \
-    -b $wd/data/freebayes_inputs/bamfiles.txt \
+    -f $wd/data/reference/dmel-6.62.fa \
+    -b $wd/data/bamfiles/bamfiles.txt \
     -q 20 \
     -Q 20 \
     -r "3L" \
-    -a DP,AD | bcftools call -mv -Oz  --format-fields GQ,GP > $wd/results/drosophila_evolution.bcftools_3L.vcf.gz
+    --threads 120 \
+    -a DP,AD | bcftools call -mv -Oz  --format-fields GQ,GP > $wd/data/vcf/3L.vcf.gz
 
 conda deactivate

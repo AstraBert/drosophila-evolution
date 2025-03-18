@@ -1,1 +1,1 @@
-wget http://berglandlab.uvadcos.io/dest_mapped/DESTv1/AT_Wie_Gro_1_2012-10-20/AT_Wie_Gro_1_2012-10-20.mel.bam.bai
+wget http://berglandlab.pods.uvarc.io/dest_mapped/DESTv2/UA_Ode_Ode_1_2019-09-06/UA_Ode_Ode_1_2019-09-06.mel.bam.bai

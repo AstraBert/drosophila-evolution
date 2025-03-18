@@ -2,6 +2,10 @@ data/bamfiles
 data/reference
 data/mapping
 data/dest*
+data/vcf/
+data/bamfiles/
+data/interim/
+data/mapping/
 data/diyabc_inputs*/
 data/diyabc_noinv_1/
 data/diyabc_noinv_2/

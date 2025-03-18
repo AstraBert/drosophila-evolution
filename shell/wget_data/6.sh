@@ -1,1 +1,1 @@
-wget http://berglandlab.uvadcos.io/dest_mapped/DESTv2/HU_Pes_Pil_1_2018-07-04/HU_Pes_Pil_1_2018-07-04.original.bam.bai
+wget http://berglandlab.pods.uvarc.io/dest_mapped/DESTv2/RU_Vla_Ale_1_2018-10-13/RU_Vla_Ale_1_2018-10-13.mel.bam.bai

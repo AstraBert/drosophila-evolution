@@ -1,0 +1,21 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+df = pd.read_csv("sliding_windows_f4.csv")
+# Define chromosome order
+chromosome_order = ["2L", "2R", "3L", "3R", "X"]
+df["Chr"] = pd.Categorical(df["Chr"], categories=chromosome_order, ordered=True)
+
+# Initialize FacetGrid to separate plots by chromosome
+g = sns.FacetGrid(df, col="Chr", col_wrap=3, sharex=False, sharey=True)
+
+# Plot value per chromosome
+g.map_dataframe(sns.lineplot, x="MidPos", y="Value", color="blue")
+
+# Improve aesthetics
+g.set_axis_labels("Position (Mbp)", "Value")
+g.set_titles(col_template="{col_name}")
+plt.show()
+plt.savefig("../imgs/sliding_c.png")
+
